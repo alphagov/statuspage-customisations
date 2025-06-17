@@ -1,0 +1,117 @@
+body {
+   font-family: "Helvetica Neue", Helvetica, Arial, Sans-Serif;
+}
+.font-regular,
+.layout-content.status.status-index .components-section .component-container .component-status {
+  font-size: 19px;
+  line-height: 1.25em;
+}
+.layout-content.status.status-index .page-status .last-updated-stamp {
+  color: #fff;
+}
+.font-small {
+  font-size: 16px;
+  line-height: 1.25em;
+}
+.layout-content.status .masthead-container .updates-dropdown-container .show-updates-dropdown {
+  text-transform: lowercase	;
+  font-size: 19px;
+  letter-spacing: 0;
+  border-radius: 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -moz-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -o-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+}
+
+.layout-content.status.status-index .page-status {
+  border-radius: 0;
+  -webkit-border-radius: 0; 
+  -moz-border-radius: 0;  
+  border: none;
+  text-shadow: none;
+}
+
+.layout-content.status.status-index .components-section .component-container .name {
+  font-weight: normal; 
+}
+.component-status {
+  font-weight: bold; 
+}
+
+.layout-content.status.status-index .components-section .components-container.one-column .component-container:first-child {
+  border-radius: 0 !important;
+}
+.layout-content.status.status-index .components-section .components-container.one-column .component-container {
+  border-right-width: 0;
+  border-left-width: 0;
+  padding: 15px 0;
+}
+.layout-content.status.status-index .components-section .components-container.one-column .component-container {
+  border-left-width: 0 !important;
+}
+a:focus {
+   outline: 3px solid transparent !important;
+   color: #0b0c0c !important;;
+   background-color: #fd0 !important;
+   -webkit-box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
+   box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
+   text-decoration: none !important;
+}
+
+button:focus {
+    border-color: #fd0 !important;
+    color: #0b0c0c !important;
+    outline: 3px solid transparent;
+    -webkit-box-shadow: inset 0 0 0 1px #fd0 !important;
+    box-shadow: inset 0 0 0 1px #fd0 !important;
+}
+
+button:focus:not(:active):not(:hover) {
+    border-color: #fd0 !important;
+    color: #0b0c0c !important;
+    background-color: #fd0;
+    -webkit-box-shadow: 0 2px 0 #0b0c0c !important;
+    box-shadow: 0 2px 0 #0b0c0c !important;
+}
+.layout-content.status-full-history .month .incident-container .impact-major {
+   color: #BD0812;
+}
+
+.layout-content.status-incident .incident-name.impact-major{
+  color: #BD0812 !important;
+}
+.layout-content.status.status-index .components-section .component-container .name {
+    white-space: inherit !important;
+}
+
+To achieve the above look you can also use this CSS
+
+.layout-content.status.status-index .components-section .component-container .icon-indicator {
+   display: none;
+}
+
+.layout-content.status.status-index .components-section .component-container {
+  border-bottom-width: 1px;
+  padding: 10px 0;
+}
+
+/* hide “about this site“ */
+.text-section .font-largest {
+  display: none;
+}
+
+/* adjust footer padding so that links get full underline */
+.page-footer {
+  padding-bottom: 0.75rem;
+}
+
+/* show/collapse incidents toggle focus state */
+.layout-content.status.status-full-history .months-container .custom-focus:focus {
+  background: #fd0;
+  color: #0b0c0c;
+  outline: 0;
+  border: 0;
+  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+}
