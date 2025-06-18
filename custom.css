@@ -115,3 +115,20 @@ To achieve the above look you can also use this CSS
   border: 0;
   box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
 }
+
+/*subscribe link selection focus */
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus,
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus{
+  box-shadow: 0 -2px #fd0, inset 0 -4px #0b0c0c !important;
+  outline: 0;
+  border: 0;
+  background: #fd0;
+  color: #0b0c0c !important;
+  outline: 0;
+  border: 0;
+}
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus span,
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus span {
+  filter: invert(1);
+  /* use filter because they load a different (dark) sprite from a url that would be fragile to use */
+}
