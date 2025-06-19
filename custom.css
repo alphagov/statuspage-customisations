@@ -75,6 +75,25 @@ button:focus:not(:active):not(:hover) {
     -webkit-box-shadow: 0 2px 0 #0b0c0c !important;
     box-shadow: 0 2px 0 #0b0c0c !important;
 }
+
+a, a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: max(1px,.0625rem);
+  text-underline-offset: 0.1578em;
+}
+
+.page-name > a,
+.show-updates-dropdown,
+.show-updates-dropdown:hover,
+.previous-page,
+.previous-page:hover,
+.next-page,
+.next-page:hover,
+.flat-button,
+.flat-button:hover {
+  text-decoration: none;
+}
+
 .layout-content.status-full-history .month .incident-container .impact-major {
    color: #BD0812;
 }
