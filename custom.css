@@ -150,3 +150,11 @@ To achieve the above look you can also use this CSS
   filter: invert(1);
   /* use filter because they load a different (dark) sprite from a url that would be fragile to use */
 }
+
+/* reduce page-footer margin if you add a custom footer*/
+/* page-footer has a default margin */
+/* and because custom footer gets appended after it */
+/* we need to reduce it */
+.page-footer {
+    margin-bottom: 10px;
+}
