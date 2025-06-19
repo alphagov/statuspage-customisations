@@ -146,8 +146,7 @@ To achieve the above look you can also use this CSS
   outline: 0;
   border: 0;
 }
-.updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus span,
-.updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus span {
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav a.active:focus span {
   filter: invert(1);
   /* use filter because they load a different (dark) sprite from a url that would be fragile to use */
 }
