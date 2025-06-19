@@ -3,6 +3,19 @@
 </div>
 <script>
 $(function() {
-  $('.components-container').removeClass('two-columns').addClass('one-column';
+  $('.components-container').removeClass('two-columns').addClass('one-column');
+  // adds autocomplete attributes to controls that don't have one
+  var selectorAndAutocompleteAttributes = {
+    email: "email",
+    phone_country: "tel-country-code",
+    phone_number: "tel-national"
+  }
+
+  $.each(selectorAndAutocompleteAttributes, function(key, val) {
+    var $targetElements = $(`[name='${key}']`);
+    $.each($targetElements, function() {
+      $(this).attr('autocomplete', val);
+    });
+  });
 });
 </script>
