@@ -158,3 +158,16 @@ To achieve the above look you can also use this CSS
 .page-footer {
     margin-bottom: 10px;
 }
+
+/* fix for subscribe to incident updates modal on mobile/zoom view */
+@media screen and (max-width: 580px) {
+    .modal-open-incident-subscribe.in {
+        margin-top: 0 !important;
+        overflow-y: auto !important;
+        bottom: 0 !important;
+    }
+
+    .modal .modal-body {
+        max-height: none !important;
+    }
+}
