@@ -17,5 +17,10 @@ $(function() {
       $(this).attr('autocomplete', val);
     });
   });
+
+  // a11y fixes for subscribe to ongoing incident(s) button
+  $('.subscribe-button').attr('aria-haspopup', 'dialog').text(function() {
+    return this.text + ' for this incident';
+  });
 });
 </script>
