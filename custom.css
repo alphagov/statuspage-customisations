@@ -171,3 +171,8 @@ To achieve the above look you can also use this CSS
         max-height: none !important;
     }
 }
+
+/* make subheader on incident page visible on smaller viewports/ zoom levels */
+.layout-content.status.status-incident .page-title .subheader:not(.scheduled-for) {
+    display: block;
+}
