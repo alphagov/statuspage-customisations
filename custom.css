@@ -126,15 +126,6 @@ To achieve the above look you can also use this CSS
   padding-bottom: 0.75rem;
 }
 
-/* show/collapse incidents toggle focus state */
-.layout-content.status.status-full-history .months-container .custom-focus:focus {
-  background: #fd0;
-  color: #0b0c0c;
-  outline: 0;
-  border: 0;
-  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
-}
-
 /*subscribe link selection focus */
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus,
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus{
