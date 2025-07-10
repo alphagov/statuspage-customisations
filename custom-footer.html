@@ -3,6 +3,19 @@
 </div>
 <script>
 $(function() {
+  // add skiplink and link to main content
+  var pathRoot = "/" + window.location.pathname.split('/')[1];
+  var mainContainerMap = {
+    "/" : ".masthead-container + .container",
+    "/history": ".months-container",
+    "/incidents": ".incident-updates-container"
+  };
+
+  if (mainContainerMap.hasOwnProperty(pathRoot)) {
+    document.querySelector(mainContainerMap[pathRoot]).setAttribute('id', 'main-content');
+    document.body.insertAdjacentHTML('afterbegin', '<a href="#main-content" class="govuk-skip-link">Skip to main content</a>'); 
+  }
+
   $('.components-container').removeClass('two-columns').addClass('one-column');
   // adds autocomplete attributes to controls that don't have one
   var selectorAndAutocompleteAttributes = {
