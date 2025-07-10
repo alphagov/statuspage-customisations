@@ -82,6 +82,42 @@ a, a:hover {
   text-underline-offset: 0.1578em;
 }
 
+.govuk-skip-link{
+  text-decoration:underline;
+  display:block;
+  padding:10px 15px
+}
+.govuk-skip-link:not(:active):not(:focus){
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  clip:rect(0 0 0 0)!important;
+  clip-path:inset(50%)!important;
+  border:0!important;
+  white-space:nowrap!important;
+  user-select:none
+}
+.govuk-skip-link:link,.govuk-skip-link:visited{
+  color:#0b0c0c
+}
+.govuk-skip-link:hover{
+  color:rgba(11,12,12,.99)
+}
+.govuk-skip-link:active,.govuk-skip-link:focus{
+  color:#0b0c0c
+}
+.govuk-skip-link:focus{
+  text-decoration: underline !important;
+  outline:3px solid #fd0;
+  outline-offset:0;
+  background-color:#fd0;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 .page-name > a,
 .show-updates-dropdown,
 .show-updates-dropdown:hover,
