@@ -13,7 +13,10 @@ You should have the latest `main` checked out.
 3. click the 'Customize HTML & CSS' button
 4. get the latest version of a file in your clipboard with the bash script below
 5. paste it into the textbox for that file
-6. check the code for your changes and the page(s) once they update
+6. repeat step 4 for the other file
+7. check the commit SHA in the comment at the bottom with the HEAD of `main`
+8. check your changes in the in-page iframe work as expected
+9. if all ok, click the 'Publish changes' button
 
 ### Command to copy file to clipboard
 
