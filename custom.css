@@ -1,79 +1,16 @@
+/* generic styles*/
 body {
-   font-family: "Helvetica Neue", Helvetica, Arial, Sans-Serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, Sans-Serif;
 }
-.font-regular,
-.layout-content.status.status-index .components-section .component-container .component-status {
-  font-size: 19px;
-  line-height: 1.25em;
-}
-.layout-content.status.status-index .page-status .last-updated-stamp {
-  color: #fff;
-}
+
 .font-small {
   font-size: 16px;
   line-height: 1.25em;
 }
-.layout-content.status .masthead-container .updates-dropdown-container .show-updates-dropdown {
-  text-transform: lowercase	;
+
+.font-regular {
   font-size: 19px;
-  letter-spacing: 0;
-  border-radius: 0;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -moz-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -o-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-}
-
-.layout-content.status.status-index .page-status {
-  border-radius: 0;
-  -webkit-border-radius: 0; 
-  -moz-border-radius: 0;  
-  border: none;
-  text-shadow: none;
-}
-
-.layout-content.status.status-index .components-section .component-container .name {
-  font-weight: normal; 
-}
-.component-status {
-  font-weight: bold; 
-}
-
-.layout-content.status.status-index .components-section .components-container.one-column .component-container:first-child {
-  border-radius: 0 !important;
-}
-.layout-content.status.status-index .components-section .components-container.one-column .component-container {
-  border-right-width: 0;
-  border-left-width: 0;
-  padding: 15px 0;
-}
-.layout-content.status.status-index .components-section .components-container.one-column .component-container {
-  border-left-width: 0 !important;
-}
-a:focus {
-   outline: 3px solid transparent !important;
-   color: #0b0c0c !important;;
-   background-color: #fd0 !important;
-   -webkit-box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
-   box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
-   text-decoration: none !important;
-}
-
-button:focus {
-    border-color: #fd0 !important;
-    color: #0b0c0c !important;
-    outline: 3px solid transparent;
-    -webkit-box-shadow: inset 0 0 0 1px #fd0 !important;
-    box-shadow: inset 0 0 0 1px #fd0 !important;
-}
-
-button:focus:not(:active):not(:hover) {
-    border-color: #fd0 !important;
-    color: #0b0c0c !important;
-    background-color: #fd0;
-    -webkit-box-shadow: 0 2px 0 #0b0c0c !important;
-    box-shadow: 0 2px 0 #0b0c0c !important;
+  line-height: 1.25em;
 }
 
 a, a:hover {
@@ -82,11 +19,37 @@ a, a:hover {
   text-underline-offset: 0.1578em;
 }
 
+a:focus {
+  outline: 3px solid transparent !important;
+  color: #0b0c0c !important;;
+  background-color: #fd0 !important;
+  -webkit-box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
+  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
+  text-decoration: none !important;
+}
+
+button:focus {
+  border-color: #fd0 !important;
+  color: #0b0c0c !important;
+  outline: 3px solid transparent;
+  -webkit-box-shadow: inset 0 0 0 1px #fd0 !important;
+  box-shadow: inset 0 0 0 1px #fd0 !important;
+}
+
+button:focus:not(:active):not(:hover) {
+  border-color: #fd0 !important;
+  color: #0b0c0c !important;
+  background-color: #fd0;
+  -webkit-box-shadow: 0 2px 0 #0b0c0c !important;
+  box-shadow: 0 2px 0 #0b0c0c !important;
+}
+
 .govuk-skip-link{
   text-decoration:underline;
   display:block;
   padding:10px 15px
 }
+
 .govuk-skip-link:not(:active):not(:focus){
   position:absolute!important;
   width:1px!important;
@@ -100,15 +63,19 @@ a, a:hover {
   white-space:nowrap!important;
   user-select:none
 }
+
 .govuk-skip-link:link,.govuk-skip-link:visited{
   color:#0b0c0c
 }
+
 .govuk-skip-link:hover{
   color:rgba(11,12,12,.99)
 }
+
 .govuk-skip-link:active,.govuk-skip-link:focus{
   color:#0b0c0c
 }
+
 .govuk-skip-link:focus{
   text-decoration: underline !important;
   outline:3px solid #fd0;
@@ -118,6 +85,7 @@ a, a:hover {
   box-shadow: none !important;
 }
 
+/* remove underline as they look like buttons */
 .page-name > a,
 .show-updates-dropdown,
 .show-updates-dropdown:hover,
@@ -130,36 +98,17 @@ a, a:hover {
   text-decoration: none;
 }
 
-.layout-content.status-full-history .month .incident-container .impact-major {
-   color: #BD0812;
-}
-
-.layout-content.status-incident .incident-name.impact-major{
-  color: #BD0812 !important;
-}
-.layout-content.status.status-index .components-section .component-container .name {
-    white-space: inherit !important;
-}
-
-To achieve the above look you can also use this CSS
-
-.layout-content.status.status-index .components-section .component-container .icon-indicator {
-   display: none;
-}
-
-.layout-content.status.status-index .components-section .component-container {
-  border-bottom-width: 1px;
-  padding: 10px 0;
-}
-
-/* hide “about this site“ */
-.text-section .font-largest {
-  display: none;
-}
-
-/* adjust footer padding so that links get full underline */
-.page-footer {
-  padding-bottom: 0.75rem;
+/* subscribe to updates container */
+.layout-content.status .masthead-container .updates-dropdown-container .show-updates-dropdown {
+  text-transform: lowercase	;
+  font-size: 19px;
+  letter-spacing: 0;
+  border-radius: 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -moz-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -o-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
 }
 
 /*subscribe link selection focus */
@@ -173,17 +122,79 @@ To achieve the above look you can also use this CSS
   outline: 0;
   border: 0;
 }
+
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav a.active:focus span {
   filter: invert(1);
   /* use filter because they load a different (dark) sprite from a url that would be fragile to use */
 }
 
-/* reduce page-footer margin if you add a custom footer*/
-/* page-footer has a default margin */
-/* and because custom footer gets appended after it */
-/* we need to reduce it */
+/* hide “about this site“ */
+.text-section .font-largest {
+  display: none;
+}
+
+.layout-content.status.status-index .page-status .last-updated-stamp {
+  color: #fff;
+}
+
+.layout-content.status.status-index .page-status {
+  border-radius: 0;
+  -webkit-border-radius: 0; 
+  -moz-border-radius: 0;  
+  border: none;
+  text-shadow: none;
+}
+
+/* homepage components section */
+.layout-content.status.status-index .components-section .component-container {
+  border-bottom-width: 1px;
+  padding: 10px 0;
+}
+
+.layout-content.status.status-index .components-section .component-container .icon-indicator {
+   display: none;
+}
+
+.layout-content.status.status-index .components-section .component-container .name {
+  font-weight: normal; 
+  white-space: inherit !important;
+}
+
+.layout-content.status.status-index .components-section .component-container .component-status {
+  font-size: 19px;
+  line-height: 1.25em;
+  font-weight: bold; 
+}
+
+/* single column container styles */
+.layout-content.status.status-index .components-section .components-container.one-column .component-container:first-child {
+  border-radius: 0 !important;
+}
+
+.layout-content.status.status-index .components-section .components-container.one-column .component-container {
+  border-right-width: 0;
+  border-left-width: 0;
+  padding: 15px 0;
+  border-left-width: 0 !important;
+}
+
+
+.layout-content.status-full-history .month .incident-container .impact-major {
+   color: #BD0812;
+}
+
+.layout-content.status-incident .incident-name.impact-major{
+  color: #BD0812 !important;
+}
+
 .page-footer {
-    margin-bottom: 10px;
+  /* adjust footer padding so that links get full underline */
+  padding-bottom: 0.75rem;
+  /* reduce page-footer margin if you add a custom footer HTML */
+  /* page-footer has a default margin */
+  /* and because custom footer gets appended after it */
+  /* we need to reduce it */
+  margin-bottom: 10px;
 }
 
 /* fix for subscribe to incident updates modal on mobile/zoom view */
