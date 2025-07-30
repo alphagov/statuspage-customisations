@@ -156,6 +156,10 @@ button:focus:not(:active):not(:hover) {
   display: none;
 }
 
+.text-section > p > a {
+  word-break:break-word;
+}
+
 .layout-content.status.status-index .page-status .last-updated-stamp {
   color: #fff;
 }
@@ -240,4 +244,14 @@ button:focus:not(:active):not(:hover) {
 
 h2.page-status__heading {
   margin-bottom: 20px;
+}
+
+/* make incident page content linear on mobile */
+.layout-content.status.status-incident .update-title,
+.layout-content.status.status-incident .update-container {
+  float: none;
+}
+
+.layout-content.status.status-incident  .update-container:not(.span12) {
+  width: auto;
 }
