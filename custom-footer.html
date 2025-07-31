@@ -42,8 +42,10 @@ $(function() {
     // expand / show all incidents in a given month
     $('.expand-incidents').click().remove()
   }
-  
+
   removeExpandIncidents();
+
+  $('[for=otp]').attr('for', $('[name=otp]').attr('id'));
 
   var $logo = document.querySelector('.page-name');
   var $container = document.querySelector('.layout-content > .container');
