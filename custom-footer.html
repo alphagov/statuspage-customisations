@@ -93,7 +93,7 @@ $(function() {
 
     if (pathRoot === "/history") {
       var $pageHeading = $container.querySelector('h4:first-child');
-      var $monthHeadings = $container.querySelectorAll('.month-title');
+      var $incidentsList = $container.querySelector('.months-container');
 
       if ($pageHeading !== null) {
         var pageHeadingText = $pageHeading.textContent;
@@ -103,9 +103,18 @@ $(function() {
         swapElForHTML($pageHeading, `<h1 class="font-x-largest">${pageHeadingText}</h1>`);
       }
 
-      if ($monthHeadings.length > 0) {
-        $monthHeadings.forEach($el => swapElForHTML($el, `<h2 class="${$el.className}">${$el.textContent}</h2>`));
+      function updateIncidentsList () {
+        var $monthHeadings = $incidentsList.querySelectorAll('h4.month-title');
+
+        if ($monthHeadings.length > 0) {
+          $monthHeadings.forEach($el => swapElForHTML($el, `<h2 class="${$el.className}">${$el.textContent}</h2>`));
+        }
       }
+
+      updateIncidentsList();
+
+      var observer = new MutationObserver(updateIncidentsList);
+      observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
     }
 
     if (pathRoot === "/incidents") {
