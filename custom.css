@@ -247,11 +247,13 @@ h2.page-status__heading {
 }
 
 /* make incident page content linear on mobile */
-.layout-content.status.status-incident .update-title,
-.layout-content.status.status-incident .update-container {
-  float: none;
-}
+@media screen and (max-width: 450px) {
+  .layout-content.status.status-incident .update-title,
+  .layout-content.status.status-incident .update-container {
+    float: none;
+  }
 
-.layout-content.status.status-incident  .update-container:not(.span12) {
-  width: auto;
+  .layout-content.status.status-incident  .update-container:not(.span12) {
+    width: auto;
+  }
 }
