@@ -37,9 +37,13 @@ $(function() {
   $('.subscribe-button').attr('aria-haspopup', 'dialog').text(function() {
     return this.text + ' for this incident';
   });
+
+  function removeExpandIncidents () {
+    // expand / show all incidents in a given month
+    $('.expand-incidents').click().remove()
+  }
   
-  // expand / show all incidents in a given month
-  $('.expand-incidents').click().remove()
+  removeExpandIncidents();
 
   var $logo = document.querySelector('.page-name');
   var $container = document.querySelector('.layout-content > .container');
@@ -113,7 +117,10 @@ $(function() {
 
       updateIncidentsList();
 
-      var observer = new MutationObserver(updateIncidentsList);
+      var observer = new MutationObserver(() => {
+        updateIncidentsList()
+        removeExpandIncidents()
+      });
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
     }
 
