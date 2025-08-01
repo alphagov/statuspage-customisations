@@ -77,6 +77,23 @@ $(function() {
     }
   }
 
+  function makeSentenceCase (str) {
+    var trimmed = str.trim();
+    return trimmed[0].toUpperCase() + trimmed.slice(1).toLowerCase();
+  }
+
+  function getNodeByXPath (xpath) {
+    var result = document.evaluate(
+      xpath,
+      document,
+      null,
+      XPathResult.FIRST_ORDERED_NODE_TYPE,
+      null,
+    );
+
+    return result.singleNodeValue;
+  }
+
   // Rewrite logo
   if ($logo !== null) {
      $logo.querySelector('a').textContent = 'GOV.UK Notify';
@@ -85,6 +102,11 @@ $(function() {
   // Add heading to footer
   if ($pageFooter !== null) {
     $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>');
+    var $footerLinkText = getNodeByXPath("//div[contains(@class, 'page-footer')]/a/text()");
+
+    if ($footerLinkText !== null) {
+      $footerLinkText.nodeValue = ' ' + makeSentenceCase($footerLinkText.nodeValue);
+    }
   }
 
   if ($container !== null) {
@@ -126,11 +148,7 @@ $(function() {
       var $incidentsList = $container.querySelector('.months-container');
 
       if ($pageHeading !== null) {
-        var pageHeadingText = $pageHeading.textContent;
-
-        // stop camel casing
-        $pageHeading.textContent = pageHeadingText[0].toUpperCase() + pageHeadingText.toLowerCase().slice(1);
-        swapElForHTML($pageHeading, `<h1 class="font-x-largest">${pageHeadingText}</h1>`);
+        swapElForHTML($pageHeading, `<h1 class="font-x-largest">${makeSentenceCase($pageHeading.textContent)}</h1>`);
       }
 
       function updateIncidentsListHeadings () {
@@ -152,7 +170,12 @@ $(function() {
     }
 
     if (pathRoot === "/incidents") {
+      var $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()");
       var $affectedHeading = $container.querySelector('.components-affected');
+
+      if ($pageHeadingContextPrefix !== null) {
+        $pageHeadingContextPrefix.nodeValue = makeSentenceCase($pageHeadingContextPrefix.nodeValue) + ' ';
+      }
 
       if ($affectedHeading !== null) {
         $affectedHeading.insertAdjacentHTML(
