@@ -3,6 +3,20 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, Sans-Serif;
 }
 
+.govuk-visually-hidden {
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  clip:rect(0 0 0 0)!important;
+  clip-path:inset(50%)!important;
+  border:0!important;
+  white-space:nowrap!important;
+  user-select:none
+}
+
 .font-small {
   font-size: 16px;
   line-height: 1.25em;
@@ -11,6 +25,15 @@ body {
 .font-regular {
   font-size: 19px;
   line-height: 1.25em;
+}
+
+.font-x-largest {
+  font-size: 36px;
+  line-height: 1.25em;
+
+  @media screen and (max-width: 650px) {
+    font-size: 27px;
+  }
 }
 
 a, a:hover {
@@ -133,6 +156,10 @@ button:focus:not(:active):not(:hover) {
   display: none;
 }
 
+.text-section > p > a {
+  word-break:break-word;
+}
+
 .layout-content.status.status-index .page-status .last-updated-stamp {
   color: #fff;
 }
@@ -213,4 +240,20 @@ button:focus:not(:active):not(:hover) {
 /* make subheader on incident page visible on smaller viewports/ zoom levels */
 .layout-content.status.status-incident .page-title .subheader:not(.scheduled-for) {
     display: block;
+}
+
+h2.page-status__heading {
+  margin-bottom: 20px;
+}
+
+/* make incident page content linear on mobile */
+@media screen and (max-width: 450px) {
+  .layout-content.status.status-incident .update-title,
+  .layout-content.status.status-incident .update-container {
+    float: none;
+  }
+
+  .layout-content.status.status-incident  .update-container:not(.span12) {
+    width: auto;
+  }
 }

@@ -12,6 +12,7 @@ $(function() {
     "/incidents": ".incident-updates-container"
   };
 
+  // Add skiplink
   if (mainContainerMap.hasOwnProperty(pathRoot)) {
     document.querySelector(mainContainerMap[pathRoot]).setAttribute('id', 'main-content');
     document.body.insertAdjacentHTML('afterbegin', '<a href="#main-content" class="govuk-skip-link">Skip to main content</a>'); 
@@ -36,8 +37,102 @@ $(function() {
   $('.subscribe-button').attr('aria-haspopup', 'dialog').text(function() {
     return this.text + ' for this incident';
   });
+
+  function removeExpandIncidents () {
+    // expand / show all incidents in a given month
+    $('.expand-incidents').click().remove()
+  }
   
-  // expand / show all incidents in a given month
-  $('.expand-incidents').click().remove()
+  removeExpandIncidents();
+
+  var $logo = document.querySelector('.page-name');
+  var $container = document.querySelector('.layout-content > .container');
+  var $pageFooter = document.querySelector('.page-footer');
+
+  function swapElForHTML ($oldEl, newHTML) {
+    $oldEl.insertAdjacentHTML('beforebegin', newHTML);
+    $oldEl.remove();
+  }
+
+  // Rewrite logo
+  if ($logo !== null) {
+     $logo.querySelector('a').textContent = 'GOV.UK Notify';
+  }
+
+  // Add heading to footer
+  if ($pageFooter !== null) {
+    $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>');
+  }
+
+  // Home page specific
+  if ($container !== null) {
+    if (pathRoot === "/") {
+      var $aboutText = document.querySelector('.page-status + .text-section');
+      var $pageStatus = document.querySelector('.page-status');
+      var $pageStatusContent = $pageStatus.querySelector('h2');
+
+      if (($aboutText !== null) && ($pageStatus !== null) && ($pageStatusContent !== null)) {
+        // Add headings and move 'about' text
+        $container.insertAdjacentElement('afterbegin', $aboutText);
+        $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>');
+        $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>');
+
+        // Remake status overview from h2 to p
+        swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`);
+
+        // Rewrite heading for incidents list to make it clear it includes today
+        document.querySelector('.incidents-list > h2:first-child').textContent = "Recent incidents";
+
+        // Reformat dates
+        document.querySelectorAll('.status-day > .date').forEach($el => {
+          if (/^[A-Za-z]+\s+\d{1,2},\s+\d{4}$/.test($el.textContent)) {
+            $textNodes = Array.from($el.childNodes).filter($el => $el.nodeType === 3);
+            $el.insertAdjacentElement('afterbegin', $el.querySelector('var:first-of-type'));
+            $textNodes[0].nodeValue = " " + $textNodes[0].nodeValue;
+            $textNodes[1].remove();
+          }
+        });
+      }
+    }
+
+    if (pathRoot === "/history") {
+      var $pageHeading = $container.querySelector('h4:first-child');
+      var $incidentsList = $container.querySelector('.months-container');
+
+      if ($pageHeading !== null) {
+        var pageHeadingText = $pageHeading.textContent;
+
+        // stop camel casing
+        $pageHeading.textContent = pageHeadingText[0].toUpperCase() + pageHeadingText.toLowerCase().slice(1);
+        swapElForHTML($pageHeading, `<h1 class="font-x-largest">${pageHeadingText}</h1>`);
+      }
+
+      function updateIncidentsList () {
+        var $monthHeadings = $incidentsList.querySelectorAll('h4.month-title');
+
+        if ($monthHeadings.length > 0) {
+          $monthHeadings.forEach($el => swapElForHTML($el, `<h2 class="${$el.className}">${$el.textContent}</h2>`));
+        }
+      }
+
+      updateIncidentsList();
+
+      var observer = new MutationObserver(() => {
+        updateIncidentsList()
+        removeExpandIncidents()
+      });
+      observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
+    }
+
+    if (pathRoot === "/incidents") {
+      var $affectedHeading = $container.querySelector('.components-affected');
+
+      if ($affectedHeading !== null) {
+        $affectedHeading.insertAdjacentHTML(
+          'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
+        );
+      }
+    }
+  }
 });
 </script>
