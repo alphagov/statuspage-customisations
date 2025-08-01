@@ -1,0 +1,24 @@
+{
+  "name": "statuspage-customisations",
+  "version": "1.0.0",
+  "description": "Custom code for uses of statuspage.io on projects owned by the Government Digital Service.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alphagov/statuspage-customisations.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alphagov/statuspage-customisations/issues"
+  },
+  "homepage": "https://github.com/alphagov/statuspage-customisations#readme",
+  "scripts": {
+    "lint": "npm run lint:js",
+    "lint:js": "standard custom-footer.js"
+  },
+  "devDependencies": {
+    "standard": "17.1.2"
+  },
+  "standard": {
+    "globals": ["$"]
+  }
+}
