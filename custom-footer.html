@@ -54,6 +54,29 @@ $(function() {
     $oldEl.remove();
   }
 
+  function reformatDateRanges () {
+    function reformatRange ($range) {
+      if (/^[A-Za-z-]+\s+\d+,\s+\d+:\d+\s+-\s+([A-Za-z]+\s+\d+,\s+)?\d+:\d+\s+[A-Z]+$/.test($range.textContent)) {
+        var $dateVars = $range.querySelectorAll('var[data-var=date]');
+
+        $range.insertAdjacentElement('afterbegin', $dateVars[0]);
+        $range.childNodes[1].nodeValue = ' ' + $range.childNodes[1].nodeValue.trim();
+        if ($dateVars.length > 1) {
+          var $month = $dateVars[1].previousSibling;
+          $range.insertBefore($dateVars[1], $month);
+          $month.nodeValue = $month.nodeValue.replace(' - ', ' ');
+          $range.insertBefore(document.createTextNode(' - '), $dateVars[1]);
+        }
+      }
+    }
+
+    if (document.querySelector('.incident-list') !== null) {
+      var $incidentDateRanges = document.querySelectorAll('.incident-data > .secondary');
+
+      if ($incidentDateRanges !== null) { $incidentDateRanges.forEach($el => reformatRange($el)); }
+    }
+  }
+
   // Rewrite logo
   if ($logo !== null) {
      $logo.querySelector('a').textContent = 'GOV.UK Notify';
@@ -64,8 +87,11 @@ $(function() {
     $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>');
   }
 
-  // Home page specific
   if ($container !== null) {
+
+    reformatDateRanges();
+
+    // Home page specific
     if (pathRoot === "/") {
       var $aboutText = document.querySelector('.page-status + .text-section');
       var $pageStatus = document.querySelector('.page-status');
@@ -107,7 +133,7 @@ $(function() {
         swapElForHTML($pageHeading, `<h1 class="font-x-largest">${pageHeadingText}</h1>`);
       }
 
-      function updateIncidentsList () {
+      function updateIncidentsListHeadings () {
         var $monthHeadings = $incidentsList.querySelectorAll('h4.month-title');
 
         if ($monthHeadings.length > 0) {
@@ -118,7 +144,8 @@ $(function() {
       updateIncidentsList();
 
       var observer = new MutationObserver(() => {
-        updateIncidentsList()
+        updateIncidentsListHeadings()
+        reformatDateRanges();
         removeExpandIncidents()
       });
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
@@ -133,6 +160,7 @@ $(function() {
         );
       }
     }
+
   }
 });
 </script>
