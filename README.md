@@ -34,5 +34,5 @@ echo "$(<custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
 For example:
 
 ```bash
-echo "$(<custom-footer.html)\n<\!-- HEAD: $(git rev-parse HEAD) -->" | pbcopy
+echo "$(<custom-footer.html)\n<script>\n$(<custom-footer.js)\n</script>\n<\!-- HEAD: $(git rev-parse HEAD) -->"
 ```
