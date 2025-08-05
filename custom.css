@@ -1,6 +1,6 @@
-/* generic styles*/
+/* generic styles */
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, Sans-Serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .govuk-visually-hidden {
@@ -45,24 +45,24 @@ a, a:hover {
 a:focus {
   outline: 3px solid transparent !important;
   color: #0b0c0c !important;;
-  background-color: #fd0 !important;
-  -webkit-box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
-  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c !important;
+  background-color: #ffdd00 !important;
+  -webkit-box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c !important;
+  box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c !important;
   text-decoration: none !important;
 }
 
 button:focus {
-  border-color: #fd0 !important;
+  border-color: #ffdd00 !important;
   color: #0b0c0c !important;
   outline: 3px solid transparent;
-  -webkit-box-shadow: inset 0 0 0 1px #fd0 !important;
-  box-shadow: inset 0 0 0 1px #fd0 !important;
+  -webkit-box-shadow: inset 0 0 0 1px #ffdd00 !important;
+  box-shadow: inset 0 0 0 1px #ffdd00 !important;
 }
 
 button:focus:not(:active):not(:hover) {
-  border-color: #fd0 !important;
+  border-color: #ffdd00 !important;
   color: #0b0c0c !important;
-  background-color: #fd0;
+  background-color: #ffdd00;
   -webkit-box-shadow: 0 2px 0 #0b0c0c !important;
   box-shadow: 0 2px 0 #0b0c0c !important;
 }
@@ -101,9 +101,9 @@ button:focus:not(:active):not(:hover) {
 
 .govuk-skip-link:focus{
   text-decoration: underline !important;
-  outline:3px solid #fd0;
+  outline:3px solid #ffdd00;
   outline-offset:0;
-  background-color:#fd0;
+  background-color:#ffdd00;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
@@ -134,21 +134,19 @@ button:focus:not(:active):not(:hover) {
   -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
 }
 
-/*subscribe link selection focus */
+/* subscribe link selection focus */
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus,
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus{
-  box-shadow: 0 -2px #fd0, inset 0 -4px #0b0c0c !important;
+  box-shadow: 0 -2px #ffdd00, inset 0 -4px #0b0c0c !important;
   outline: 0;
   border: 0;
-  background: #fd0;
+  background: #ffdd00;
   color: #0b0c0c !important;
-  outline: 0;
-  border: 0;
 }
 
-.updates-dropdown-container .updates-dropdown .updates-dropdown-nav a.active:focus span {
+/* use filter because they load a different (dark) sprite from a url that would be fragile to use */
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav .active:focus span {
   filter: invert(1);
-  /* use filter because they load a different (dark) sprite from a url that would be fragile to use */
 }
 
 /* hide “about this site“ */
@@ -161,7 +159,7 @@ button:focus:not(:active):not(:hover) {
 }
 
 .layout-content.status.status-index .page-status .last-updated-stamp {
-  color: #fff;
+  color: #ffffff;
 }
 
 .layout-content.status.status-index .page-status {
@@ -200,9 +198,8 @@ button:focus:not(:active):not(:hover) {
 
 .layout-content.status.status-index .components-section .components-container.one-column .component-container {
   border-right-width: 0;
-  border-left-width: 0;
-  padding: 15px 0;
   border-left-width: 0 !important;
+  padding: 15px 0;
 }
 
 
@@ -214,13 +211,15 @@ button:focus:not(:active):not(:hover) {
   color: #BD0812 !important;
 }
 
-.page-footer {
-  /* adjust footer padding so that links get full underline */
-  padding-bottom: 0.75rem;
-  /* reduce page-footer margin if you add a custom footer HTML */
-  /* page-footer has a default margin */
-  /* and because custom footer gets appended after it */
-  /* we need to reduce it */
+.page-footer { 
+  padding-bottom: 0.75rem; /* adjust footer padding so that links get full underline */
+
+  /* 
+   * reduce page-footer margin if you add a custom footer HTML
+   * page-footer has a default margin
+   * and because custom footer gets appended after it
+   * we need to reduce it
+   */
   margin-bottom: 10px;
 }
 
@@ -242,7 +241,7 @@ button:focus:not(:active):not(:hover) {
     display: block;
 }
 
-h2.page-status__heading {
+.container .page-status__heading {
   margin-bottom: 20px;
 }
 
