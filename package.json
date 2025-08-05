@@ -12,13 +12,29 @@
   },
   "homepage": "https://github.com/alphagov/statuspage-customisations#readme",
   "scripts": {
-    "lint": "npm run lint:js",
-    "lint:js": "standard custom-footer.js"
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "standard custom-footer.js",
+    "lint:css": "stylelint custom.css"
   },
   "devDependencies": {
-    "standard": "17.1.2"
+    "standard": "17.1.2",
+    "stylelint": "16.23.0",
+    "stylelint-config-gds": "2.0.0"
   },
   "standard": {
-    "globals": ["$"]
+    "globals": [
+      "$"
+    ]
+  },
+  "stylelint": {
+    "extends": "stylelint-config-gds/css",
+    "overrides": [
+      {
+        "files": "**/*.css",
+        "rules": {
+          "declaration-no-important": null
+        }
+      }
+    ]
   }
 }
