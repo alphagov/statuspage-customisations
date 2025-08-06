@@ -17,6 +17,8 @@
     "lint:css": "stylelint custom.css"
   },
   "devDependencies": {
+    "puppeteer": "^24.15.0",
+    "puppeteer-core": "^24.15.0",
     "standard": "17.1.2",
     "stylelint": "16.23.0",
     "stylelint-config-gds": "2.0.0"
