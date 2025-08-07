@@ -1,12 +1,13 @@
 import { getTemplateFromPage } from './getTemplateFromPage.mjs';
+import { statusPageUrls } from './variables.mjs';
 
 export default async function getTemplatesFromPages () {
 
   const templates = {};
 
-  templates['/'] = await getTemplateFromPage('https://status.notifications.service.gov.uk/');
-  templates['/history'] = await getTemplateFromPage('https://status.notifications.service.gov.uk/history');
-  templates['/incidents/<id>'] = await getTemplateFromPage('https://status.notifications.service.gov.uk/incidents/2wryjrq3v9mt');
+  templates['/'] = await getTemplateFromPage(statusPageUrls.base);
+  templates['/history'] = await getTemplateFromPage(statusPageUrls.historyPage);
+  templates['/incidents/<id>'] = await getTemplateFromPage(statusPageUrls.incidentPage);
 
   return templates;
 

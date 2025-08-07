@@ -6,6 +6,7 @@ import { EOL } from "node:os";
 import nunjucks from 'nunjucks';
 import { getTemplateFromPage, saveTemplate } from './getTemplateFromPage.mjs';
 import getTemplatesFromPages from './getTemplatesFromPages.mjs';
+import { statusPageUrls } from './variables.mjs';
 
 const currentDir = path.dirname(url.fileURLToPath(import.meta.url));
 const fileOpts = { 'encoding': 'utf-8' };
@@ -29,9 +30,9 @@ async function getPagesAsTemplates () {
 
   const templates = {};
 
-  templates['/'] = await getTemplateFromPage('https://status.notifications.service.gov.uk/');
-  templates['/history'] = await getTemplateFromPage('https://status.notifications.service.gov.uk/history');
-  templates['/incidents/<id>'] = await getTemplateFromPage('https://status.notifications.service.gov.uk/incidents/2wryjrq3v9mt');
+  templates['/'] = await getTemplateFromPage(statusPageUrls.base);
+  templates['/history'] = await getTemplateFromPage(statusPageUrls.historyPage);
+  templates['/incidents/<id>'] = await getTemplateFromPage(statusPageUrls.incidentPage);
 
   return templates;
 

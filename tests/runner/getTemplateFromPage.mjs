@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { writeFile } from 'node:fs';
 import path from 'node:path';
 import * as cheerio from 'cheerio';
+import { statusPageUrls } from './variables.mjs';
 
 async function getTemplateFromPage (url) {
 
@@ -14,7 +15,7 @@ async function getTemplateFromPage (url) {
   const $ = cheerio.load(pageHTML);
 
   // re-route all relative requests to https://status.notifications.service.gov.uk
-  $('html').prepend(`<base href="https://status.notifications.service.gov.uk" />`);
+  $('html').prepend(`<base href="${statusPageUrls.base}" />`);
 
   // hollow out custom footer container
   const $customFooter = $('.custom-footer-container');
