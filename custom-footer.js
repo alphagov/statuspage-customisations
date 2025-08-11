@@ -97,7 +97,7 @@ $(function () {
   // Add heading to footer
   if ($pageFooter !== null) {
     $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>')
-    const $footerLinkText = getNodeByXPath("//div[contains(@class, 'page-footer')]/a/text()")
+    const $footerLinkText = getNodeByXPath("//div[contains(@class, 'page-footer')]/a/*[contains(., '←')]/following-sibling::text()")
 
     if ($footerLinkText !== null) {
       $footerLinkText.nodeValue = ' ' + makeSentenceCase($footerLinkText.nodeValue)
