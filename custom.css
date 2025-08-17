@@ -202,15 +202,6 @@ button:focus:not(:active):not(:hover) {
   padding: 15px 0;
 }
 
-
-.layout-content.status-full-history .month .incident-container .impact-major {
-   color: #BD0812;
-}
-
-.layout-content.status-incident .incident-name.impact-major{
-  color: #BD0812 !important;
-}
-
 .page-footer { 
   padding-bottom: 0.75rem; /* adjust footer padding so that links get full underline */
 
