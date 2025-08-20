@@ -32,7 +32,8 @@
       {
         "files": "**/*.css",
         "rules": {
-          "declaration-no-important": null
+          "declaration-no-important": null,
+          "selector-no-qualifying-type": null
         }
       }
     ]

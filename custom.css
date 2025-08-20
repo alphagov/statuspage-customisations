@@ -51,6 +51,10 @@ a:focus {
   text-decoration: none !important;
 }
 
+a.secondary {
+  color: #1D70B8;
+}
+
 button:focus {
   border-color: #ffdd00 !important;
   color: #0b0c0c !important;
@@ -200,15 +204,6 @@ button:focus:not(:active):not(:hover) {
   border-right-width: 0;
   border-left-width: 0 !important;
   padding: 15px 0;
-}
-
-
-.layout-content.status-full-history .month .incident-container .impact-major {
-   color: #BD0812;
-}
-
-.layout-content.status-incident .incident-name.impact-major{
-  color: #BD0812 !important;
 }
 
 .page-footer { 
