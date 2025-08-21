@@ -17,7 +17,8 @@
     "lint:css": "stylelint custom.css",
     "test": "concurrently \"npm run dev\" \"npm run tests:only\" --kill-others",
     "test:only": "concurrently \"npm run lint\" \"wdio run ./tests/config.js\" --kill-others",
-    "dev": "nodemon ./server/serve.mjs"
+    "dev": "nodemon ./server/serve.mjs",
+    "refresh": "node -e 'import(\"./server/helpers/generateTemplatesFromRemote.mjs\").then( module => module.generateAllTemplatesFromRemote())'"
   },
   "devDependencies": {
     "@wdio/cli": "9.19.2",
