@@ -7,6 +7,19 @@ $(function () {
     '/incidents': '.incident-updates-container'
   }
 
+  const incidentLevelMap = {
+    'impact-none': 'No incident',
+    'impact-maintenance': 'Maintenance',
+    'impact-minor': 'Minor incident',
+    'impact-major': 'Major incident',
+    'impact-critical': 'Critical incident'
+  }
+
+  // generate ID
+  function generateId () {
+    return Math.random().toString(36).replace(/[^a-z]+/g, '')
+  }
+
   // Add skiplink
   if (pathRoot in mainContainerMap) {
     document.querySelector(mainContainerMap[pathRoot]).setAttribute('id', 'main-content')
@@ -36,6 +49,27 @@ $(function () {
   function removeExpandIncidents () {
     // expand / show all incidents in a given month
     $('.expand-incidents').click().remove()
+  }
+
+  function addIncidentTypeToTarget ($target, isIncidentPage = false, position = null) {
+    const incidentLevel = Array.from($target.classList).filter(c => c.startsWith('impact-'))[0]
+    const $incidentLevelTextContainer = document.createElement('div')
+    $incidentLevelTextContainer.classList.add('incident-level', 'color-secondary')
+    if (isIncidentPage) {
+      $incidentLevelTextContainer.classList.add('font-largest')
+    } else {
+      const id = generateId()
+      $target.setAttribute('aria-describedby', id)
+      $incidentLevelTextContainer.setAttribute('id', id)
+    }
+    if (incidentLevel in incidentLevelMap) {
+      $incidentLevelTextContainer.textContent = incidentLevelMap[incidentLevel]
+    }
+    if (position && position === 'after') {
+      $target.after($incidentLevelTextContainer)
+    } else {
+      $target.prepend($incidentLevelTextContainer)
+    }
   }
 
   removeExpandIncidents()
@@ -154,12 +188,23 @@ $(function () {
         }
       }
 
+      function addIncidentTypeToIncidentList () {
+        const $incidentLinks = $incidentsList.querySelectorAll('a')
+
+        if ($incidentLinks.length > 0) {
+          $incidentLinks.forEach($el => addIncidentTypeToTarget($el, false, 'after'))
+        }
+      }
+
+      addIncidentTypeToIncidentList()
+
       updateIncidentsListHeadings()
 
       const observer = new window.MutationObserver(() => {
         updateIncidentsListHeadings()
         reformatDateRanges()
         removeExpandIncidents()
+        addIncidentTypeToIncidentList()
       })
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true })
     }
@@ -167,6 +212,7 @@ $(function () {
     if (pathRoot === '/incidents') {
       const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()")
       const $affectedHeading = $container.querySelector('.components-affected')
+      const $incidentHeading = document.querySelector('.incident-name')
 
       if ($pageHeadingContextPrefix !== null) {
         $pageHeadingContextPrefix.nodeValue = makeSentenceCase($pageHeadingContextPrefix.nodeValue) + ' '
@@ -177,6 +223,7 @@ $(function () {
           'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
         )
       }
+      addIncidentTypeToTarget($incidentHeading, true)
     }
   }
 })
