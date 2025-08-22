@@ -160,6 +160,32 @@ $(function () {
         // Rewrite heading for incidents list to make it clear it includes today
         document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents'
 
+        // make components list an actual semantic list
+        // adds aria-describedby to the component name container to announce the status
+        // adds visually hiddent 'status' and 'comppnent' texts
+        const $componentContainer = document.querySelector('.components-container')
+        swapElForHTML(document.querySelector('.components-container'), `<ul class="${$componentContainer.className}">${$componentContainer.innerHTML}</ul>`)
+        const $newComponentContainer = document.querySelector('.components-container')
+        const $components = $newComponentContainer.querySelectorAll('.component-container')
+        $components.forEach($el => {
+          const classes = $el.className
+          const $componentName = $el.querySelector('.name')
+          const $componentStatus = $el.querySelector('.component-status')
+          const componentStatusClasses = $el.querySelector('.component-inner-container').className
+          const $listElement = `
+          <li class="${classes} ${componentStatusClasses}">
+            <span class="${$componentName.className}">
+              <span class="govuk-visually-hidden">component name: </span>
+              ${$componentName.textContent}
+            </span>
+            <span class="${$componentStatus.className}">
+              <span class="govuk-visually-hidden">status: </span>
+              ${$componentStatus.textContent}
+            </span>
+          </li>`
+          swapElForHTML($el, $listElement)
+        })
+
         // Reformat dates
         document.querySelectorAll('.status-day > .date').forEach($el => {
           if (/^[A-Za-z]+\s+\d{1,2},\s+\d{4}$/.test($el.textContent)) {
