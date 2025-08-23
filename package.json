@@ -14,7 +14,9 @@
   "scripts": {
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "standard custom-footer.js",
-    "lint:css": "stylelint custom.css"
+    "lint:css": "stylelint custom.css",
+    "test": "concurrently \"npm run dev\" \"npm run tests:only\" --kill-others",
+    "test:only": "concurrently \"npm run lint\" \"wdio run ./tests/config.js\" --kill-others"
   },
   "devDependencies": {
     "@wdio/cli": "9.19.2",
