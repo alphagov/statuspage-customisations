@@ -16,7 +16,8 @@
     "lint:js": "standard custom-footer.js",
     "lint:css": "stylelint custom.css",
     "test": "concurrently \"npm run dev\" \"npm run tests:only\" --kill-others",
-    "test:only": "concurrently \"npm run lint\" \"wdio run ./tests/config.js\" --kill-others"
+    "test:only": "concurrently \"npm run lint\" \"wdio run ./tests/config.js\" --kill-others",
+    "dev": "nodemon ./server/serve.mjs"
   },
   "devDependencies": {
     "@wdio/cli": "9.19.2",
@@ -46,5 +47,12 @@
         }
       }
     ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.spec.js", 
+      "**/server/**/*.mjs"
+    ],
+    "ext": "js,mjs,html,css"
   }
 }
