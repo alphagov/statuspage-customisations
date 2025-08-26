@@ -106,7 +106,6 @@ $(function () {
 
   // Home page specific
   if ($container !== null) {
-
     reformatDateRanges()
 
     // Home page specific
@@ -179,6 +178,5 @@ $(function () {
         )
       }
     }
-
   }
 })
