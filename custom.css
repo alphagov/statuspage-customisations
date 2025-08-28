@@ -240,6 +240,16 @@ button:focus:not(:active):not(:hover) {
   margin-bottom: 20px;
 }
 
+/* our incident descriptor on incident and history pages */
+.incident-level {
+  font-weight: 400;
+}
+
+/* left-align page title and subheader */
+.layout-content.status.status-incident .page-title {
+  text-align: left;
+}
+
 /* make incident page content linear on mobile */
 @media screen and (max-width: 450px) {
   .layout-content.status.status-incident .update-title,
