@@ -15,8 +15,8 @@
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "standard custom-footer.js",
     "lint:css": "stylelint custom.css",
-    "test": "concurrently \"npm run dev\" \"npm run tests:only\" --kill-others",
-    "test:only": "concurrently \"npm run lint\" \"wdio run ./tests/config.js\" --kill-others",
+    "test": "npm run lint && concurrently \"npm run test:only\" \"npm run dev\" --kill-others",
+    "test:only": "wdio run ./tests/config.mjs",
     "dev": "nodemon ./server/serve.mjs",
     "refresh": "node -e 'import(\"./server/helpers/generateTemplatesFromRemote.mjs\").then( module => module.generateAllTemplatesFromRemote())'"
   },
