@@ -44,4 +44,25 @@ describe('History page', () => {
       }
     });
   });
+
+  describe("incident list link", () => {
+    it('should have incident type descriptor below the link and be linked to it vis aria-describedby ', async () => {
+      const incidentLevelMap = {
+        'impact-none': 'No incident',
+        'impact-maintenance': 'Maintenance',
+        'impact-minor': 'Minor incident',
+        'impact-major': 'Major incident',
+        'impact-critical': 'Critical incident'
+      }
+      for await (const el of $$('.incident-data > a')) {
+        const impactLevelClass = (await el.getAttribute('class')).split(" ")[0]
+        const incidentDescriptorElemement = await el.nextElement()
+        const elementAria = await el.getAttribute('aria-describedby')
+        const descriptorElementAria = await incidentDescriptorElemement.getAttribute('id')
+
+        await expect(await incidentDescriptorElemement.getText()).toBe(incidentLevelMap[impactLevelClass])
+        await expect(await elementAria).toBe(descriptorElementAria)
+      }
+    });
+  });
 });
