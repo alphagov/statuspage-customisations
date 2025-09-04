@@ -1,7 +1,7 @@
 import { expect, browser, $ } from '@wdio/globals';
 import { serverConfig } from '../server/config.mjs';
 
-describe('History page', () => {
+describe('Incident page', () => {
 
   beforeAll( async () => {
     await browser.url(`http://${serverConfig.hostname}:${serverConfig.port}/incidents`);
@@ -28,6 +28,21 @@ describe('History page', () => {
     it('is preceded by a visually hidden heading that says "Components affected"', async () => {
       const componentAffectedSection = $('.components-affected > h2');
       await expect(await componentAffectedSection.getText()).toContain('Components affected');
+    });
+  });
+
+  describe("incident heading", () => {
+    it('should should contain the type of incident it is', async () => {
+      const incidentLevelMap = {
+        'impact-none': 'No incident',
+        'impact-maintenance': 'Maintenance',
+        'impact-minor': 'Minor incident',
+        'impact-major': 'Major incident',
+        'impact-critical': 'Critical incident'
+      }
+      const pageTitle = $('.page-title > h1')
+      const impactLevelClass = (await pageTitle.getAttribute('class')).split(" ").pop()
+      await expect(await pageTitle.getText()).toContain(incidentLevelMap[impactLevelClass])
     });
   });
 
