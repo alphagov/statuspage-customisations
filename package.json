@@ -14,11 +14,23 @@
   "scripts": {
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "standard custom-footer.js",
-    "lint:css": "stylelint custom.css"
+    "lint:css": "stylelint custom.css",
+    "test": "npm run lint && concurrently \"npm run test:only\" \"npm run dev\" --kill-others",
+    "test:only": "wdio run ./tests/config.mjs",
+    "dev": "nodemon ./server/serve.mjs",
+    "refresh": "node -e 'import(\"./server/helpers/generateTemplatesFromRemote.mjs\").then( module => module.generateAllTemplatesFromRemote())'"
   },
   "devDependencies": {
+    "@wdio/cli": "9.19.2",
+    "@wdio/jasmine-framework": "9.19.2",
+    "@wdio/local-runner": "9.19.2",
+    "@wdio/spec-reporter": "9.19.2",
+    "cheerio": "1.1.2",
+    "concurrently": "9.2.1",
+    "nodemon": "3.1.10",
+    "nunjucks": "3.2.4",
     "standard": "17.1.2",
-    "stylelint": "16.23.0",
+    "stylelint": "16.23.1",
     "stylelint-config-gds": "2.0.0"
   },
   "standard": {
@@ -37,5 +49,12 @@
         }
       }
     ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.spec.js", 
+      "**/server/**/*.mjs"
+    ],
+    "ext": "js,mjs,html,css"
   }
 }
