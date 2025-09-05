@@ -51,16 +51,23 @@ $(function () {
     $('.expand-incidents').click().remove()
   }
 
-  function addIncidentTypeToTarget ($target, isIncidentPage = false, position = null) {
-    const incidentLevel = Array.from($target.classList).filter(c => c.startsWith('impact-'))[0]
+  function addIncidentTypeToTarget ($target, pageType, position = null) {
+    let incidentLevel
+    // homepage incident list has a different html structure to history page
+    if (pageType === '/') {
+      incidentLevel = Array.from($target.parentNode.classList).filter(c => c.startsWith('impact-'))[0]
+    } else {
+      incidentLevel = Array.from($target.classList).filter(c => c.startsWith('impact-'))[0]
+    }
     const $incidentLevelTextContainer = document.createElement('div')
     $incidentLevelTextContainer.classList.add('incident-level', 'color-secondary')
-    if (isIncidentPage) {
+    if (pageType === '/incidents') {
       $incidentLevelTextContainer.classList.add('font-largest')
     } else {
       const id = generateId()
       $target.setAttribute('aria-describedby', id)
       $incidentLevelTextContainer.setAttribute('id', id)
+      $incidentLevelTextContainer.classList.add('font-regular')
     }
     if (incidentLevel in incidentLevelMap) {
       $incidentLevelTextContainer.textContent = incidentLevelMap[incidentLevel]
@@ -123,6 +130,14 @@ $(function () {
     return result.singleNodeValue
   }
 
+  function addIncidentTypeToIncidentList ($list, pathRoot) {
+    const $incidentLinks = $list.querySelectorAll('a')
+
+    if ($incidentLinks.length > 0) {
+      $incidentLinks.forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'))
+    }
+  }
+
   // Rewrite logo
   if ($logo !== null) {
     $logo.querySelector('a').textContent = 'GOV.UK Notify'
@@ -147,6 +162,7 @@ $(function () {
       const $aboutText = document.querySelector('.page-status + .text-section')
       const $pageStatus = document.querySelector('.page-status')
       const $pageStatusContent = $pageStatus.querySelector('h2')
+      const $incidentsList = $container.querySelector('.incidents-list')
 
       if (($aboutText !== null) && ($pageStatus !== null) && ($pageStatusContent !== null)) {
         // Add headings and move 'about' text
@@ -161,8 +177,7 @@ $(function () {
         document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents'
 
         // make components list an actual semantic list
-        // adds aria-describedby to the component name container to announce the status
-        // adds visually hiddent 'status' and 'comppnent' texts
+        // adds visually hiddent 'status' text
         const $componentContainer = document.querySelector('.components-container')
         swapElForHTML(document.querySelector('.components-container'), `<ul class="${$componentContainer.className}">${$componentContainer.innerHTML}</ul>`)
         const $newComponentContainer = document.querySelector('.components-container')
@@ -175,7 +190,6 @@ $(function () {
           const $listElement = `
           <li class="${classes} ${componentStatusClasses}">
             <span class="${$componentName.className}">
-              <span class="govuk-visually-hidden">component name: </span>
               ${$componentName.textContent}
             </span>
             <span class="${$componentStatus.className}">
@@ -185,6 +199,9 @@ $(function () {
           </li>`
           swapElForHTML($el, $listElement)
         })
+
+        // add incident descriptor to incidents
+        addIncidentTypeToIncidentList($incidentsList, pathRoot)
 
         // Reformat dates
         document.querySelectorAll('.status-day > .date').forEach($el => {
@@ -214,15 +231,7 @@ $(function () {
         }
       }
 
-      function addIncidentTypeToIncidentList () {
-        const $incidentLinks = $incidentsList.querySelectorAll('a')
-
-        if ($incidentLinks.length > 0) {
-          $incidentLinks.forEach($el => addIncidentTypeToTarget($el, false, 'after'))
-        }
-      }
-
-      addIncidentTypeToIncidentList()
+      addIncidentTypeToIncidentList($incidentsList, pathRoot)
 
       updateIncidentsListHeadings()
 
@@ -230,7 +239,7 @@ $(function () {
         updateIncidentsListHeadings()
         reformatDateRanges()
         removeExpandIncidents()
-        addIncidentTypeToIncidentList()
+        addIncidentTypeToIncidentList($incidentsList, pathRoot)
       })
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true })
     }
@@ -249,7 +258,7 @@ $(function () {
           'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
         )
       }
-      addIncidentTypeToTarget($incidentHeading, true)
+      addIncidentTypeToTarget($incidentHeading, pathRoot)
     }
   }
 })
