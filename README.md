@@ -45,7 +45,7 @@ npm run test:only
 To run a single selected test when the server is running, you can run
 
 ```bash
-npx wdio run ./tests/config.js --spec tests/home-page.spec.js
+npx wdio run ./tests/config.js --spec tests/home-page.spec.mjs
 ```
 
 ## Linting
