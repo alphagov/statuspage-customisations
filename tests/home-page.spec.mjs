@@ -56,6 +56,24 @@ describe('Homepage', () => {
     });
   });
 
+  describe("component status list", () => { 
+    it('has been converted to an unordered list', async () => {
+      await expect(await $('.components-container').getTagName()).toBe('ul');
+    });
+  });
+
+  describe("component status list items", () => { 
+    it('have been converted to an a list item and contain component name, status and visually hidden status descriptor', async () => {
+      for await (const el of $$('.component-inner-container')) {
+         await expect(await el.getTagName()).toBe('li');
+         await expect(await el.$('.name')).toBeExisting();
+         await expect(await el.$('.component-status')).toBeExisting();
+         await expect(await el.$('.component-status span')).toHaveElementClass('govuk-visually-hidden');
+         await expect(await el.$('.component-status span')).toHaveText('status:')
+      }
+    });
+  });
+
   describe("incidents list", () => {
     it('should have a h2 that says "Recent incidents"', async () => {
       await expect($('.incidents-list > h2:first-child')).toHaveText('Recent incidents');
@@ -67,6 +85,28 @@ describe('Homepage', () => {
       for await (const el of $$('.status-day > .date')) {
         const isInCorrectFormat = (/^\d{1,2}\s+[A-Za-z]+\s+\d{4}$/.test(await el.getText()))
         await expect(isInCorrectFormat).toBeTruthy()
+      }
+    });
+  });
+
+  describe("incident list link", () => {
+    it('should have incident type descriptor below the link and be linked to it vis aria-describedby ', async () => {
+      const incidentLevelMap = {
+        'impact-none': 'No incident',
+        'impact-maintenance': 'Maintenance',
+        'impact-minor': 'Minor incident',
+        'impact-major': 'Major incident',
+        'impact-critical': 'Critical incident'
+      }
+      for await (const el of $$('.incident-title')) {
+        const impactLevelClass = (await el.getAttribute('class')).split(" ")[1]
+        const incidentLink = await el.$('a')
+        const incidentDescriptorElemement = await el.$('.incident-level')
+        const elementAria = await incidentLink.getAttribute('aria-describedby')
+        const descriptorElementAria = await incidentDescriptorElemement.getAttribute('id')
+
+        await expect(await incidentDescriptorElemement.getText()).toBe(incidentLevelMap[impactLevelClass])
+        await expect(await elementAria).toBe(descriptorElementAria)
       }
     });
   });

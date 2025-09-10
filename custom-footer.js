@@ -7,6 +7,19 @@ $(function () {
     '/incidents': '.incident-updates-container'
   }
 
+  const incidentLevelMap = {
+    'impact-none': 'No incident',
+    'impact-maintenance': 'Maintenance',
+    'impact-minor': 'Minor incident',
+    'impact-major': 'Major incident',
+    'impact-critical': 'Critical incident'
+  }
+
+  // generate ID
+  function generateId () {
+    return Math.random().toString(36).replace(/[^a-z]+/g, '')
+  }
+
   // Add skiplink
   if (pathRoot in mainContainerMap) {
     document.querySelector(mainContainerMap[pathRoot]).setAttribute('id', 'main-content')
@@ -36,6 +49,34 @@ $(function () {
   function removeExpandIncidents () {
     // expand / show all incidents in a given month
     $('.expand-incidents').click().remove()
+  }
+
+  function addIncidentTypeToTarget ($target, pageType, position = null) {
+    let incidentLevel
+    // homepage incident list has a different html structure to history page
+    if (pageType === '/') {
+      incidentLevel = Array.from($target.parentNode.classList).filter(c => c.startsWith('impact-'))[0]
+    } else {
+      incidentLevel = Array.from($target.classList).filter(c => c.startsWith('impact-'))[0]
+    }
+    const $incidentLevelTextContainer = document.createElement('div')
+    $incidentLevelTextContainer.classList.add('incident-level', 'color-secondary')
+    if (pageType === '/incidents') {
+      $incidentLevelTextContainer.classList.add('font-largest')
+    } else {
+      const id = generateId()
+      $target.setAttribute('aria-describedby', id)
+      $incidentLevelTextContainer.setAttribute('id', id)
+      $incidentLevelTextContainer.classList.add('font-regular')
+    }
+    if (incidentLevel in incidentLevelMap) {
+      $incidentLevelTextContainer.textContent = incidentLevelMap[incidentLevel]
+    }
+    if (position && position === 'after') {
+      $target.after($incidentLevelTextContainer)
+    } else {
+      $target.prepend($incidentLevelTextContainer)
+    }
   }
 
   removeExpandIncidents()
@@ -89,6 +130,14 @@ $(function () {
     return result.singleNodeValue
   }
 
+  function addIncidentTypeToIncidentList ($list, pathRoot) {
+    const $incidentLinks = $list.querySelectorAll('a')
+
+    if ($incidentLinks.length > 0) {
+      $incidentLinks.forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'))
+    }
+  }
+
   // Rewrite logo
   if ($logo !== null) {
     $logo.querySelector('a').textContent = 'GOV.UK Notify'
@@ -113,6 +162,7 @@ $(function () {
       const $aboutText = document.querySelector('.page-status + .text-section')
       const $pageStatus = document.querySelector('.page-status')
       const $pageStatusContent = $pageStatus.querySelector('h2')
+      const $incidentsList = $container.querySelector('.incidents-list')
 
       if (($aboutText !== null) && ($pageStatus !== null) && ($pageStatusContent !== null)) {
         // Add headings and move 'about' text
@@ -125,6 +175,33 @@ $(function () {
 
         // Rewrite heading for incidents list to make it clear it includes today
         document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents'
+
+        // make components list an actual semantic list
+        // adds visually hiddent 'status' text
+        const $componentContainer = document.querySelector('.components-container')
+        swapElForHTML(document.querySelector('.components-container'), `<ul class="${$componentContainer.className}">${$componentContainer.innerHTML}</ul>`)
+        const $newComponentContainer = document.querySelector('.components-container')
+        const $components = $newComponentContainer.querySelectorAll('.component-container')
+        $components.forEach($el => {
+          const classes = $el.className
+          const $componentName = $el.querySelector('.name')
+          const $componentStatus = $el.querySelector('.component-status')
+          const componentStatusClasses = $el.querySelector('.component-inner-container').className
+          const $listElement = `
+          <li class="${classes} ${componentStatusClasses}">
+            <span class="${$componentName.className}">
+              ${$componentName.textContent}
+            </span>
+            <span class="${$componentStatus.className}">
+              <span class="govuk-visually-hidden">status: </span>
+              ${$componentStatus.textContent}
+            </span>
+          </li>`
+          swapElForHTML($el, $listElement)
+        })
+
+        // add incident descriptor to incidents
+        addIncidentTypeToIncidentList($incidentsList, pathRoot)
 
         // Reformat dates
         document.querySelectorAll('.status-day > .date').forEach($el => {
@@ -154,12 +231,15 @@ $(function () {
         }
       }
 
+      addIncidentTypeToIncidentList($incidentsList, pathRoot)
+
       updateIncidentsListHeadings()
 
       const observer = new window.MutationObserver(() => {
         updateIncidentsListHeadings()
         reformatDateRanges()
         removeExpandIncidents()
+        addIncidentTypeToIncidentList($incidentsList, pathRoot)
       })
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true })
     }
@@ -167,6 +247,7 @@ $(function () {
     if (pathRoot === '/incidents') {
       const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()")
       const $affectedHeading = $container.querySelector('.components-affected')
+      const $incidentHeading = document.querySelector('.incident-name')
 
       if ($pageHeadingContextPrefix !== null) {
         $pageHeadingContextPrefix.nodeValue = makeSentenceCase($pageHeadingContextPrefix.nodeValue) + ' '
@@ -177,6 +258,7 @@ $(function () {
           'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
         )
       }
+      addIncidentTypeToTarget($incidentHeading, pathRoot)
     }
   }
 })
