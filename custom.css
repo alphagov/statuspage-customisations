@@ -218,6 +218,20 @@ button:focus:not(:active):not(:hover) {
   margin-bottom: 10px;
 }
 
+/* footer of the incident page has special width and padding
+ * compared to other page, so to make the custom footer container fit well, 
+ * we need to adjust the width and the margin of its container element
+*/
+.layout-content.status.status-incident>.container + .custom-footer-container .container {
+  max-width: 600px;
+  margin-top: -70px;
+}
+@media screen and (max-width: 650px) {
+  .layout-content.status.status-incident>.container + .custom-footer-container .container {
+    margin-top: -10%;
+  }
+}
+
 /* fix for subscribe to incident updates modal on mobile/zoom view */
 @media screen and (max-width: 580px) {
     .modal-open-incident-subscribe.in {
