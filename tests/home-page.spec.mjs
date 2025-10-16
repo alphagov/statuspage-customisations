@@ -44,13 +44,17 @@ describe('Homepage', () => {
   });
 
   describe("page status section", () => { 
-    it('h2 has been converted to a paragraph', async () => {
-      await expect($('.page-status h2')).not.toExist();
-      await expect($('.page-status p')).toExist();
+    it('if it exists, the h2 has been converted to a paragraph', async () => {
+      if ($('.page-status').length > 0) {
+        await expect($('.page-status h2')).not.toExist();
+        await expect($('.page-status p')).toExist();
+      }
     });
 
     it('is preceded by a h2 that says "Current status', async () => {
-      const $pageStatusHeading = $('.page-status').previousElement();
+      let $pageStatus = $('.page-status, .unresolved-incidents');
+      const $pageStatusHeading = $pageStatus.previousElement();
+
       await expect(await $pageStatusHeading.getTagName()).toBe('h2');
       await expect(await $pageStatusHeading.getText()).toBe('Current status');
     });
@@ -98,7 +102,7 @@ describe('Homepage', () => {
         'impact-major': 'Major incident',
         'impact-critical': 'Critical incident'
       }
-      for await (const el of $$('.incident-title')) {
+      for await (const el of $$('.incidents-list .incident-title')) {
         const impactLevelClass = (await el.getAttribute('class')).split(" ")[1]
         const incidentLink = await el.$('a')
         const incidentDescriptorElemement = await el.$('.incident-level')

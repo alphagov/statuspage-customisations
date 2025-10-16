@@ -159,19 +159,22 @@ $(function () {
 
     // Home page specific
     if (pathRoot === '/') {
-      const $aboutText = document.querySelector('.page-status + .text-section')
-      const $pageStatus = document.querySelector('.page-status')
-      const $pageStatusContent = $pageStatus.querySelector('h2')
+      const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section')
+      const $pageStatus = document.querySelector('.page-status, .unresolved-incidents')
       const $incidentsList = $container.querySelector('.incidents-list')
 
-      if (($aboutText !== null) && ($pageStatus !== null) && ($pageStatusContent !== null)) {
+      if (($aboutText !== null) && ($pageStatus !== null)) {
+        const $pageStatusContent = $pageStatus.querySelector('h2');
+
         // Add headings and move 'about' text
         $container.insertAdjacentElement('afterbegin', $aboutText)
         $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>')
         $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>')
 
-        // Remake status overview from h2 to p
-        swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`)
+        // Remake status overview h2 to p
+        if ($pageStatusContent !== null) {
+          swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`)
+        }
 
         // Rewrite heading for incidents list to make it clear it includes today
         document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents'
