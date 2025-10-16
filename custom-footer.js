@@ -164,7 +164,7 @@ $(function () {
       const $incidentsList = $container.querySelector('.incidents-list')
 
       if (($aboutText !== null) && ($pageStatus !== null)) {
-        const $pageStatusContent = $pageStatus.querySelector('h2');
+        const $pageStatusContent = $pageStatus.querySelector('h2')
 
         // Add headings and move 'about' text
         $container.insertAdjacentElement('afterbegin', $aboutText)
