@@ -225,11 +225,7 @@ button:focus:not(:active):not(:hover) {
 .layout-content.status.status-incident>.container + .custom-footer-container .container {
   max-width: 600px;
   margin-top: -70px;
-}
-@media screen and (max-width: 650px) {
-  .layout-content.status.status-incident>.container + .custom-footer-container .container {
-    margin-top: -10%;
-  }
+  padding-bottom: 0 !important;
 }
 
 /* fix for subscribe to incident updates modal on mobile/zoom view */
