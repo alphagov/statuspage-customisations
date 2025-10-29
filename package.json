@@ -29,6 +29,8 @@
     "concurrently": "9.2.1",
     "nodemon": "3.1.10",
     "nunjucks": "3.2.4",
+    "rollup": "4.52.5",
+    "sass": "1.93.2",
     "standard": "17.1.2",
     "stylelint": "16.25.0",
     "stylelint-config-gds": "2.0.0"
