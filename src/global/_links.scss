@@ -1,0 +1,32 @@
+
+a, a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: max(1px,.0625rem);
+  text-underline-offset: 0.1578em;
+}
+
+a:focus {
+  outline: 3px solid transparent !important;
+  color: #0b0c0c !important;;
+  background-color: #ffdd00 !important;
+  -webkit-box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c !important;
+  box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c !important;
+  text-decoration: none !important;
+}
+
+a.color-secondary {
+  color: #1D70B8;
+}
+
+/* remove underline as they look like buttons */
+.page-name > a,
+.show-updates-dropdown,
+.show-updates-dropdown:hover,
+.previous-page,
+.previous-page:hover,
+.next-page,
+.next-page:hover,
+.flat-button,
+.flat-button:hover {
+  text-decoration: none;
+}

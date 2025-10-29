@@ -1,20 +1,20 @@
-/* generic styles */
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+@charset "UTF-8";
+.govuk-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+  user-select: none;
 }
 
-.govuk-visually-hidden {
-  position:absolute!important;
-  width:1px!important;
-  height:1px!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  clip:rect(0 0 0 0)!important;
-  clip-path:inset(50%)!important;
-  border:0!important;
-  white-space:nowrap!important;
-  user-select:none
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .font-small {
@@ -30,21 +30,22 @@ body {
 .font-x-largest {
   font-size: 36px;
   line-height: 1.25em;
-
-  @media screen and (max-width: 650px) {
+}
+@media screen and (max-width: 650px) {
+  .font-x-largest {
     font-size: 27px;
   }
 }
 
 a, a:hover {
   text-decoration: underline;
-  text-decoration-thickness: max(1px,.0625rem);
+  text-decoration-thickness: max(1px, 0.0625rem);
   text-underline-offset: 0.1578em;
 }
 
 a:focus {
   outline: 3px solid transparent !important;
-  color: #0b0c0c !important;;
+  color: #0b0c0c !important;
   background-color: #ffdd00 !important;
   -webkit-box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c !important;
   box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c !important;
@@ -53,6 +54,19 @@ a:focus {
 
 a.color-secondary {
   color: #1D70B8;
+}
+
+/* remove underline as they look like buttons */
+.page-name > a,
+.show-updates-dropdown,
+.show-updates-dropdown:hover,
+.previous-page,
+.previous-page:hover,
+.next-page,
+.next-page:hover,
+.flat-button,
+.flat-button:hover {
+  text-decoration: none;
 }
 
 button:focus {
@@ -71,76 +85,63 @@ button:focus:not(:active):not(:hover) {
   box-shadow: 0 2px 0 #0b0c0c !important;
 }
 
-.govuk-skip-link{
-  text-decoration:underline;
-  display:block;
-  padding:10px 15px
+.govuk-skip-link {
+  text-decoration: underline;
+  display: block;
+  padding: 10px 15px;
 }
 
-.govuk-skip-link:not(:active):not(:focus){
-  position:absolute!important;
-  width:1px!important;
-  height:1px!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  clip:rect(0 0 0 0)!important;
-  clip-path:inset(50%)!important;
-  border:0!important;
-  white-space:nowrap!important;
-  user-select:none
+.govuk-skip-link:not(:active):not(:focus) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+  user-select: none;
 }
 
-.govuk-skip-link:link,.govuk-skip-link:visited{
-  color:#0b0c0c
+.govuk-skip-link:link, .govuk-skip-link:visited {
+  color: #0b0c0c;
 }
 
-.govuk-skip-link:hover{
-  color:rgba(11,12,12,.99)
+.govuk-skip-link:hover {
+  color: rgba(11, 12, 12, 0.99);
 }
 
-.govuk-skip-link:active,.govuk-skip-link:focus{
-  color:#0b0c0c
+.govuk-skip-link:active, .govuk-skip-link:focus {
+  color: #0b0c0c;
 }
 
-.govuk-skip-link:focus{
+.govuk-skip-link:focus {
   text-decoration: underline !important;
-  outline:3px solid #ffdd00;
-  outline-offset:0;
-  background-color:#ffdd00;
+  outline: 3px solid #ffdd00;
+  outline-offset: 0;
+  background-color: #ffdd00;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
 
-/* remove underline as they look like buttons */
-.page-name > a,
-.show-updates-dropdown,
-.show-updates-dropdown:hover,
-.previous-page,
-.previous-page:hover,
-.next-page,
-.next-page:hover,
-.flat-button,
-.flat-button:hover {
-  text-decoration: none;
-}
-
 /* subscribe to updates container */
 .layout-content.status .masthead-container .updates-dropdown-container .show-updates-dropdown {
-  text-transform: lowercase	;
+  text-transform: lowercase;
   font-size: 19px;
   letter-spacing: 0;
   border-radius: 0;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -moz-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -o-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
-  -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
+  -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
+  -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
+  -o-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
+  -ms-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
 }
 
 /* subscribe link selection focus */
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus,
-.updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus{
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus {
   box-shadow: 0 -2px #ffdd00, inset 0 -4px #0b0c0c !important;
   outline: 0;
   border: 0;
@@ -159,7 +160,7 @@ button:focus:not(:active):not(:hover) {
 }
 
 .text-section > p > a {
-  word-break:break-word;
+  word-break: break-word;
 }
 
 .layout-content.status.status-index .page-status .last-updated-stamp {
@@ -168,8 +169,8 @@ button:focus:not(:active):not(:hover) {
 
 .layout-content.status.status-index .page-status {
   border-radius: 0;
-  -webkit-border-radius: 0; 
-  -moz-border-radius: 0;  
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
   border: none;
   text-shadow: none;
 }
@@ -181,18 +182,18 @@ button:focus:not(:active):not(:hover) {
 }
 
 .layout-content.status.status-index .components-section .component-container .icon-indicator {
-   display: none;
+  display: none;
 }
 
 .layout-content.status.status-index .components-section .component-container .name {
-  font-weight: normal; 
+  font-weight: normal;
   white-space: inherit !important;
 }
 
 .layout-content.status.status-index .components-section .component-container .component-status {
   font-size: 19px;
   line-height: 1.25em;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 /* single column container styles */
@@ -206,10 +207,9 @@ button:focus:not(:active):not(:hover) {
   padding: 15px 0;
 }
 
-.page-footer { 
+.page-footer {
   padding-bottom: 0.75rem; /* adjust footer padding so that links get full underline */
-
-  /* 
+  /*
    * reduce page-footer margin if you add a custom footer HTML
    * page-footer has a default margin
    * and because custom footer gets appended after it
@@ -222,7 +222,7 @@ button:focus:not(:active):not(:hover) {
  * compared to other page, so to make the custom footer container fit well, 
  * we need to adjust the width and the margin of its container element
 */
-.layout-content.status.status-incident>.container + .custom-footer-container .container {
+.layout-content.status.status-incident > .container + .custom-footer-container .container {
   max-width: 600px;
   margin-top: -70px;
   padding-bottom: 0 !important;
@@ -230,22 +230,35 @@ button:focus:not(:active):not(:hover) {
 
 /* fix for subscribe to incident updates modal on mobile/zoom view */
 @media screen and (max-width: 580px) {
-    .modal-open-incident-subscribe.in {
-        margin-top: 0 !important;
-        overflow-y: auto !important;
-        bottom: 0 !important;
-    }
-
-    .modal .modal-body {
-        max-height: none !important;
-    }
+  .modal-open-incident-subscribe.in {
+    margin-top: 0 !important;
+    overflow-y: auto !important;
+    bottom: 0 !important;
+  }
+  .modal .modal-body {
+    max-height: none !important;
+  }
 }
-
 /* make subheader on incident page visible on smaller viewports/ zoom levels */
 .layout-content.status.status-incident .page-title .subheader:not(.scheduled-for) {
-    display: block;
+  display: block;
 }
 
+/* left-align page title and subheader */
+.layout-content.status.status-incident .page-title {
+  text-align: left;
+}
+
+/* make incident page content linear on mobile */
+@media screen and (max-width: 450px) {
+  .layout-content.status.status-incident .update-title,
+  .layout-content.status.status-incident .update-container {
+    float: none;
+  }
+  .layout-content.status.status-incident .update-container:not(.span12) {
+    width: auto;
+  }
+}
 .container .page-status__heading {
   margin-bottom: 20px;
 }
@@ -266,8 +279,7 @@ button:focus:not(:active):not(:hover) {
   .layout-content.status.status-incident .update-container {
     float: none;
   }
-
-  .layout-content.status.status-incident  .update-container:not(.span12) {
+  .layout-content.status.status-incident .update-container:not(.span12) {
     width: auto;
   }
 }

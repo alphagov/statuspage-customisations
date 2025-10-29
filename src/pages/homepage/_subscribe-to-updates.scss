@@ -1,0 +1,28 @@
+
+/* subscribe to updates container */
+.layout-content.status .masthead-container .updates-dropdown-container .show-updates-dropdown {
+  text-transform: lowercase	;
+  font-size: 19px;
+  letter-spacing: 0;
+  border-radius: 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -moz-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -o-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+  -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.9);
+}
+
+/* subscribe link selection focus */
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav a:focus,
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav button:focus{
+  box-shadow: 0 -2px #ffdd00, inset 0 -4px #0b0c0c !important;
+  outline: 0;
+  border: 0;
+  background: #ffdd00;
+  color: #0b0c0c !important;
+}
+
+/* use filter because they load a different (dark) sprite from a url that would be fragile to use */
+.updates-dropdown-container .updates-dropdown .updates-dropdown-nav .active:focus span {
+  filter: invert(1);
+}

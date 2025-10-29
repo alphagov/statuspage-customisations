@@ -42,7 +42,7 @@ const localFiles = [
   },
   {
     fileName: "customCss",
-    filePath: path.resolve('./custom.css'),
+    filePath: path.resolve('./dist/custom.css'),
   }
 ]
 

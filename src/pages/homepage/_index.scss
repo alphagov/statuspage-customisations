@@ -1,0 +1,21 @@
+
+/* hide “about this site“ */
+.text-section .font-largest {
+  display: none;
+}
+
+.text-section > p > a {
+  word-break:break-word;
+}
+
+.layout-content.status.status-index .page-status .last-updated-stamp {
+  color: #ffffff;
+}
+
+.layout-content.status.status-index .page-status {
+  border-radius: 0;
+  -webkit-border-radius: 0; 
+  -moz-border-radius: 0;  
+  border: none;
+  text-shadow: none;
+}

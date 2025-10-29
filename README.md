@@ -15,6 +15,14 @@ We use [Nodemon](https://nodemon.io/) to watch for changes to `.js, .css, .html`
 
 If you want to add work on and new pages, they can be added to the `pages` object in `server/config.mjs`.
 
+### Build CSS
+
+To build the CSS, run this command:
+
+```bash
+npm run build:css
+```
+
 ### Refresh templates
 
 If you wish to fetch fresh content from remote to generate updated or new templates, you can run 
@@ -82,7 +90,7 @@ CSS comment:
 #### Custom CSS
 
 ```bash
-echo "$(<custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
+echo "$(<dist/custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
 ```
 
 #### Custom footer HTML

@@ -1,0 +1,12 @@
+
+.page-footer { 
+  padding-bottom: 0.75rem; /* adjust footer padding so that links get full underline */
+
+  /*
+   * reduce page-footer margin if you add a custom footer HTML
+   * page-footer has a default margin
+   * and because custom footer gets appended after it
+   * we need to reduce it
+   */
+  margin-bottom: 10px;
+}
