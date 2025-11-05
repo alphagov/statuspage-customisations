@@ -1,0 +1,320 @@
+(function () {
+  'use strict';
+
+  const mainContainerMap = {
+    '/': '.masthead-container + .container',
+    '/history': '.months-container',
+    '/incidents': '.incident-updates-container'
+  };
+
+  const incidentLevelMap = {
+    'impact-none': 'No incident',
+    'impact-maintenance': 'Maintenance',
+    'impact-minor': 'Minor incident',
+    'impact-major': 'Major incident',
+    'impact-critical': 'Critical incident'
+  };
+
+  function generateId () {
+    return Math.random().toString(36).replace(/[^a-z]+/g, '')
+  }
+
+  function swapElForHTML ($oldEl, newHTML) {
+    $oldEl.insertAdjacentHTML('beforebegin', newHTML);
+    $oldEl.remove();
+  }
+
+  function reformatDateRanges () {
+    function reformatRange ($range) {
+      if (/^[A-Za-z-]+\s+\d+,\s+\d+:\d+\s+-\s+([A-Za-z]+\s+\d+,\s+)?\d+:\d+\s+[A-Z]+$/.test($range.textContent)) {
+        const $dateVars = $range.querySelectorAll('var[data-var=date]');
+
+        $range.insertAdjacentElement('afterbegin', $dateVars[0]);
+        $range.childNodes[1].nodeValue = ' ' + $range.childNodes[1].nodeValue.trim();
+        if ($dateVars.length > 1) {
+          const $month = $dateVars[1].previousSibling;
+          $range.insertBefore($dateVars[1], $month);
+          $month.nodeValue = $month.nodeValue.replace(' - ', ' ');
+          $range.insertBefore(document.createTextNode(' - '), $dateVars[1]);
+        }
+      }
+    }
+
+    if (document.querySelector('.incident-list') !== null) {
+      const $incidentDateRanges = document.querySelectorAll('.incident-data > .secondary');
+
+      if ($incidentDateRanges !== null) { $incidentDateRanges.forEach($el => reformatRange($el)); }
+    }
+  }
+
+  function makeSentenceCase (str) {
+    const trimmed = str.trim();
+    return trimmed[0].toUpperCase() + trimmed.slice(1).toLowerCase()
+  }
+
+  function getNodeByXPath (xpath) {
+    const result = document.evaluate(
+      xpath,
+      document,
+      null,
+      window.XPathResult.FIRST_ORDERED_NODE_TYPE,
+      null
+    );
+
+    return result.singleNodeValue
+  }
+
+  function addIncidentTypeToTarget ($target, pageType, position = null) {
+    let incidentLevel;
+    // homepage incident list has a different html structure to history page
+    if (pageType === '/') {
+      incidentLevel = Array.from($target.parentNode.classList).filter(c => c.startsWith('impact-'))[0];
+    } else {
+      incidentLevel = Array.from($target.classList).filter(c => c.startsWith('impact-'))[0];
+    }
+    const $incidentLevelTextContainer = document.createElement('div');
+    $incidentLevelTextContainer.classList.add('incident-level', 'color-secondary');
+    if (pageType === '/incidents') {
+      $incidentLevelTextContainer.classList.add('font-largest');
+    } else {
+      const id = generateId();
+      $target.setAttribute('aria-describedby', id);
+      $incidentLevelTextContainer.setAttribute('id', id);
+      $incidentLevelTextContainer.classList.add('font-regular');
+    }
+    if (incidentLevel in incidentLevelMap) {
+      $incidentLevelTextContainer.textContent = incidentLevelMap[incidentLevel];
+    }
+    if (position && position === 'after') {
+      $target.after($incidentLevelTextContainer);
+    } else {
+      $target.prepend($incidentLevelTextContainer);
+    }
+  }
+
+  function addIncidentTypeToIncidentList ($list, pathRoot) {
+    const $incidentLinks = $list.querySelectorAll('a');
+
+    if ($incidentLinks.length > 0) {
+      $incidentLinks.forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'));
+    }
+  }
+
+  function addAutocompleteAttributes () {
+    // adds autocomplete attributes to controls that don't have one
+    const selectorAndAutocompleteAttributes = {
+      email: 'email',
+      phone_country: 'tel-country-code',
+      phone_number: 'tel-national'
+    };
+
+    $.each(selectorAndAutocompleteAttributes, function (key, val) {
+      const $targetElements = $(`[name='${key}']`);
+      $.each($targetElements, function () {
+        $(this).attr('autocomplete', val);
+      });
+    });
+  }
+
+  function addSkipLink (pathRoot) {
+    const $mainContainer = document.querySelector(mainContainerMap[pathRoot]);
+
+    if ($mainContainer !== null) {
+      $mainContainer.setAttribute('id', 'main-content');
+      document.body.insertAdjacentHTML('afterbegin', '<a href="#main-content" class="govuk-skip-link">Skip to main content</a>');
+    }
+  }
+
+  function addHeadingToFooter ($pageFooter) {
+    $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>');
+    const $footerLinkText = getNodeByXPath("//div[contains(@class, 'page-footer')]/a/*[contains(., '←')]/following-sibling::text()");
+
+    if ($footerLinkText !== null) {
+      $footerLinkText.nodeValue = ' ' + makeSentenceCase($footerLinkText.nodeValue);
+    }
+  }
+
+  function addHeadingsAndMoveAboutText ($container, $aboutText, $pageStatus) {
+    $container.insertAdjacentElement('afterbegin', $aboutText);
+    $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>');
+    $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>');
+  }
+
+  function remakeStatusOverviewHeadingAsParagraph ($pageStatusContent) {
+    swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`);
+  }
+
+  function rewriteIncidentsListHeading () {
+    document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents';
+  }
+
+  function remakeComponentsList ($componentContainer) {
+    swapElForHTML(document.querySelector('.components-container'), `<ul class="${$componentContainer.className}">${$componentContainer.innerHTML}</ul>`);
+    const $newComponentContainer = document.querySelector('.components-container');
+    const $components = $newComponentContainer.querySelectorAll('.component-container');
+    $components.forEach($el => {
+      const classes = $el.className;
+      const $componentName = $el.querySelector('.name');
+      const $componentStatus = $el.querySelector('.component-status');
+      const componentStatusClasses = $el.querySelector('.component-inner-container').className;
+      const $listElement = `
+    <li class="${classes} ${componentStatusClasses}">
+      <span class="${$componentName.className}">
+        ${$componentName.textContent}
+      </span>
+      <span class="${$componentStatus.className}">
+        <span class="govuk-visually-hidden">status: </span>
+        ${$componentStatus.textContent}
+      </span>
+    </li>`;
+      swapElForHTML($el, $listElement);
+    });
+  }
+
+  function reformatDates () {
+    document.querySelectorAll('.status-day > .date').forEach($el => {
+      if (/^[A-Za-z]+\s+\d{1,2},\s+\d{4}$/.test($el.textContent)) {
+        const $textNodes = Array.from($el.childNodes).filter($el => $el.nodeType === 3);
+        $el.insertAdjacentElement('afterbegin', $el.querySelector('var:first-of-type'));
+        $textNodes[0].nodeValue = ' ' + $textNodes[0].nodeValue;
+        $textNodes[1].remove();
+      }
+    });
+  }
+
+  function swapHistoryPageH4ForH1 ($pageHeading) {
+    swapElForHTML($pageHeading, `<h1 class="font-x-largest">${makeSentenceCase($pageHeading.textContent)}</h1>`);
+  }
+
+  function updateIncidentsListHeadings ($incidentsList) {
+    const $monthHeadings = $incidentsList.querySelectorAll('h4.month-title');
+
+    if ($monthHeadings.length > 0) {
+      $monthHeadings.forEach($el => swapElForHTML($el, `<h2 class="${$el.className}">${$el.textContent}</h2>`));
+    }
+  }
+
+  function removeExpandIncidentsButton () {
+    // expand / show all incidents in a given month
+    $('.expand-incidents').click().remove();
+  }
+
+  function fixSubscribeToIncidentUpdatesButton () {
+
+    // a11y fixes for subscribe to ongoing incident(s) button
+    $('.subscribe-button').attr('aria-haspopup', 'dialog').text(function () {
+      return this.text + ' for this incident'
+    });
+
+  }
+
+  function remakePageHeadingPrefixInSentenceCase ($pageHeadingContextPrefix) {
+    $pageHeadingContextPrefix.nodeValue = makeSentenceCase($pageHeadingContextPrefix.nodeValue) + ' ';
+  }
+
+  function addAffectedComponentsHeading ($affectedHeading) {
+    $affectedHeading.insertAdjacentHTML(
+      'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
+    );
+  }
+
+  const pathRoot = '/' + window.location.pathname.split('/')[1];
+
+  // Add skiplink
+  if (pathRoot in mainContainerMap) {
+    addSkipLink(pathRoot);
+  }
+
+  $('.components-container').removeClass('two-columns').addClass('one-column');
+
+  addAutocompleteAttributes();
+  fixSubscribeToIncidentUpdatesButton();
+  removeExpandIncidentsButton();
+
+  const $logo = document.querySelector('.page-name');
+  const $container = document.querySelector('.layout-content > .container');
+  const $pageFooter = document.querySelector('.page-footer');
+
+  // Rewrite logo
+  if ($logo !== null) {
+    $logo.querySelector('a').textContent = 'GOV.UK Notify';
+  }
+
+  // Add heading to footer
+  if ($pageFooter !== null) {
+    addHeadingToFooter($pageFooter);
+  }
+
+  // Home page specific
+  if ($container !== null) {
+    reformatDateRanges();
+
+    // Home page specific
+    if (pathRoot === '/') {
+      const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section');
+      const $pageStatus = document.querySelector('.page-status, .unresolved-incidents');
+      const $incidentsList = $container.querySelector('.incidents-list');
+
+      if (($aboutText !== null) && ($pageStatus !== null)) {
+        addHeadingsAndMoveAboutText($container, $aboutText, $pageStatus);
+
+        const $pageStatusContent = $pageStatus.querySelector('h2');
+
+        if ($pageStatusContent !== null) {
+          remakeStatusOverviewHeadingAsParagraph($pageStatusContent);
+        }
+
+        rewriteIncidentsListHeading();
+
+        const $componentContainer = document.querySelector('.components-container');
+        if ($componentContainer !== null) {
+          remakeComponentsList($componentContainer);
+        }
+
+        addIncidentTypeToIncidentList($incidentsList, pathRoot);
+        reformatDates();
+      }
+    }
+
+    if (pathRoot === '/history') {
+      const $pageHeading = $container.querySelector('h4:first-child');
+      const $incidentsList = $container.querySelector('.months-container');
+
+      if ($pageHeading !== null) {
+        swapHistoryPageH4ForH1($pageHeading);
+      }
+
+      if ($incidentsList !== null) {
+
+        addIncidentTypeToIncidentList($incidentsList, pathRoot);
+        updateIncidentsListHeadings($incidentsList);
+
+        const observer = new window.MutationObserver(() => {
+          reformatDateRanges();
+          removeExpandIncidents();
+          addIncidentTypeToIncidentList($incidentsList, pathRoot);
+          updateIncidentsListHeadings($incidentsList);
+        });
+        observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
+
+      }
+    }
+
+    if (pathRoot === '/incidents') {
+      const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()");
+      const $affectedHeading = $container.querySelector('.components-affected');
+      const $incidentHeading = document.querySelector('.incident-name');
+
+      if ($pageHeadingContextPrefix !== null) {
+        remakePageHeadingPrefixInSentenceCase($pageHeadingContextPrefix);
+      }
+
+      if ($affectedHeading !== null) {
+        addAffectedComponentsHeading($affectedHeading);
+      }
+
+      addIncidentTypeToTarget($incidentHeading, pathRoot);
+    }
+  }
+
+})();

@@ -15,23 +15,40 @@ We use [Nodemon](https://nodemon.io/) to watch for changes to `.js, .css, .html`
 
 If you want to add work on and new pages, they can be added to the `pages` object in `server/config.mjs`.
 
-### Build CSS
+### Build the CSS, JS and HTML
 
-To build the CSS, run this command:
+To build the CSS and JS, run this command:
+
+```bash
+npm run build
+```
+
+To build only the CSS, run this command:
 
 ```bash
 npm run build:css
 ```
 
+To build only the JS, run this command:
+
+```bash
+npm run build:js
+```
+
+To build only the HTML, run this command:
+
+```bash
+npm run build:html
+```
+
 ### Refresh templates
 
-If you wish to fetch fresh content from remote to generate updated or new templates, you can run 
+If you wish to fetch fresh content from your production statuspage, to generate updated or new templates, you can run
 
 ```bash
 npm run refresh
 ```
 Server will automatically restart and serve these.
-
 
 ## Testing
 
@@ -60,8 +77,24 @@ npx wdio run ./tests/config.js --spec tests/home-page.spec.mjs
 
 JavaScript is linted against [Standard JS](https://standardjs.com).
 
+SCSS is linted against the GDS variant of [stylelint](https://github.com/alphagov/stylelint-config-gds).
+
+To lint your SCSS and JS, run this command:
+
 ```bash
 npm run lint
+```
+
+To lint only your SCSS, run this command:
+
+```bash
+npm run lint:scss
+```
+
+To lint only your JS, run this command:
+
+```bash
+npm run lint:js
 ```
 
 Linting is run as well when tests are run.
@@ -98,6 +131,6 @@ echo "$(<dist/custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
 For example:
 
 ```bash
-echo "$(<custom-footer.html)\n<script>\n$(<custom-footer.js)\n</script>\n<\!-- HEAD: $(git rev-parse HEAD) -->" | pbcopy
+echo "$(<dist/custom-footer.html)\n<script>\n$(<dist/custom-footer.js)\n</script>\n<\!-- HEAD: $(git rev-parse HEAD) -->" | pbcopy
 ```
 

@@ -12,14 +12,17 @@
   },
   "homepage": "https://github.com/alphagov/statuspage-customisations#readme",
   "scripts": {
-    "lint": "npm run lint:js && npm run lint:scss",
-    "lint:js": "standard custom-footer.js",
+    "lint": "npm run lint:mjs && npm run lint:scss",
+    "lint:mjs": "standard src/**/*.mjs",
     "lint:scss": "stylelint src/**/*.scss",
     "test": "npm run lint && concurrently \"npm run test:only\" \"npm run dev\" --kill-others",
     "test:only": "wdio run ./tests/config.mjs",
     "dev": "nodemon ./server/serve.mjs",
     "refresh": "node -e 'import(\"./server/helpers/generateTemplatesFromRemote.mjs\").then( module => module.generateAllTemplatesFromRemote())'",
-    "build:css": "sass --no-source-map src/custom.scss dist/custom.css"
+    "build": "npm run build:css && npm run build:js && npm run build:html",
+    "build:css": "sass --no-source-map src/custom.scss dist/custom.css",
+    "build:js": "rollup src/custom-footer.mjs --file dist/custom-footer.js --format iife",
+    "build:html": "cp src/custom-footer.html dist/custom-footer.html"
   },
   "devDependencies": {
     "@wdio/cli": "9.20.0",
@@ -58,8 +61,9 @@
     "ignore": [
       "*.spec.js",
       "**/server/**/*.mjs",
-      "src/**/*.scss"
+      "src/**/*.scss",
+      "src/**/*.mjs"
     ],
-    "ext": "js,mjs,html,css"
+    "ext": "js,html,css"
   }
 }

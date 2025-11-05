@@ -34,11 +34,11 @@ const pages = [
 const localFiles = [
   {
     fileName: "customFooterHtml",
-    filePath: path.resolve('./custom-footer.html'),
+    filePath: path.resolve('./dist/custom-footer.html'),
   },
   {
     fileName: "customFooterJs",
-    filePath: path.resolve('./custom-footer.js'),
+    filePath: path.resolve('./dist/custom-footer.js'),
   },
   {
     fileName: "customCss",
