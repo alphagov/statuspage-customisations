@@ -1,4 +1,4 @@
-import { incidentLevelMap } from '../global/constants.mjs'
+import { incidentLevelMap, incidentsListMap } from '../global/constants.mjs'
 
 function generateId () {
   return Math.random().toString(36).replace(/[^a-z]+/g, '')
@@ -77,11 +77,19 @@ function addIncidentTypeToTarget ($target, pageType, position = null) {
   }
 }
 
-function addIncidentTypeToIncidentList ($list, pathRoot) {
-  const $incidentLinks = $list.querySelectorAll('a')
+function addIncidentTypeToPageHeading (pathRoot) {
+  const $incidentHeading = document.querySelector('.incident-name')
 
-  if ($incidentLinks.length > 0) {
-    $incidentLinks.forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'))
+  if ($incidentHeading !== null) {
+    addIncidentTypeToTarget($incidentHeading, pathRoot)
+  }
+}
+
+function addIncidentTypeToIncidentList (pathRoot) {
+  const $incidentsList = document.querySelector(incidentsListMap[pathRoot])
+
+  if ($incidentsList !== null) {
+    $incidentsList.querySelectorAll('a').forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'))
   }
 }
 
@@ -92,5 +100,6 @@ export {
   makeSentenceCase,
   getNodeByXPath,
   addIncidentTypeToTarget,
+  addIncidentTypeToPageHeading,
   addIncidentTypeToIncidentList
 }

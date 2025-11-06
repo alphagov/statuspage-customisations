@@ -1,20 +1,32 @@
 import { swapElForHTML } from '../../shared/utilities.mjs'
 
-function addHeadingsAndMoveAboutText ($container, $aboutText, $pageStatus) {
-  $container.insertAdjacentElement('afterbegin', $aboutText)
-  $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>')
-  $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>')
+function addHeadingsAndMoveAboutText () {
+  const $container = document.querySelector('.layout-content > .container')
+  const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section')
+  const $pageStatus = document.querySelector('.page-status, .unresolved-incidents')
+
+  if (($container !== null) && ($aboutText !== null) && ($pageStatus !== null))  {
+    $container.insertAdjacentElement('afterbegin', $aboutText)
+    $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>')
+    $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>')
+  }
 }
 
-function remakeStatusOverviewHeadingAsParagraph ($pageStatusContent) {
-  swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`)
+function remakeStatusOverviewHeadingAsParagraph () {
+  const $pageStatusContent = document.querySelector('.page-status h2, .unresolved-incidents h2')
+
+  if ($pageStatusContent !== null) {
+    swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`)
+  }
 }
 
 function rewriteIncidentsListHeading () {
   document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents'
 }
 
-function remakeComponentsList ($componentContainer) {
+function remakeComponentsList () {
+  const $componentContainer = document.querySelector('.components-container')
+
   swapElForHTML(document.querySelector('.components-container'), `<ul class="${$componentContainer.className}">${$componentContainer.innerHTML}</ul>`)
   const $newComponentContainer = document.querySelector('.components-container')
   const $components = $newComponentContainer.querySelectorAll('.component-container')

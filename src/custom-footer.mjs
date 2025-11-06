@@ -5,10 +5,16 @@ import {
   makeSentenceCase,
   getNodeByXPath,
   addIncidentTypeToTarget,
+  addIncidentTypeToPageHeading,
   addIncidentTypeToIncidentList
 } from './shared/utilities.mjs'
 import addAutoCompleteAttributes from './shared/addAutocompleteAttributes.mjs'
-import { mainContainerMap, incidentLevelMap } from './global/constants.mjs'
+import rewriteLogo from './shared/rewriteLogo.mjs'
+import {
+  mainContainerMap,
+  incidentLevelMap,
+  incidentsListMap
+} from './global/constants.mjs'
 import addSkipLink from './global/skiplink.mjs'
 import { addHeadingToFooter } from './global/pageFooter.mjs'
 import {
@@ -31,69 +37,36 @@ import {
 
 const pathRoot = '/' + window.location.pathname.split('/')[1]
 
-// Add skiplink
+// Guard against new pages
 if (pathRoot in mainContainerMap) {
+
+  // Leave this until we know if it's still needed
+  $('.components-container').removeClass('two-columns').addClass('one-column')
+
   addSkipLink(pathRoot)
-}
-
-$('.components-container').removeClass('two-columns').addClass('one-column')
-
-addAutoCompleteAttributes()
-fixSubscribeToIncidentUpdatesButton()
-removeExpandIncidentsButton()
-
-const $logo = document.querySelector('.page-name')
-const $container = document.querySelector('.layout-content > .container')
-const $pageFooter = document.querySelector('.page-footer')
-
-// Rewrite logo
-if ($logo !== null) {
-  $logo.querySelector('a').textContent = 'GOV.UK Notify'
-}
-
-// Add heading to footer
-if ($pageFooter !== null) {
-  addHeadingToFooter($pageFooter)
-}
-
-// Home page specific
-if ($container !== null) {
+  addAutoCompleteAttributes()
+  fixSubscribeToIncidentUpdatesButton()
+  removeExpandIncidentsButton()
+  rewriteLogo()
+  addHeadingToFooter()
   reformatDateRanges()
+
+  const $container = document.querySelector('.layout-content > .container')
 
   // Home page specific
   if (pathRoot === '/') {
-    const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section')
-    const $pageStatus = document.querySelector('.page-status, .unresolved-incidents')
-    const $incidentsList = $container.querySelector('.incidents-list')
-
-    if (($aboutText !== null) && ($pageStatus !== null)) {
-      addHeadingsAndMoveAboutText($container, $aboutText, $pageStatus)
-
-      const $pageStatusContent = $pageStatus.querySelector('h2')
-
-      if ($pageStatusContent !== null) {
-        remakeStatusOverviewHeadingAsParagraph($pageStatusContent)
-      }
-
-      rewriteIncidentsListHeading()
-
-      const $componentContainer = document.querySelector('.components-container')
-      if ($componentContainer !== null) {
-        remakeComponentsList($componentContainer)
-      }
-
-      addIncidentTypeToIncidentList($incidentsList, pathRoot)
-      reformatDates()
-    }
+    addHeadingsAndMoveAboutText()
+    remakeStatusOverviewHeadingAsParagraph()
+    rewriteIncidentsListHeading()
+    remakeComponentsList()
+    addIncidentTypeToIncidentList(pathRoot)
+    reformatDates()
   }
 
   if (pathRoot === '/history') {
-    const $pageHeading = $container.querySelector('h4:first-child')
-    const $incidentsList = $container.querySelector('.months-container')
+    const $incidentsList = $container.querySelector(incidentsListMap[pathRoot])
 
-    if ($pageHeading !== null) {
-      swapHistoryPageH4ForH1($pageHeading)
-    }
+    swapHistoryPageH4ForH1()
 
     if ($incidentsList !== null) {
 
@@ -103,8 +76,8 @@ if ($container !== null) {
       const observer = new window.MutationObserver(() => {
         reformatDateRanges()
         removeExpandIncidents()
-        addIncidentTypeToIncidentList($incidentsList, pathRoot)
-        updateIncidentsListHeadings($incidentsList)
+        addIncidentTypeToIncidentList(pathRoot)
+        updateIncidentsListHeadings(pathRoot)
       })
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true })
 
@@ -112,18 +85,9 @@ if ($container !== null) {
   }
 
   if (pathRoot === '/incidents') {
-    const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()")
-    const $affectedHeading = $container.querySelector('.components-affected')
-    const $incidentHeading = document.querySelector('.incident-name')
-
-    if ($pageHeadingContextPrefix !== null) {
-      remakePageHeadingPrefixInSentenceCase($pageHeadingContextPrefix)
-    }
-
-    if ($affectedHeading !== null) {
-      addAffectedComponentsHeading($affectedHeading)
-    }
-
-    addIncidentTypeToTarget($incidentHeading, pathRoot)
+    remakePageHeadingPrefixInSentenceCase()
+    addIncidentTypeToPageHeading(pathRoot)
+    addAffectedComponentsHeading()
   }
+
 }

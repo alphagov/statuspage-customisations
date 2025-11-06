@@ -12,4 +12,9 @@ const incidentLevelMap = {
   'impact-critical': 'Critical incident'
 }
 
-export { mainContainerMap, incidentLevelMap }
+const incidentsListMap = {
+  '/': '.incidents-list',
+  '/history': '.months-container'
+}
+
+export { mainContainerMap, incidentLevelMap, incidentsListMap }

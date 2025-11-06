@@ -15,6 +15,11 @@
     'impact-critical': 'Critical incident'
   };
 
+  const incidentsListMap = {
+    '/': '.incidents-list',
+    '/history': '.months-container'
+  };
+
   function generateId () {
     return Math.random().toString(36).replace(/[^a-z]+/g, '')
   }
@@ -92,11 +97,19 @@
     }
   }
 
-  function addIncidentTypeToIncidentList ($list, pathRoot) {
-    const $incidentLinks = $list.querySelectorAll('a');
+  function addIncidentTypeToPageHeading (pathRoot) {
+    const $incidentHeading = document.querySelector('.incident-name');
 
-    if ($incidentLinks.length > 0) {
-      $incidentLinks.forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'));
+    if ($incidentHeading !== null) {
+      addIncidentTypeToTarget($incidentHeading, pathRoot);
+    }
+  }
+
+  function addIncidentTypeToIncidentList (pathRoot) {
+    const $incidentsList = document.querySelector(incidentsListMap[pathRoot]);
+
+    if ($incidentsList !== null) {
+      $incidentsList.querySelectorAll('a').forEach($el => addIncidentTypeToTarget($el, pathRoot, 'after'));
     }
   }
 
@@ -116,6 +129,14 @@
     });
   }
 
+  function rewriteLogo () {
+    const $logo = document.querySelector('.page-name');
+
+    if ($logo !== null) {
+      $logo.querySelector('a').textContent = 'GOV.UK Notify';
+    }
+  }
+
   function addSkipLink (pathRoot) {
     const $mainContainer = document.querySelector(mainContainerMap[pathRoot]);
 
@@ -125,30 +146,46 @@
     }
   }
 
-  function addHeadingToFooter ($pageFooter) {
-    $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>');
-    const $footerLinkText = getNodeByXPath("//div[contains(@class, 'page-footer')]/a/*[contains(., '←')]/following-sibling::text()");
+  function addHeadingToFooter () {
+    const $pageFooter = document.querySelector('.page-footer');
 
-    if ($footerLinkText !== null) {
-      $footerLinkText.nodeValue = ' ' + makeSentenceCase($footerLinkText.nodeValue);
+    if ($pageFooter !== null) {
+      $pageFooter.insertAdjacentHTML('afterbegin', '<h2 class="page-footer__heading govuk-visually-hidden">Support links</h2>');
+      const $footerLinkText = getNodeByXPath("//div[contains(@class, 'page-footer')]/a/*[contains(., '←')]/following-sibling::text()");
+
+      if ($footerLinkText !== null) {
+        $footerLinkText.nodeValue = ' ' + makeSentenceCase($footerLinkText.nodeValue);
+      }
     }
   }
 
-  function addHeadingsAndMoveAboutText ($container, $aboutText, $pageStatus) {
-    $container.insertAdjacentElement('afterbegin', $aboutText);
-    $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>');
-    $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>');
+  function addHeadingsAndMoveAboutText () {
+    const $container = document.querySelector('.layout-content > .container');
+    const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section');
+    const $pageStatus = document.querySelector('.page-status, .unresolved-incidents');
+
+    if (($container !== null) && ($aboutText !== null) && ($pageStatus !== null))  {
+      $container.insertAdjacentElement('afterbegin', $aboutText);
+      $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>');
+      $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>');
+    }
   }
 
-  function remakeStatusOverviewHeadingAsParagraph ($pageStatusContent) {
-    swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`);
+  function remakeStatusOverviewHeadingAsParagraph () {
+    const $pageStatusContent = document.querySelector('.page-status h2, .unresolved-incidents h2');
+
+    if ($pageStatusContent !== null) {
+      swapElForHTML($pageStatusContent, `<p class="${$pageStatusContent.className}">${$pageStatusContent.textContent}</p>`);
+    }
   }
 
   function rewriteIncidentsListHeading () {
     document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents';
   }
 
-  function remakeComponentsList ($componentContainer) {
+  function remakeComponentsList () {
+    const $componentContainer = document.querySelector('.components-container');
+
     swapElForHTML(document.querySelector('.components-container'), `<ul class="${$componentContainer.className}">${$componentContainer.innerHTML}</ul>`);
     const $newComponentContainer = document.querySelector('.components-container');
     const $components = $newComponentContainer.querySelectorAll('.component-container');
@@ -182,12 +219,17 @@
     });
   }
 
-  function swapHistoryPageH4ForH1 ($pageHeading) {
-    swapElForHTML($pageHeading, `<h1 class="font-x-largest">${makeSentenceCase($pageHeading.textContent)}</h1>`);
+  function swapHistoryPageH4ForH1 () {
+    const $pageHeading = document.querySelector('.layout-content > .container h4:first-child');
+
+    if ($pageHeading !== null) {
+      swapElForHTML($pageHeading, `<h1 class="font-x-largest">${makeSentenceCase($pageHeading.textContent)}</h1>`);
+    }
   }
 
-  function updateIncidentsListHeadings ($incidentsList) {
-    const $monthHeadings = $incidentsList.querySelectorAll('h4.month-title');
+  function updateIncidentsListHeadings (pathRoot) {
+    const incidentsListSelector = incidentsListMap[pathRoot];
+    const $monthHeadings = document.querySelectorAll(`${incidentsListSelector} h4.month-title`);
 
     if ($monthHeadings.length > 0) {
       $monthHeadings.forEach($el => swapElForHTML($el, `<h2 class="${$el.className}">${$el.textContent}</h2>`));
@@ -208,92 +250,67 @@
 
   }
 
-  function remakePageHeadingPrefixInSentenceCase ($pageHeadingContextPrefix) {
-    $pageHeadingContextPrefix.nodeValue = makeSentenceCase($pageHeadingContextPrefix.nodeValue) + ' ';
+  function remakePageHeadingPrefixInSentenceCase () {
+    const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()");
+
+    if ($pageHeadingContextPrefix !== null) {
+      $pageHeadingContextPrefix.nodeValue = makeSentenceCase($pageHeadingContextPrefix.nodeValue) + ' ';
+    }
   }
 
-  function addAffectedComponentsHeading ($affectedHeading) {
-    $affectedHeading.insertAdjacentHTML(
-      'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
-    );
+  function addAffectedComponentsHeading () {
+    const $affectedHeading = document.querySelector('.components-affected');
+
+    if ($affectedHeading) {
+      $affectedHeading.insertAdjacentHTML(
+        'afterbegin', '<h2 class="govuk-visually-hidden">Components affected</h2>'
+      );
+    }
   }
 
   const pathRoot = '/' + window.location.pathname.split('/')[1];
 
-  // Add skiplink
+  // Guard against new pages
   if (pathRoot in mainContainerMap) {
+
+    // Leave this until we know if it's still needed
+    $('.components-container').removeClass('two-columns').addClass('one-column');
+
     addSkipLink(pathRoot);
-  }
-
-  $('.components-container').removeClass('two-columns').addClass('one-column');
-
-  addAutocompleteAttributes();
-  fixSubscribeToIncidentUpdatesButton();
-  removeExpandIncidentsButton();
-
-  const $logo = document.querySelector('.page-name');
-  const $container = document.querySelector('.layout-content > .container');
-  const $pageFooter = document.querySelector('.page-footer');
-
-  // Rewrite logo
-  if ($logo !== null) {
-    $logo.querySelector('a').textContent = 'GOV.UK Notify';
-  }
-
-  // Add heading to footer
-  if ($pageFooter !== null) {
-    addHeadingToFooter($pageFooter);
-  }
-
-  // Home page specific
-  if ($container !== null) {
+    addAutocompleteAttributes();
+    fixSubscribeToIncidentUpdatesButton();
+    removeExpandIncidentsButton();
+    rewriteLogo();
+    addHeadingToFooter();
     reformatDateRanges();
+
+    const $container = document.querySelector('.layout-content > .container');
 
     // Home page specific
     if (pathRoot === '/') {
-      const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section');
-      const $pageStatus = document.querySelector('.page-status, .unresolved-incidents');
-      const $incidentsList = $container.querySelector('.incidents-list');
-
-      if (($aboutText !== null) && ($pageStatus !== null)) {
-        addHeadingsAndMoveAboutText($container, $aboutText, $pageStatus);
-
-        const $pageStatusContent = $pageStatus.querySelector('h2');
-
-        if ($pageStatusContent !== null) {
-          remakeStatusOverviewHeadingAsParagraph($pageStatusContent);
-        }
-
-        rewriteIncidentsListHeading();
-
-        const $componentContainer = document.querySelector('.components-container');
-        if ($componentContainer !== null) {
-          remakeComponentsList($componentContainer);
-        }
-
-        addIncidentTypeToIncidentList($incidentsList, pathRoot);
-        reformatDates();
-      }
+      addHeadingsAndMoveAboutText();
+      remakeStatusOverviewHeadingAsParagraph();
+      rewriteIncidentsListHeading();
+      remakeComponentsList();
+      addIncidentTypeToIncidentList(pathRoot);
+      reformatDates();
     }
 
     if (pathRoot === '/history') {
-      const $pageHeading = $container.querySelector('h4:first-child');
-      const $incidentsList = $container.querySelector('.months-container');
+      const $incidentsList = $container.querySelector(incidentsListMap[pathRoot]);
 
-      if ($pageHeading !== null) {
-        swapHistoryPageH4ForH1($pageHeading);
-      }
+      swapHistoryPageH4ForH1();
 
       if ($incidentsList !== null) {
 
-        addIncidentTypeToIncidentList($incidentsList, pathRoot);
+        addIncidentTypeToIncidentList($incidentsList);
         updateIncidentsListHeadings($incidentsList);
 
         const observer = new window.MutationObserver(() => {
           reformatDateRanges();
           removeExpandIncidents();
-          addIncidentTypeToIncidentList($incidentsList, pathRoot);
-          updateIncidentsListHeadings($incidentsList);
+          addIncidentTypeToIncidentList(pathRoot);
+          updateIncidentsListHeadings(pathRoot);
         });
         observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
 
@@ -301,20 +318,11 @@
     }
 
     if (pathRoot === '/incidents') {
-      const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()");
-      const $affectedHeading = $container.querySelector('.components-affected');
-      const $incidentHeading = document.querySelector('.incident-name');
-
-      if ($pageHeadingContextPrefix !== null) {
-        remakePageHeadingPrefixInSentenceCase($pageHeadingContextPrefix);
-      }
-
-      if ($affectedHeading !== null) {
-        addAffectedComponentsHeading($affectedHeading);
-      }
-
-      addIncidentTypeToTarget($incidentHeading, pathRoot);
+      remakePageHeadingPrefixInSentenceCase();
+      addIncidentTypeToPageHeading(pathRoot);
+      addAffectedComponentsHeading();
     }
+
   }
 
 })();
