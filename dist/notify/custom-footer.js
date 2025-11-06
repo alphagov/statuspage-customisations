@@ -180,7 +180,11 @@
   }
 
   function rewriteIncidentsListHeading () {
-    document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents';
+    const $incidentsListHeading = document.querySelector('.incidents-list > h2:first-child');
+
+    if ($incidentsListHeading !== null) {
+      $incidentsListHeading.textContent = 'Recent incidents';
+    }
   }
 
   function remakeComponentsList () {
@@ -272,10 +276,15 @@
 
   // Guard against new pages
   if (pathRoot in mainContainerMap) {
+    // Add skiplink, only for the home and incident pages
+    // The history page only loads its main content area after the page load so needs this to run later
+    if ((pathRoot in mainContainerMap) && (pathRoot !== '/history')) {
+      addSkipLink(pathRoot);
+    }
+
     // Leave this until we know if it's still needed
     $('.components-container').removeClass('two-columns').addClass('one-column');
 
-    addSkipLink(pathRoot);
     addAutocompleteAttributes();
     fixSubscribeToIncidentUpdatesButton();
     removeExpandIncidentsButton();
@@ -296,21 +305,30 @@
     }
 
     if (pathRoot === '/history') {
-      const $incidentsList = $container.querySelector(incidentsListMap[pathRoot]);
+      const $historyContentContainer = $container.querySelector('.layout-content > .container > div:first-of-type');
 
       swapHistoryPageH4ForH1();
 
-      if ($incidentsList !== null) {
-        addIncidentTypeToIncidentList(pathRoot);
-        updateIncidentsListHeadings(pathRoot);
+      if ($historyContentContainer !== null) {
+        const observer = new window.MutationObserver((mutationRecords) => {
+          const $incidentsList = document.querySelector(incidentsListMap[pathRoot]);
 
-        const observer = new window.MutationObserver(() => {
+          // prevent our changes triggering mutations, and so this function
+          observer.disconnect();
+
+          addSkipLink(pathRoot);
           reformatDateRanges();
           removeExpandIncidentsButton();
           addIncidentTypeToIncidentList(pathRoot);
           updateIncidentsListHeadings(pathRoot);
+
+          // reset observation, targeted only the history entries we expect the pagination to change
+          observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
         });
-        observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
+
+        // the page loads as an empty shell, with nothing between the heading and footer
+        // so watch for the rest of the content to load before changing it
+        observer.observe($historyContentContainer, { attributes: true, childList: true, subtree: true });
       }
     }
 

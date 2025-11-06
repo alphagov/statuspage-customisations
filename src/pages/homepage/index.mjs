@@ -21,7 +21,11 @@ function remakeStatusOverviewHeadingAsParagraph () {
 }
 
 function rewriteIncidentsListHeading () {
-  document.querySelector('.incidents-list > h2:first-child').textContent = 'Recent incidents'
+  const $incidentsListHeading = document.querySelector('.incidents-list > h2:first-child')
+
+  if ($incidentsListHeading !== null) {
+    $incidentsListHeading.textContent = 'Recent incidents'
+  }
 }
 
 function remakeComponentsList () {
