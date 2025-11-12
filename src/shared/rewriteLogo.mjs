@@ -1,8 +1,8 @@
-function rewriteLogo () {
+function rewriteLogo (logoText) {
   const $logo = document.querySelector('.page-name')
 
   if ($logo !== null) {
-    $logo.querySelector('a').textContent = 'GOV.UK Notify'
+    $logo.querySelector('a').textContent = logoText
   }
 }
 

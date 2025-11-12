@@ -16,13 +16,13 @@
     "lint:mjs": "standard src/**/*.mjs",
     "lint:scss": "stylelint src/**/*.scss",
     "test": "npm run lint && concurrently \"npm run test:only\" \"npm run dev\" --kill-others",
-    "test:only": "wdio run ./tests/config.mjs",
+    "test:only": "wdio run ./tests/$TEAM/config.mjs",
     "dev": "nodemon ./server/serve.mjs",
     "refresh": "node -e 'import(\"./server/helpers/generateTemplatesFromRemote.mjs\").then( module => module.generateAllTemplatesFromRemote())'",
     "build": "npm run build:css && npm run build:js && npm run build:html",
-    "build:css": "sass --no-source-map src/custom.scss dist/custom.css",
-    "build:js": "rollup src/custom-footer.mjs --file dist/custom-footer.js --format iife",
-    "build:html": "cp src/custom-footer.html dist/custom-footer.html"
+    "build:css": "sass --no-source-map src/$TEAM/custom.scss dist/$TEAM/custom.css",
+    "build:js": "rollup src/$TEAM/custom-footer.mjs --file dist/$TEAM/custom-footer.js --format iife",
+    "build:html": "cp src/$TEAM/custom-footer.html dist/$TEAM/custom-footer.html"
   },
   "devDependencies": {
     "@wdio/cli": "9.20.0",

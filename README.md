@@ -4,7 +4,36 @@ Custom code for uses of statuspage.io on projects owned by the Government Digita
 
 ## Local development
 
-To run a local dev server, run `npm run dev`.
+### Set up
+
+Add an `.env` file, copied from `.env.tmpl`, containing your team name and the URL of your
+statuspage.
+
+#### Environment variables
+
+Your team name will be used to point the various commands at the folders for:
+- your base `custom.scss` and `custom-footer.mjs` files
+- the folder in `./dist` to output your CSS and JS files
+
+The URL of your statuspage, used to get the source markup for your pages.
+
+#### Configuring your statuspage CSS and JS
+
+Make sure you add a folder to the `./src` matching your team name and put your own version of
+`custom.scss` and `custom-footer.mjs` in it.
+
+### Running a dev server
+
+You need to run the local dev server to:
+- view your statuspage with your local CSS and JS
+- run the testsuite
+
+To run the local dev server, run
+
+```bash
+npm run dev
+```
+
 This will:
 - fetch source markup from pages defined in the `pages`object in `server/config.mjs`
 - modify markup to allow local customisations to be loaded when served
@@ -59,6 +88,7 @@ To run the tests, if you don't already have the server already running, you can 
 ```bash
 npm test
 ```
+
 This will start-up the server, load the templates and then run the tests.
 
 If you already have the server running and want to run the tests, you can run
@@ -131,6 +161,6 @@ echo "$(<dist/custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
 For example:
 
 ```bash
-echo "$(<dist/custom-footer.html)\n<script>\n$(<dist/custom-footer.js)\n</script>\n<\!-- HEAD: $(git rev-parse HEAD) -->" | pbcopy
+echo "$(<dist/$TEAM/custom-footer.html)\n<script>\n$(<dist/$TEAM/custom-footer.js)\n</script>\n<\!-- HEAD: $(git rev-parse HEAD) -->" | pbcopy
 ```
 

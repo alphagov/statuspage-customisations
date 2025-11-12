@@ -129,11 +129,11 @@
     });
   }
 
-  function rewriteLogo () {
+  function rewriteLogo (logoText) {
     const $logo = document.querySelector('.page-name');
 
     if ($logo !== null) {
-      $logo.querySelector('a').textContent = 'GOV.UK Notify';
+      $logo.querySelector('a').textContent = logoText;
     }
   }
 
@@ -159,15 +159,15 @@
     }
   }
 
-  function addHeadingsAndMoveAboutText () {
+  function addHeadingsAndMoveAboutText (content) {
     const $container = document.querySelector('.layout-content > .container');
     const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section');
     const $pageStatus = document.querySelector('.page-status, .unresolved-incidents');
 
     if (($container !== null) && ($aboutText !== null) && ($pageStatus !== null))  {
       $container.insertAdjacentElement('afterbegin', $aboutText);
-      $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>');
-      $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>');
+      $container.insertAdjacentHTML('afterbegin', `<h1 class="font-x-largest">${content.h1Text}</h1>`);
+      $pageStatus.insertAdjacentHTML('beforebegin', `<h2 class="page-status__heading font-largest">${content.h2Text}</h2>`);
     }
   }
 
@@ -272,7 +272,6 @@
 
   // Guard against new pages
   if (pathRoot in mainContainerMap) {
-
     // Leave this until we know if it's still needed
     $('.components-container').removeClass('two-columns').addClass('one-column');
 
@@ -280,7 +279,7 @@
     addAutocompleteAttributes();
     fixSubscribeToIncidentUpdatesButton();
     removeExpandIncidentsButton();
-    rewriteLogo();
+    rewriteLogo('GOV.UK Notify');
     addHeadingToFooter();
     reformatDateRanges();
 
@@ -288,7 +287,7 @@
 
     // Home page specific
     if (pathRoot === '/') {
-      addHeadingsAndMoveAboutText();
+      addHeadingsAndMoveAboutText({ h1Text: 'GOV.UK Notify status page', h2Text: 'Current status' });
       remakeStatusOverviewHeadingAsParagraph();
       rewriteIncidentsListHeading();
       remakeComponentsList();
@@ -302,18 +301,16 @@
       swapHistoryPageH4ForH1();
 
       if ($incidentsList !== null) {
-
-        addIncidentTypeToIncidentList($incidentsList);
-        updateIncidentsListHeadings($incidentsList);
+        addIncidentTypeToIncidentList(pathRoot);
+        updateIncidentsListHeadings(pathRoot);
 
         const observer = new window.MutationObserver(() => {
           reformatDateRanges();
-          removeExpandIncidents();
+          removeExpandIncidentsButton();
           addIncidentTypeToIncidentList(pathRoot);
           updateIncidentsListHeadings(pathRoot);
         });
         observer.observe($incidentsList, { attributes: true, childList: true, subtree: true });
-
       }
     }
 
@@ -322,7 +319,6 @@
       addIncidentTypeToPageHeading(pathRoot);
       addAffectedComponentsHeading();
     }
-
   }
 
 })();

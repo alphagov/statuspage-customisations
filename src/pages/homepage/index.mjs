@@ -1,14 +1,14 @@
 import { swapElForHTML } from '../../shared/utilities.mjs'
 
-function addHeadingsAndMoveAboutText () {
+function addHeadingsAndMoveAboutText (content) {
   const $container = document.querySelector('.layout-content > .container')
   const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section')
   const $pageStatus = document.querySelector('.page-status, .unresolved-incidents')
 
   if (($container !== null) && ($aboutText !== null) && ($pageStatus !== null))  {
     $container.insertAdjacentElement('afterbegin', $aboutText)
-    $container.insertAdjacentHTML('afterbegin', '<h1 class="font-x-largest">GOV.UK Notify status page</h1>')
-    $pageStatus.insertAdjacentHTML('beforebegin', '<h2 class="page-status__heading font-largest">Current status</h2>')
+    $container.insertAdjacentHTML('afterbegin', `<h1 class="font-x-largest">${content.h1Text}</h1>`)
+    $pageStatus.insertAdjacentHTML('beforebegin', `<h2 class="page-status__heading font-largest">${content.h2Text}</h2>`)
   }
 }
 

@@ -1,45 +1,38 @@
 import {
-  generateId,
-  swapElForHTML,
   reformatDateRanges,
-  makeSentenceCase,
-  getNodeByXPath,
-  addIncidentTypeToTarget,
   addIncidentTypeToPageHeading,
   addIncidentTypeToIncidentList
-} from './shared/utilities.mjs'
-import addAutoCompleteAttributes from './shared/addAutocompleteAttributes.mjs'
-import rewriteLogo from './shared/rewriteLogo.mjs'
+} from '../shared/utilities.mjs'
+import addAutoCompleteAttributes from '../shared/addAutocompleteAttributes.mjs'
+import rewriteLogo from '../shared/rewriteLogo.mjs'
 import {
   mainContainerMap,
-  incidentLevelMap,
   incidentsListMap
-} from './global/constants.mjs'
-import addSkipLink from './global/skiplink.mjs'
-import { addHeadingToFooter } from './global/pageFooter.mjs'
+} from '../global/constants.mjs'
+import addSkipLink from '../global/skiplink.mjs'
+import { addHeadingToFooter } from '../global/pageFooter.mjs'
 import {
   addHeadingsAndMoveAboutText,
   remakeStatusOverviewHeadingAsParagraph,
   rewriteIncidentsListHeading,
   remakeComponentsList,
   reformatDates
-} from './pages/homepage/index.mjs'
+} from '../pages/homepage/index.mjs'
 import {
   updateIncidentsListHeadings,
   swapHistoryPageH4ForH1
-} from './pages/history/index.mjs'
+} from '../pages/history/index.mjs'
 import {
   fixSubscribeToIncidentUpdatesButton,
   removeExpandIncidentsButton,
   remakePageHeadingPrefixInSentenceCase,
   addAffectedComponentsHeading
-} from './pages/incidents/index.mjs'
+} from '../pages/incidents/index.mjs'
 
 const pathRoot = '/' + window.location.pathname.split('/')[1]
 
 // Guard against new pages
 if (pathRoot in mainContainerMap) {
-
   // Leave this until we know if it's still needed
   $('.components-container').removeClass('two-columns').addClass('one-column')
 
@@ -47,7 +40,7 @@ if (pathRoot in mainContainerMap) {
   addAutoCompleteAttributes()
   fixSubscribeToIncidentUpdatesButton()
   removeExpandIncidentsButton()
-  rewriteLogo()
+  rewriteLogo('GOV.UK Notify')
   addHeadingToFooter()
   reformatDateRanges()
 
@@ -55,7 +48,7 @@ if (pathRoot in mainContainerMap) {
 
   // Home page specific
   if (pathRoot === '/') {
-    addHeadingsAndMoveAboutText()
+    addHeadingsAndMoveAboutText({ h1Text: 'GOV.UK Notify status page', h2Text: 'Current status' })
     remakeStatusOverviewHeadingAsParagraph()
     rewriteIncidentsListHeading()
     remakeComponentsList()
@@ -69,18 +62,16 @@ if (pathRoot in mainContainerMap) {
     swapHistoryPageH4ForH1()
 
     if ($incidentsList !== null) {
-
-      addIncidentTypeToIncidentList($incidentsList, pathRoot)
-      updateIncidentsListHeadings($incidentsList)
+      addIncidentTypeToIncidentList(pathRoot)
+      updateIncidentsListHeadings(pathRoot)
 
       const observer = new window.MutationObserver(() => {
         reformatDateRanges()
-        removeExpandIncidents()
+        removeExpandIncidentsButton()
         addIncidentTypeToIncidentList(pathRoot)
         updateIncidentsListHeadings(pathRoot)
       })
       observer.observe($incidentsList, { attributes: true, childList: true, subtree: true })
-
     }
   }
 
@@ -89,5 +80,4 @@ if (pathRoot in mainContainerMap) {
     addIncidentTypeToPageHeading(pathRoot)
     addAffectedComponentsHeading()
   }
-
 }

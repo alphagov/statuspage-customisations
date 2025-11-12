@@ -1,5 +1,5 @@
 import { expect, browser, $ } from '@wdio/globals';
-import { serverConfig } from '../server/config.mjs';
+import { serverConfig } from '../../server/config.mjs';
 
 describe('Incident page', () => {
 
