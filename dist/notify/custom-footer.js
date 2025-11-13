@@ -20,15 +20,25 @@
     '/history': '.months-container'
   };
 
+  /*
+   * Utility method, not specific to any accessibility issue
+   */
   function generateId () {
     return Math.random().toString(36).replace(/[^a-z]+/g, '')
   }
 
+  /*
+   * Utility method, not specific to any accessibility issue
+   */
   function swapElForHTML ($oldEl, newHTML) {
     $oldEl.insertAdjacentHTML('beforebegin', newHTML);
     $oldEl.remove();
   }
 
+  /*
+   * Fix for a style issue, not accessibility:
+   * - This remakes all dates to match GDS style: https://www.gov.uk/guidance/style-guide/a-to-z#dates
+   */
   function reformatDateRanges () {
     function reformatRange ($range) {
       if (/^[A-Za-z-]+\s+\d+,\s+\d+:\d+\s+-\s+([A-Za-z]+\s+\d+,\s+)?\d+:\d+\s+[A-Z]+$/.test($range.textContent)) {
@@ -52,11 +62,18 @@
     }
   }
 
+  /*
+   * Fix for a style issue, not accessibility
+   * - Some words are capitalised in the middle of sentences
+   */
   function makeSentenceCase (str) {
     const trimmed = str.trim();
     return trimmed[0].toUpperCase() + trimmed.slice(1).toLowerCase()
   }
 
+  /*
+   * Utility method, not specific to any accessibility issue
+   */
   function getNodeByXPath (xpath) {
     const result = document.evaluate(
       xpath,
@@ -69,6 +86,12 @@
     return result.singleNodeValue
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - ID: 9, Titles for incidents have different colours which convey a meaning
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+   *   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+   */
   function addIncidentTypeToTarget ($target, pageType, position = null) {
     let incidentLevel;
     // homepage incident list has a different html structure to history page
@@ -97,6 +120,12 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - ID: 9, Titles for incidents have different colours which convey a meaning
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+   *   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+   */
   function addIncidentTypeToPageHeading (pathRoot) {
     const $incidentHeading = document.querySelector('.incident-name');
 
@@ -105,6 +134,12 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - ID: 9, Titles for incidents have different colours which convey a meaning
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+   *   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+   */
   function addIncidentTypeToIncidentList (pathRoot) {
     const $incidentsList = document.querySelector(incidentsListMap[pathRoot]);
 
@@ -113,6 +148,12 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - ID: 21, Some form fields are not correctly set up for autocomplete
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/6
+   *   - Trello card: https://trello.com/c/erU3zqaQ/772-status-page-add-missing-autocomplete-attributes-to-subscribe-to-updates-form-input
+   */
   function addAutocompleteAttributes () {
     // adds autocomplete attributes to controls that don't have one
     const selectorAndAutocompleteAttributes = {
@@ -129,6 +170,10 @@
     });
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - Only an issue with GOV.UK Notify's statuspage. The logo text didn't match what it linked to
+   */
   function rewriteLogo (logoText) {
     const $logo = document.querySelector('.page-name');
 
@@ -137,6 +182,12 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - ID: 17, no mechanism to skip to the main content
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/12
+   *   - Trello card: https://trello.com/c/YTw6kldC/798-status-page-add-skiplink-to-pages
+   */
   function addSkipLink (pathRoot) {
     const $mainContainer = document.querySelector(mainContainerMap[pathRoot]);
 
@@ -146,6 +197,15 @@
     }
   }
 
+  /*
+   * Accessibility issues this proposes to address:
+   * - issue ID: 69, lack of accessibility statement
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/3
+   *   - Trello card: https://trello.com/c/PUxouWrT/773-status-page-add-link-to-the-a11y-statement-to-meet-psbar-regulations
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   */
   function addHeadingToFooter () {
     const $pageFooter = document.querySelector('.page-footer');
 
@@ -159,6 +219,13 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   *   - Note: this also moves the 'about' text further up the page
+   */
   function addHeadingsAndMoveAboutText (content) {
     const $container = document.querySelector('.layout-content > .container');
     const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section');
@@ -171,6 +238,13 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   *   - Note: stops this heading being a heading
+   */
   function remakeStatusOverviewHeadingAsParagraph () {
     const $pageStatusContent = document.querySelector('.page-status h2, .unresolved-incidents h2');
 
@@ -179,6 +253,13 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   *   - Note: The existing heading is 'Past incidents' but it can contain current ones
+   */
   function rewriteIncidentsListHeading () {
     const $incidentsListHeading = document.querySelector('.incidents-list > h2:first-child');
 
@@ -223,6 +304,12 @@
     });
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   */
   function swapHistoryPageH4ForH1 () {
     const $pageHeading = document.querySelector('.layout-content > .container h4:first-child');
 
@@ -231,6 +318,12 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   */
   function updateIncidentsListHeadings (pathRoot) {
     const incidentsListSelector = incidentsListMap[pathRoot];
     const $monthHeadings = document.querySelectorAll(`${incidentsListSelector} h4.month-title`);
@@ -240,20 +333,34 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 37, the showy-hidey feature shows content before itself
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/11
+   *   - Trello card: https://trello.com/c/ekoRmpGe/784-status-page-hidden-incidents-in-the-incident-history-are-revealed-above-the-show-button
+   */
   function removeExpandIncidentsButton () {
     // expand / show all incidents in a given month
     $('.expand-incidents').click().remove();
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 28, Subscribe button does not make its purpose clear
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/9
+   *   - Trello card: https://trello.com/c/rcUYJrW2/788-status-page-fix-subscribe-to-updates-button-visible-only-during-incidents
+   */
   function fixSubscribeToIncidentUpdatesButton () {
-
     // a11y fixes for subscribe to ongoing incident(s) button
     $('.subscribe-button').attr('aria-haspopup', 'dialog').text(function () {
       return this.text + ' for this incident'
     });
-
   }
 
+  /*
+   * Fix for a style issue, not accessibility
+   * - Some words are capitalised in the heading context prefix
+   */
   function remakePageHeadingPrefixInSentenceCase () {
     const $pageHeadingContextPrefix = getNodeByXPath("//h1/following-sibling::div[contains(@class, 'subheader')]/text()");
 
@@ -262,6 +369,12 @@
     }
   }
 
+  /*
+   * Accessibility issue this proposes to address:
+   * - issue ID: 53, headings are missing
+   *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+   *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+   */
   function addAffectedComponentsHeading () {
     const $affectedHeading = document.querySelector('.components-affected');
 

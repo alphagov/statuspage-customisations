@@ -1,14 +1,24 @@
 import { incidentLevelMap, incidentsListMap } from '../global/constants.mjs'
 
+/*
+ * Utility method, not specific to any accessibility issue
+ */
 function generateId () {
   return Math.random().toString(36).replace(/[^a-z]+/g, '')
 }
 
+/*
+ * Utility method, not specific to any accessibility issue
+ */
 function swapElForHTML ($oldEl, newHTML) {
   $oldEl.insertAdjacentHTML('beforebegin', newHTML)
   $oldEl.remove()
 }
 
+/*
+ * Fix for a style issue, not accessibility:
+ * - This remakes all dates to match GDS style: https://www.gov.uk/guidance/style-guide/a-to-z#dates
+ */
 function reformatDateRanges () {
   function reformatRange ($range) {
     if (/^[A-Za-z-]+\s+\d+,\s+\d+:\d+\s+-\s+([A-Za-z]+\s+\d+,\s+)?\d+:\d+\s+[A-Z]+$/.test($range.textContent)) {
@@ -32,11 +42,18 @@ function reformatDateRanges () {
   }
 }
 
+/*
+ * Fix for a style issue, not accessibility
+ * - Some words are capitalised in the middle of sentences
+ */
 function makeSentenceCase (str) {
   const trimmed = str.trim()
   return trimmed[0].toUpperCase() + trimmed.slice(1).toLowerCase()
 }
 
+/*
+ * Utility method, not specific to any accessibility issue
+ */
 function getNodeByXPath (xpath) {
   const result = document.evaluate(
     xpath,
@@ -49,6 +66,12 @@ function getNodeByXPath (xpath) {
   return result.singleNodeValue
 }
 
+/*
+ * Accessibility issue this proposes to address:
+ * - ID: 9, Titles for incidents have different colours which convey a meaning
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+ *   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+ */
 function addIncidentTypeToTarget ($target, pageType, position = null) {
   let incidentLevel
   // homepage incident list has a different html structure to history page
@@ -77,6 +100,12 @@ function addIncidentTypeToTarget ($target, pageType, position = null) {
   }
 }
 
+/*
+ * Accessibility issue this proposes to address:
+ * - ID: 9, Titles for incidents have different colours which convey a meaning
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+ *   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+ */
 function addIncidentTypeToPageHeading (pathRoot) {
   const $incidentHeading = document.querySelector('.incident-name')
 
@@ -85,6 +114,12 @@ function addIncidentTypeToPageHeading (pathRoot) {
   }
 }
 
+/*
+ * Accessibility issue this proposes to address:
+ * - ID: 9, Titles for incidents have different colours which convey a meaning
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+ *   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+ */
 function addIncidentTypeToIncidentList (pathRoot) {
   const $incidentsList = document.querySelector(incidentsListMap[pathRoot])
 

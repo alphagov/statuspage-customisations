@@ -1,8 +1,11 @@
-
+// Fix for style issues, not accessibility:
+// - Adjust font-family to use fallbacks from GDS design system styles
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+// Fix for style issues, not accessibility:
+// - Reset styles for font classes already in use to match type scales from GDS design system
 .font-small {
   font-size: 16px;
   line-height: 1.25em;

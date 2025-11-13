@@ -1,5 +1,14 @@
 import { getNodeByXPath, makeSentenceCase } from '../shared/utilities.mjs'
 
+/*
+ * Accessibility issues this proposes to address:
+ * - issue ID: 69, lack of accessibility statement
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/3
+ *   - Trello card: https://trello.com/c/PUxouWrT/773-status-page-add-link-to-the-a11y-statement-to-meet-psbar-regulations
+ * - issue ID: 53, headings are missing
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+ *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+ */
 function addHeadingToFooter () {
   const $pageFooter = document.querySelector('.page-footer')
 

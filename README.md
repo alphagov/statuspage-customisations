@@ -20,7 +20,7 @@ The URL of your statuspage, used to get the source markup for your pages.
 #### Configuring your statuspage CSS and JS
 
 Make sure you add a folder to the `./src` matching your team name and put your own version of
-`custom.scss` and `custom-footer.mjs` in it.
+`custom.scss` and `custom-footer.mjs` in it, only including the fixes you need.
 
 ### Running a dev server
 
@@ -158,9 +158,43 @@ echo "$(<dist/custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
 
 #### Custom footer HTML
 
-For example:
+Make sure you source your `.env` file before running this command.
 
 ```bash
 echo "$(<dist/$TEAM/custom-footer.html)\n<script>\n$(<dist/$TEAM/custom-footer.js)\n</script>\n<\!-- HEAD: $(git rev-parse HEAD) -->" | pbcopy
 ```
 
+## Contributing to this repository
+
+Please do contribute to this repository. Both new teams-specific code and changes to shared code are
+welcome, as well as opinions and pull requests that suggest changes to the structure and syntax.
+
+### Styleguide
+
+Statuspage code, the environment our fixes have to work in, can change at any time. Because of this,
+there are a few things any code changes made should consider.
+
+#### Write JS and SCSS defensively
+
+Always test for elements before operating on them and do the same for any assumptions about patterns
+of DOM you manipulate. Your code should fail silently it the DOM has changed, which it often will.
+
+For example, if you're moving an element before its preceding sibling, check
+the sibling exists in that position first and return early if it isn't.
+
+Try to keep any DOM checks inside your function. This will allow others to use it without thinking
+about any assumptions it might make about DOM structure.
+
+#### Use Web APIs to handle
+
+Statuspage used React to update the page in places when this was written, but that could change.
+
+Use web APIs like MutationObserver to monitor for DOM changes and don't write in any assumptions
+about how the DOM is changed, or what framework might be in use.
+these changes and operate on the resulting DOM without making assumptions on 
+
+#### Document what issues your code fixes
+
+Please include comments documenting which accessibility issues from [Anika's
+spreadsheet](https://docs.google.com/spreadsheets/d/1sJItjnPB1ZVc8uS8H76KziAmfYtEji341KrAxfVizGg/edit?usp=sharing)
+they fix, with as much detail as possible.

@@ -1,5 +1,12 @@
 import { swapElForHTML } from '../../shared/utilities.mjs'
 
+/*
+ * Accessibility issue this proposes to address:
+ * - issue ID: 53, headings are missing
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+ *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+ *   - Note: this also moves the 'about' text further up the page
+ */
 function addHeadingsAndMoveAboutText (content) {
   const $container = document.querySelector('.layout-content > .container')
   const $aboutText = document.querySelector('.page-status + .text-section, .unresolved-incidents + .text-section')
@@ -12,6 +19,13 @@ function addHeadingsAndMoveAboutText (content) {
   }
 }
 
+/*
+ * Accessibility issue this proposes to address:
+ * - issue ID: 53, headings are missing
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+ *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+ *   - Note: stops this heading being a heading
+ */
 function remakeStatusOverviewHeadingAsParagraph () {
   const $pageStatusContent = document.querySelector('.page-status h2, .unresolved-incidents h2')
 
@@ -20,6 +34,13 @@ function remakeStatusOverviewHeadingAsParagraph () {
   }
 }
 
+/*
+ * Accessibility issue this proposes to address:
+ * - issue ID: 53, headings are missing
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+ *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+ *   - Note: The existing heading is 'Past incidents' but it can contain current ones
+ */
 function rewriteIncidentsListHeading () {
   const $incidentsListHeading = document.querySelector('.incidents-list > h2:first-child')
 
