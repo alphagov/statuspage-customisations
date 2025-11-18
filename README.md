@@ -160,7 +160,7 @@ CSS comment:
 #### Custom CSS
 
 ```bash
-echo "$(<dist/custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
+echo "$(<dist/$TEAM/custom.css)\n/* HEAD: $(git rev-parse HEAD) */" | pbcopy
 ```
 
 #### Custom footer HTML
