@@ -1,0 +1,15 @@
+// Accessibility issue this proposes to address:
+// - ID: 46, subscription popup overflows its container past 200% zoom
+//   - PR: https://github.com/alphagov/statuspage-customisations/pull/10
+//   - Trello card: https://trello.com/c/em88peMN/789-status-page-fix-subscribe-to-updates-popup-display-when-zoomed-in
+@media screen and (max-width: 580px) {
+    .modal-open-incident-subscribe.in {
+        margin-top: 0 !important;
+        overflow-y: auto !important;
+        bottom: 0 !important;
+    }
+
+    .modal .modal-body {
+        max-height: none !important;
+    }
+}

@@ -1,0 +1,37 @@
+// Fix for style issues, not accessibility:
+// - Adjust footer padding so that links get full underline
+// - Reduce page-footer margin to prevent large gap appearing between it and the custom footer we added
+.container .page-status__heading {
+  margin-bottom: 20px;
+}
+
+// Accessibility issue this proposes to address:
+// - issue ID: 53, headings are missing
+//   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
+//   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
+//   - Note: This removes the 'about' section heading
+.text-section .font-largest {
+  display: none;
+}
+
+// Fix for style issues, not accessibility:
+// - Break links in 'about' section to prevent overflow problems
+.text-section > p > a {
+  word-break:break-word;
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .page-status .last-updated-stamp {
+  color: #ffffff;
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .page-status {
+  border-radius: 0;
+  -webkit-border-radius: 0; 
+  -moz-border-radius: 0;  
+  border: none;
+  text-shadow: none;
+}

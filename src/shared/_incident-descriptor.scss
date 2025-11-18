@@ -1,0 +1,8 @@
+// Accessibility issue this proposes to address:
+// - ID: 9, Titles for incidents have different colours which convey a meaning
+//   - PR: https://github.com/alphagov/statuspage-customisations/pull/24
+//   - Trello card: https://trello.com/c/ari5FjHW/1425-status-page-status-colours-convey-meaning
+//   - Note: used on history and incident pages
+.incident-level {
+  font-weight: 400;
+}

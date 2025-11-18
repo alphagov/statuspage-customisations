@@ -1,0 +1,7 @@
+// Fix for style issues, not accessibility:
+// - Adjust footer padding so that links get full underline
+// - Reduce page-footer margin to prevent large gap appearing between it and the custom footer we added
+.page-footer { 
+  padding-bottom: 0.75rem;
+  margin-bottom: 10px;
+}

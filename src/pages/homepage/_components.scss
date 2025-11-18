@@ -1,0 +1,42 @@
+// Spacing tweaks, not an accessibility issue fix:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .components-section .component-container {
+  border-bottom-width: 1px;
+  padding: 10px 0;
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .components-section .component-container .icon-indicator {
+   display: none;
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .components-section .component-container .name {
+  font-weight: normal; 
+  white-space: inherit !important;
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .components-section .component-container .component-status {
+  font-size: 19px;
+  line-height: 1.25em;
+  font-weight: bold; 
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+//   - Note: Single column container styles
+.layout-content.status.status-index .components-section .components-container.one-column .component-container:first-child {
+  border-radius: 0 !important;
+}
+
+// Fix for style issues, not accessibility:
+// - Existing CSS from GOV.UK Notify status page
+.layout-content.status.status-index .components-section .components-container.one-column .component-container {
+  border-right-width: 0;
+  border-left-width: 0 !important;
+  padding: 15px 0;
+}

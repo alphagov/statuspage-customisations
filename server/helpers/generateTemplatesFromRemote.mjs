@@ -1,6 +1,7 @@
+import path from 'node:path';
 import * as cheerio from 'cheerio';
-import { pages, statusPageBaseUrl } from "../config.mjs";
-import { writeFile } from './file.mjs';
+import { serverConfig, pages, statusPageBaseUrl } from "../config.mjs";
+import { writeFile, fileExists } from './file.mjs';
 
 // get remote page source
 async function getRemoteSource(url) {

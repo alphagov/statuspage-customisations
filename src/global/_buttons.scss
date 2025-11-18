@@ -1,0 +1,21 @@
+// Styling tweaks, not an accessibility issue fix:
+// - Existing CSS from GOV.UK Notify status page
+// - Copies button focus style from GDS design system
+button:focus {
+  border-color: #ffdd00 !important;
+  color: #0b0c0c !important;
+  outline: 3px solid transparent;
+  -webkit-box-shadow: inset 0 0 0 1px #ffdd00 !important;
+  box-shadow: inset 0 0 0 1px #ffdd00 !important;
+}
+
+// Styling tweaks, not an accessibility issue fix:
+// - Existing CSS from GOV.UK Notify status page
+// - Copies button focus style from GDS design system
+button:focus:not(:active):not(:hover) {
+  border-color: #ffdd00 !important;
+  color: #0b0c0c !important;
+  background-color: #ffdd00;
+  -webkit-box-shadow: 0 2px 0 #0b0c0c !important;
+  box-shadow: 0 2px 0 #0b0c0c !important;
+}
