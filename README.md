@@ -2,6 +2,11 @@
 
 Custom code for uses of statuspage.io on projects owned by the Government Digital Service.
 
+- [Local development](#local-development)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing to this repository](contributing-to-this-repository)
+
 ## Local development
 
 ### Set up
@@ -81,7 +86,9 @@ Server will automatically restart and serve these.
 
 ## Testing
 
-Tests for customisations are located in `tests` directory. We use [WebdriverIO](https://webdriver.io/) as a test runner with Jasmine framework.
+### Unit tests
+
+Unit tests for customisations are located in `tests` directory. We use [WebdriverIO](https://webdriver.io/) as a test runner with Jasmine framework.
 
 To run the tests, if you don't already have the server already running, you can run
 
@@ -103,7 +110,7 @@ To run a single selected test when the server is running, you can run
 npx wdio run ./tests/config.js --spec tests/home-page.spec.mjs
 ```
 
-## Linting
+### Linting
 
 JavaScript is linted against [Standard JS](https://standardjs.com).
 
