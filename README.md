@@ -205,3 +205,7 @@ these changes and operate on the resulting DOM without making assumptions on
 Please include comments documenting which accessibility issues from [Anika's
 spreadsheet](https://docs.google.com/spreadsheets/d/1sJItjnPB1ZVc8uS8H76KziAmfYtEji341KrAxfVizGg/edit?usp=sharing)
 they fix, with as much detail as possible.
+
+## Licence
+
+Unless stated otherwise, the codebase is released under [the MIT License](LICENSE). This covers both the codebase and any sample code in the documentation.
