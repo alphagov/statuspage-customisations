@@ -208,4 +208,4 @@ they fix, with as much detail as possible.
 
 ## Licence
 
-Unless stated otherwise, the codebase is released under [the MIT License](LICENSE). This covers both the codebase and any sample code in the documentation.
+Unless stated otherwise, the codebase is released under [the MIT License](LICENCE). This covers both the codebase and any sample code in the documentation.
