@@ -86,6 +86,16 @@ Server will automatically restart and serve these.
 
 ## Testing
 
+### Set up
+
+Post/Pre-install NPM scripts are banned. This shouldn't stop the tests running but the following is
+worth noting:
+- esbuild runs in a slightly different way (see `npm i esbuild --ignore-scripts` section in [this
+  comment](https://github.com/evanw/esbuild/issues/4288#issuecomment-3294624072))
+- [the geckodriver binary will need to be manually
+  installed](https://webdriver.io/docs/driverbinaries#geckodriver), if you want to use it (the JS
+  tests run in chrome by default)
+
 ### Unit tests
 
 Unit tests for customisations are located in `tests` directory. We use [WebdriverIO](https://webdriver.io/) as a test runner with Jasmine framework.
