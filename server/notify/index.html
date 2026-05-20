@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
     <!-- Time this page was rendered - http://purl.org/dc/terms/issued -->
-    <meta name="issued" content="1762987097">
+    <meta name="issued" content="1779184198">
 
     <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
     <meta http-equiv="cleartype" content="on">
@@ -48,8 +48,8 @@
     <link rel="alternate" type="application/atom+xml" title="ATOM" href="https://status.notifications.service.gov.uk/history.atom">
 
     <!-- Le styles -->
-    <link rel="stylesheet" media="screen" href="https://dka575ofm4ao0.cloudfront.net/packs/0.076d36a21dada6e9b8ca.css">
-    <link rel="stylesheet" media="all" href="https://dka575ofm4ao0.cloudfront.net/assets/status/status_manifest-2291a8db1cf94c3f8b132626924ff7424d9c768ab6e236ad92393af2f5c69f1c.css">
+    <link rel="stylesheet" media="screen" href="https://dka575ofm4ao0.cloudfront.net/packs/0.3196e1790c0547398277.css">
+    <link rel="stylesheet" media="all" href="https://dka575ofm4ao0.cloudfront.net/assets/status/status_manifest-51905443bbfe61223eaea38cbf08b789e674d8721a1447b6649eecf417e904a7.css">
 
     <script src="https://dka575ofm4ao0.cloudfront.net/assets/jquery-3.5.1.min-729e416557a365062a8a20f0562f18aa171da57298005d392312670c706c68de.js"></script>
 
@@ -372,11 +372,11 @@
           
   <div class="updates-dropdown-container" data-js-hook="updates-dropdown-container">
     <a href="#" data-js-hook="show-updates-dropdown" id="show-updates-dropdown" class="show-updates-dropdown" aria-label="Subscribe to updates" aria-expanded="false" aria-haspopup="dialog" role="button">
-
+      <span class="subscribe-text-full">Subscribe to Updates</span><span class="subscribe-text-short">Subscribe</span>
     </a>
 
 <!--    Accessibility guidelines for tabs: https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html -->
-    <div class="updates-dropdown" data-js-hook="updates-dropdown" id="updates-dropdown" style="display:none">
+    <div class="updates-dropdown" data-js-hook="updates-dropdown" id="updates-dropdown" style="display:none" role="dialog" aria-modal="false" aria-label="Subscribe to updates">
       <div class="updates-dropdown-nav nav-items-7" role="tablist" aria-label="Subscribe to updates">
           <a href="#updates-dropdown-email" aria-controls="updates-dropdown-email" aria-label="Subscribe via email" role="tab" aria-selected="true" id="updates-dropdown-email-btn">
             <span class="icon-container email">
@@ -838,6 +838,9 @@
   $(function() {
     $('#subscribe-form-email').on('submit', function() {
       var tokenField = document.getElementById('email-otp-token-field');
+      if (!tokenField) {
+        return;
+      }
       let page_code = "stdg40247zwv"
       let key = keyForEmailOtpToken($('#email').val(), page_code);
       tokenField.value = localStorage.getItem(key);
@@ -970,7 +973,7 @@
 
   </span>
 
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
 
 </div>
 
@@ -980,7 +983,7 @@
 <div data-component-id="57s58nvl5rc4" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
 
    <span class="name">
-      File uploads
+      Notify website
    </span>
 
 
@@ -990,67 +993,7 @@
 
   </span>
 
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
-
-</div>
-
-          </div>
-          <div class="component-container border-color">
-            
-<div data-component-id="p6h29rfj7ydg" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
-
-   <span class="name">
-      Text message sending
-   </span>
-
-
-  <span class="component-status " title="">
-
-    Operational
-
-  </span>
-
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
-
-</div>
-
-          </div>
-          <div class="component-container border-color">
-            
-<div data-component-id="h5ntf7lftggt" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
-
-   <span class="name">
-      Text message delivery receipts
-   </span>
-
-
-  <span class="component-status " title="">
-
-    Operational
-
-  </span>
-
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
-
-</div>
-
-          </div>
-          <div class="component-container border-color">
-            
-<div data-component-id="czn4n4xc3phv" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
-
-   <span class="name">
-      Text message receiving
-   </span>
-
-
-  <span class="component-status " title="">
-
-    Operational
-
-  </span>
-
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
 
 </div>
 
@@ -1070,7 +1013,7 @@
 
   </span>
 
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
 
 </div>
 
@@ -1090,7 +1033,67 @@
 
   </span>
 
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
+
+</div>
+
+          </div>
+          <div class="component-container border-color">
+            
+<div data-component-id="p6h29rfj7ydg" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
+
+   <span class="name">
+      Text message sending
+   </span>
+
+
+  <span class="component-status " title="">
+
+    Operational
+
+  </span>
+
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
+
+</div>
+
+          </div>
+          <div class="component-container border-color">
+            
+<div data-component-id="h5ntf7lftggt" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
+
+   <span class="name">
+      Text message delivery receipts
+   </span>
+
+
+  <span class="component-status " title="">
+
+    Operational
+
+  </span>
+
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
+
+</div>
+
+          </div>
+          <div class="component-container border-color">
+            
+<div data-component-id="czn4n4xc3phv" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
+
+   <span class="name">
+      Text message receiving
+   </span>
+
+
+  <span class="component-status " title="">
+
+    Operational
+
+  </span>
+
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
 
 </div>
 
@@ -1110,7 +1113,67 @@
 
   </span>
 
-  <span class="tool icon-indicator fa fa-check" title="Operational"></span>
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
+
+</div>
+
+          </div>
+          <div class="component-container border-color">
+            
+<div data-component-id="mj7gdkbgsh7t" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
+
+   <span class="name">
+      Send files by email
+   </span>
+
+
+  <span class="component-status " title="">
+
+    Operational
+
+  </span>
+
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
+
+</div>
+
+          </div>
+          <div class="component-container border-color">
+            
+<div data-component-id="bn9pt0kn5ww2" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
+
+   <span class="name">
+      Download files sent by email
+   </span>
+
+
+  <span class="component-status " title="">
+
+    Operational
+
+  </span>
+
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
+
+</div>
+
+          </div>
+          <div class="component-container border-color">
+            
+<div data-component-id="fz17tkhz9bcp" class="component-inner-container status-green " data-component-status="operational" data-js-hook="">
+
+   <span class="name">
+      Callbacks
+   </span>
+
+
+  <span class="component-status " title="">
+
+    Operational
+
+  </span>
+
+  <button type="button" class="tool icon-indicator fa fa-check status-icon-button" aria-label="Operational" data-js-hook="tooltip" data-original-title="Operational"></button>
 
 </div>
 
@@ -1151,40 +1214,34 @@
         <h2 class="font-largest no-link" id="past-incidents">Past Incidents</h2>
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date">12</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">19</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported today.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date">11</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">18</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date">10</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">17</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date"> 9</var>, <var data-var="year">2025</var></div>
-        <p class="color-secondary">No incidents reported.</p>
-  </div>
-
-          
-  <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date"> 8</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">16</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular ">
-    <div class="date border-color font-large">Nov <var data-var="date"> 7</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">15</var>, <var data-var="year">2026</var></div>
           <div class="incident-container">
   <div class="incident-title impact-minor font-large">
-    <a class="whitespace-pre-wrap" href="/incidents/mqf9wxjv8cvf">Some text messages are delayed</a>
+    <a class="whitespace-pre-wrap" href="/incidents/dv9y353xn809">Letter processing issue</a>
   </div>
 
   <div class="updates-container">
@@ -1193,62 +1250,12 @@
     <!-- incident updates -->
       <div class="update font-regular resolved">
         <strong>Resolved</strong> -
-      	<span class="whitespace-pre-wrap">The issue affecting slow delivery of text messages has now been resolved.<br><br>We have seen text message delivery times return to normal. <br><br>Sorry for the inconvenience to you and your users.</span>
+      	<span class="whitespace-pre-wrap">The issue affecting processing of some letters containing international character sets is now resolved.<br><br>Affected letters have been resubmitted to our print provider successfully.  <br><br>You do not need to retry any letters which were affected by this incident.<br><br>Sorry for the inconvenience to you and your users.<br><br>GOV.UK Notify</span>
 
         <br>
 
         <small>
-            Nov <var data-var="date"> 7</var>, <var data-var="time">09:50</var> GMT
-        </small>
-      </div>
-      <div class="update font-regular monitoring">
-        <strong>Monitoring</strong> -
-      	<span class="whitespace-pre-wrap">We have seen text message delivery times return to normal. <br><br>We will continue to monitor in case of any further issues. <br><br>Sorry for the inconvenience to you and your users.</span>
-
-        <br>
-
-        <small>
-            Nov <var data-var="date"> 6</var>, <var data-var="time">09:58</var> GMT
-        </small>
-      </div>
-      <div class="update font-regular identified">
-        <strong>Identified</strong> -
-      	<span class="whitespace-pre-wrap">During monitoring we have noticed some slowing of text message delivery this morning. We are working with our text message providers to explore the recurring issue.<br><br>We will provide another update within an hour.<br><br>The Notify website and API are working as normal.</span>
-
-        <br>
-
-        <small>
-            Nov <var data-var="date"> 6</var>, <var data-var="time">09:29</var> GMT
-        </small>
-      </div>
-      <div class="update font-regular update">
-        <strong>Update</strong> -
-      	<span class="whitespace-pre-wrap">We have seen text message delivery times return to normal. <br><br>We will continue to monitor overnight in case of any further issues. We will update if issues arise, or tomorrow morning to confirm.<br><br>Sorry for the inconvenience to you and your users.</span>
-
-        <br>
-
-        <small>
-            Nov <var data-var="date"> 5</var>, <var data-var="time">15:44</var> GMT
-        </small>
-      </div>
-      <div class="update font-regular update">
-        <strong>Update</strong> -
-      	<span class="whitespace-pre-wrap">We have continued monitoring. There have been improvements but there are also still delays. We are exploring the situation with our providers and will update again within an hour.</span>
-
-        <br>
-
-        <small>
-            Nov <var data-var="date"> 5</var>, <var data-var="time">14:03</var> GMT
-        </small>
-      </div>
-      <div class="update font-regular monitoring">
-        <strong>Monitoring</strong> -
-      	<span class="whitespace-pre-wrap">We are seeing an improvement in the time taken to deliver text messages. We will continue to investigate and provide another update within an hour.</span>
-
-        <br>
-
-        <small>
-            Nov <var data-var="date"> 5</var>, <var data-var="time">13:03</var> GMT
+            May <var data-var="date">15</var>, <var data-var="time">11:27</var> BST
         </small>
       </div>
       <div class="update font-regular update">
@@ -1258,17 +1265,109 @@
         <br>
 
         <small>
-            Nov <var data-var="date"> 5</var>, <var data-var="time">11:48</var> GMT
+            May <var data-var="date">12</var>, <var data-var="time">15:47</var> BST
         </small>
       </div>
       <div class="update font-regular investigating">
         <strong>Investigating</strong> -
-      	<span class="whitespace-pre-wrap">One of our text message providers is delivering messages more slowly than usual.<br><br>We have manually rebalanced sending between providers to compensate. We will continue to investigate and provide an update within an hour.<br><br>The Notify website and API are working as normal. <br><br>Thank you for your patience.<br>GOV.UK Notify</span>
+      	<span class="whitespace-pre-wrap">We’re investigating a letter processing issue which is affecting a small number of letters.<br><br>Letters that contain some international characters are failing to process correctly and are being rejected by our print provider.<br><br>If this issue occurs, letters will show as “Technical failure” in the Notify admin console.<br><br>We’ll keep you updated throughout the incident.<br><br>Thank you for your patience<br><br>GOV.UK Notify</span>
 
         <br>
 
         <small>
-            Nov <var data-var="date"> 5</var>, <var data-var="time">11:48</var> GMT
+            May <var data-var="date">12</var>, <var data-var="time">15:47</var> BST
+        </small>
+      </div>
+  </div>
+
+</div>
+
+  </div>
+
+          
+  <div class="status-day font-regular ">
+    <div class="date border-color font-large">May <var data-var="date">14</var>, <var data-var="year">2026</var></div>
+          <div class="incident-container">
+  <div class="incident-title impact-minor font-large">
+    <a class="whitespace-pre-wrap" href="/incidents/p1rrmmyjmgrs">Lebara degradation</a>
+  </div>
+
+  <div class="updates-container">
+    <!-- postmortem -->
+
+    <!-- incident updates -->
+      <div class="update font-regular resolved">
+        <strong>Resolved</strong> -
+      	<span class="whitespace-pre-wrap">This incident has been resolved.<br><br>GOV.UK Notify</span>
+
+        <br>
+
+        <small>
+            May <var data-var="date">14</var>, <var data-var="time">13:52</var> BST
+        </small>
+      </div>
+      <div class="update font-regular monitoring">
+        <strong>Monitoring</strong> -
+      	<span class="whitespace-pre-wrap">We are aware of some degradation of SMS services relating to Lebara mobile starting at 11:00 BST. Sending and receiving of SMS, and receiving of delivery receipt may be affected or delayed. <br><br>GOV.UK Notify itself is fully operational. We will continue to monitor and post any updates here.</span>
+
+        <br>
+
+        <small>
+            May <var data-var="date">14</var>, <var data-var="time">11:41</var> BST
+        </small>
+      </div>
+  </div>
+
+</div>
+
+  </div>
+
+          
+  <div class="status-day font-regular no-incidents">
+    <div class="date border-color font-large">May <var data-var="date">13</var>, <var data-var="year">2026</var></div>
+        <p class="color-secondary">No incidents reported.</p>
+  </div>
+
+          
+  <div class="status-day font-regular ">
+    <div class="date border-color font-large">May <var data-var="date">12</var>, <var data-var="year">2026</var></div>
+          <div class="incident-container">
+  <div class="incident-title impact-minor font-large">
+    <a class="whitespace-pre-wrap" href="/incidents/r5qzwlgzs81b">Text message delivery</a>
+  </div>
+
+  <div class="updates-container">
+    <!-- postmortem -->
+
+    <!-- incident updates -->
+      <div class="update font-regular resolved">
+        <strong>Resolved</strong> -
+      	<span class="whitespace-pre-wrap">The issue affecting one of our providers used for delivery of text messages is now resolved.<br><br>Our text message provider confirmed they restored full service at 16:43 on 12th May. You do not need to retry any messages which were delayed.<br><br>Sorry for the inconvenience to you and your users.<br><br>GOV.UK Notify</span>
+
+        <br>
+
+        <small>
+            May <var data-var="date">12</var>, <var data-var="time">17:42</var> BST
+        </small>
+      </div>
+      <div class="update font-regular monitoring">
+        <strong>Monitoring</strong> -
+      	<span class="whitespace-pre-wrap">One of our text message providers is having intermittent connectivity issues.<br><br>Notify systems have automatically routed all text messages to be delivered by another provider.<br><br>Text message delivery is operational, however some messages may be delayed.<br><br>We continue to monitor carefully, and will keep you updated throughout the incident.<br><br>GOV.UK Notify</span>
+
+        <br>
+
+        <small>
+            May <var data-var="date">11</var>, <var data-var="time">16:36</var> BST
+        </small>
+      </div>
+      <div class="update font-regular investigating">
+        <strong>Investigating</strong> -
+      	<span class="whitespace-pre-wrap">We’re investigating a text message delivery issue with one of our providers.<br><br>Some text messages may be delayed or fail to deliver.<br><br>We’ll keep you updated throughout the incident.<br><br>Thank you for your patience<br><br>GOV.UK Notify</span>
+
+        <br>
+
+        <small>
+            May <var data-var="date">11</var>, <var data-var="time">15:58</var> BST
         </small>
       </div>
   </div>
@@ -1279,53 +1378,42 @@
 
           
   <div class="status-day font-regular">
-    <div class="date border-color font-large">Nov <var data-var="date"> 6</var>, <var data-var="year">2025</var></div>
-  </div>
-
-          
-  <div class="status-day font-regular">
-    <div class="date border-color font-large">Nov <var data-var="date"> 5</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">11</var>, <var data-var="year">2026</var></div>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date"> 4</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date">10</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date"> 3</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date"> 9</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date"> 2</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date"> 8</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Nov <var data-var="date"> 1</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date"> 7</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Oct <var data-var="date">31</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date"> 6</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
           
   <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Oct <var data-var="date">30</var>, <var data-var="year">2025</var></div>
-        <p class="color-secondary">No incidents reported.</p>
-  </div>
-
-          
-  <div class="status-day font-regular no-incidents">
-    <div class="date border-color font-large">Oct <var data-var="date">29</var>, <var data-var="year">2025</var></div>
+    <div class="date border-color font-large">May <var data-var="date"> 5</var>, <var data-var="year">2026</var></div>
         <p class="color-secondary">No incidents reported.</p>
   </div>
 
@@ -1350,7 +1438,7 @@
 
 
 
-    <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_manifest-acb69ae7e67a6c4167b2544bef9249ec03b50cdd6c9a198592162f175e04b891.js"></script>
+    <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_manifest-eeef8672b0cbb40a02c0ba8888aa3a753ac8685acd9186a697d3ec1edc1c9853.js"></script>
     <div id="cpt-notification-container"></div>
     
 
@@ -1373,7 +1461,7 @@
 
 
   </script>
-  <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_common-c1b99d73ee7ab0fea796bd170723c1daac1381095a7dd7501a38ce6f333d86b3.js"></script>
+  <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_common-a86dffb81955091741c3de8bded6ce66ae0c6d8f736b57b580f853d9f892727e.js"></script>
     <script>
       SP.pollForChanges('/api/v2/status.json');
     </script>
@@ -1584,13 +1672,19 @@
   $('#subscribe-form-email').on('ajax:success', function(e, data, status, xhr){
     if (data.type === 'success') {
       SP.currentPage.updatesDropdown.hide();
-      document.getElementById('email').value = '';
+      var emailField = document.getElementById('email');
+      if (emailField) {
+        emailField.value = '';
+      }
     }
   });
   $('#subscribe-form-sms').on('ajax:success', function(e, data, status, xhr){
     if (data.type === 'success' && data.otp_flow !== true) {
       SP.currentPage.updatesDropdown.hide();
-      document.getElementById('phone-number').value = '';
+      var phoneField = document.getElementById('phone-number');
+      if (phoneField) {
+        phoneField.value = '';
+      }
     }
   });
   $('#subscribe-form-webhook').on('ajax:success', function(e, data, status, xhr){
@@ -1632,10 +1726,10 @@
 
 
     
-  <script src="https://dka575ofm4ao0.cloudfront.net/packs/common-4d053c18cbeef079deb0.chunk.js"></script>
-  <script src="https://dka575ofm4ao0.cloudfront.net/packs/globals-f39f1afbe40d8b149e0b.chunk.js"></script>
+  <script src="https://dka575ofm4ao0.cloudfront.net/packs/common-4437b1edb40d550663e6.chunk.js"></script>
+  <script src="https://dka575ofm4ao0.cloudfront.net/packs/globals-f12471d5e878ec0f0705.chunk.js"></script>
 
-    <script src="https://dka575ofm4ao0.cloudfront.net/packs/runtime-315523c15b4d55375eca.js"></script>
+    <script src="https://dka575ofm4ao0.cloudfront.net/packs/runtime-08032479de648cdef21e.js"></script>
     
     
 
