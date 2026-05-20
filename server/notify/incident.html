@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
     <!-- Time this page was rendered - http://purl.org/dc/terms/issued -->
-    <meta name="issued" content="1762987098">
+    <meta name="issued" content="1779184331">
 
     <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
     <meta http-equiv="cleartype" content="on">
@@ -48,8 +48,8 @@
     <link rel="alternate" type="application/atom+xml" title="ATOM" href="https://status.notifications.service.gov.uk/history.atom">
 
     <!-- Le styles -->
-    <link rel="stylesheet" media="screen" href="https://dka575ofm4ao0.cloudfront.net/packs/0.076d36a21dada6e9b8ca.css">
-    <link rel="stylesheet" media="all" href="https://dka575ofm4ao0.cloudfront.net/assets/status/status_manifest-2291a8db1cf94c3f8b132626924ff7424d9c768ab6e236ad92393af2f5c69f1c.css">
+    <link rel="stylesheet" media="screen" href="https://dka575ofm4ao0.cloudfront.net/packs/0.3196e1790c0547398277.css">
+    <link rel="stylesheet" media="all" href="https://dka575ofm4ao0.cloudfront.net/assets/status/status_manifest-51905443bbfe61223eaea38cbf08b789e674d8721a1447b6649eecf417e904a7.css">
 
     <script src="https://dka575ofm4ao0.cloudfront.net/assets/jquery-3.5.1.min-729e416557a365062a8a20f0562f18aa171da57298005d392312670c706c68de.js"></script>
 
@@ -682,7 +682,7 @@
 
       <!-- affected components -->
         <div class="components-affected font-small color-secondary border-color">
-          This incident affected: File uploads.
+          This incident affected: Notify website.
         </div>
     </div>
 
@@ -1152,7 +1152,7 @@
 
 
 
-    <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_manifest-acb69ae7e67a6c4167b2544bef9249ec03b50cdd6c9a198592162f175e04b891.js"></script>
+    <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_manifest-eeef8672b0cbb40a02c0ba8888aa3a753ac8685acd9186a697d3ec1edc1c9853.js"></script>
     <div id="cpt-notification-container"></div>
     
 
@@ -1175,7 +1175,7 @@
 
 
   </script>
-  <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_common-c1b99d73ee7ab0fea796bd170723c1daac1381095a7dd7501a38ce6f333d86b3.js"></script>
+  <script src="https://dka575ofm4ao0.cloudfront.net/assets/status_common-a86dffb81955091741c3de8bded6ce66ae0c6d8f736b57b580f853d9f892727e.js"></script>
 
 
   <script>
@@ -1402,13 +1402,19 @@
   $('#subscribe-form-email').on('ajax:success', function(e, data, status, xhr){
     if (data.type === 'success') {
       SP.currentPage.updatesDropdown.hide();
-      document.getElementById('email').value = '';
+      var emailField = document.getElementById('email');
+      if (emailField) {
+        emailField.value = '';
+      }
     }
   });
   $('#subscribe-form-sms').on('ajax:success', function(e, data, status, xhr){
     if (data.type === 'success' && data.otp_flow !== true) {
       SP.currentPage.updatesDropdown.hide();
-      document.getElementById('phone-number').value = '';
+      var phoneField = document.getElementById('phone-number');
+      if (phoneField) {
+        phoneField.value = '';
+      }
     }
   });
   $('#subscribe-form-webhook').on('ajax:success', function(e, data, status, xhr){
@@ -1450,10 +1456,10 @@
 
 
     
-  <script src="https://dka575ofm4ao0.cloudfront.net/packs/common-4d053c18cbeef079deb0.chunk.js"></script>
-  <script src="https://dka575ofm4ao0.cloudfront.net/packs/globals-f39f1afbe40d8b149e0b.chunk.js"></script>
+  <script src="https://dka575ofm4ao0.cloudfront.net/packs/common-4437b1edb40d550663e6.chunk.js"></script>
+  <script src="https://dka575ofm4ao0.cloudfront.net/packs/globals-f12471d5e878ec0f0705.chunk.js"></script>
 
-    <script src="https://dka575ofm4ao0.cloudfront.net/packs/runtime-315523c15b4d55375eca.js"></script>
+    <script src="https://dka575ofm4ao0.cloudfront.net/packs/runtime-08032479de648cdef21e.js"></script>
     
     
 
