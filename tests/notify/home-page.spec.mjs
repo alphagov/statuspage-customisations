@@ -30,6 +30,52 @@ describe('Homepage', () => {
     });
   });
 
+  describe("validation error messages", () => {
+    describe("when the page loads", () => {
+      it("the existing container should be replaced by one that announces errors to assistive technologies", async () => {
+        await expect($('#cpt-notification-container')).toHaveAttribute('hidden', '');
+        await expect($('#cpt-notification-container__duplicate')).toExist();
+        await expect($('#cpt-notification-container__duplicate')).toHaveAttribute('role', 'alert');
+      });
+    });
+
+    describe("when error messages are added to the page", () => {
+      let errorMessage;
+      let erroredFieldId;
+
+      beforeEach(async () => {
+        await $(function() {
+          this.document.getElementById('cpt-notification-container__duplicate').innerHTML = `
+            <div class="cpt-notification flag-message error showing show" id="cpt-notification-61169" role="alert">
+              <div class="cpt-notification-message">Please enter a valid email that you wish to have updates sent to.</div>
+            </div>
+          `;
+        });
+      });
+
+      it("they should appear in the new container (and so be announced to assistive technologies)", async () => {
+        const newContainer = await $('#cpt-notification-container__duplicate');
+
+        await expect(newContainer).toHaveText(errorMessage);
+        // make sure any attributes that the existing JS uses to identify the error are stripped
+      });
+
+      it("they should contain a link to the field at error", async () => {
+        await expect($('#cpt-notification-container__duplicate a')).toHaveAttribure('href', `#${erroredFieldId}`);
+        await expect($('#cpt-notification-container__duplicate a')).toHaveText(errorMessage);
+      });
+
+      it("they should be focused", async () => {
+        await expect($('#cpt-notification-container__duplicate')).toBeFocused();
+      });
+
+      it("and the 'subscribe to updates' popup is closed, hiding the field with errors, the error message is removed", () => {
+        await $('#show-updates-dropdown').click();
+        await expect($('#cpt-notification-container__duplicate')
+      });
+    });
+  });
+
   describe("about this page section", () => {
     it('should have a h1 that says "GOV.UK Notify status page"', async () => {
       const $heading = $('.layout-content > .container h1');
