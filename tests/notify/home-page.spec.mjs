@@ -3,8 +3,20 @@ import { serverConfig } from '../../server/config.mjs';
 
 describe('Homepage', () => {
 
+  let _grecaptchaEnterprise;
+
   beforeAll( async () => {
     await browser.url(`http://${serverConfig.hostname}:${serverConfig.port}`);
+
+    // cache google recaptcha, so we can reset it afterwards
+    _grecaptchaEnterprise = grecaptcha.enterprise;
+
+    // mock grecaptcha.enterprise, so it never gets called properly
+    jasmine.createSpyObj('grecaptcha.enterprise', Object.keys(grecaptcha.enterprise));
+  });
+
+  afterAll(() => {
+    grecaptcha.enterprise = _grecaptchaEnterprise;
   });
 
   describe('skip link', () => {
