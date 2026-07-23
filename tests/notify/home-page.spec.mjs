@@ -34,6 +34,14 @@ describe('Homepage', () => {
     });
   });
 
+  describe("banner container", () => {
+    it('should have role=alert, so banner contents is announced to screen readers when added', async () => {
+      const $bannerContainer = $('#cpt-notification-container');
+      await expect($bannerContainer).toBeExisting();
+      await expect($bannerContainer).toHaveAttribute('role', 'alert');
+    });
+  });
+
   describe("subscribe to updates pop-up", () => {
     it('inputs have the correct autcomplete attribute', async () => {
       await expect($('[name="email"]')).toHaveAttribute('autocomplete', 'email');
