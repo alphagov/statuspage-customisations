@@ -2,21 +2,25 @@ import { expect, browser, $ } from '@wdio/globals';
 import { serverConfig } from '../../server/config.mjs';
 
 describe('Homepage', () => {
-
-  let _grecaptchaEnterprise;
+  let recaptchaMock;
 
   beforeAll( async () => {
+    /*
+     * We don't want Google Recaptcha to run in our tests.
+     * But some of statuspage's JS makes use of its JS API, so fake the response and stub the JS API.
+     */
+    recaptchaMock = await browser.mock('https://www.recaptcha.net/recaptcha/enterprise.js');
+    recaptchaMock.respond(`
+      window.grecaptcha = {
+        getPageId: () => 'RC-zi8XCyzjRNrrfx',
+        enterprise: {
+          getResponse: () => {},
+          ready: () => {},
+          render: () => {},
+          reset: () => {}
+        }
+    }`);
     await browser.url(`http://${serverConfig.hostname}:${serverConfig.port}`);
-
-    // cache google recaptcha, so we can reset it afterwards
-    _grecaptchaEnterprise = grecaptcha.enterprise;
-
-    // mock grecaptcha.enterprise, so it never gets called properly
-    jasmine.createSpyObj('grecaptcha.enterprise', Object.keys(grecaptcha.enterprise));
-  });
-
-  afterAll(() => {
-    grecaptcha.enterprise = _grecaptchaEnterprise;
   });
 
   describe('skip link', () => {
