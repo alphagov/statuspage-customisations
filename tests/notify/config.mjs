@@ -1,3 +1,7 @@
+const debug = process.env.DEBUG
+const defaultTimeoutInterval = 60000
+const defaultMaxInstances = 10
+
 export const config = {
   // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: 'local',
@@ -13,11 +17,11 @@ export const config = {
   // files and you set maxInstances to 10, all spec files will get tested at the same time
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
-  maxInstances: 10,
+  maxInstances: debug ? 1 : defaultMaxInstances,
   capabilities: [{
     browserName: 'chrome',
     'goog:chromeOptions': {
-      args: ['headless', 'disable-gpu']
+      args: debug ? ['disable-gpu'] : ['headless', 'disable-gpu']
     }
   }],
   // Level of logging verbosity: trace | debug | info | warn | error | silent
@@ -40,6 +44,6 @@ export const config = {
   // Options to be passed to Jasmine.
   jasmineOpts: {
     // Jasmine default timeout
-    defaultTimeoutInterval: 60000,
+    defaultTimeoutInterval: debug ? (24 * 60 * 60 * 1000) : defaultTimeoutInterval
   }
 }

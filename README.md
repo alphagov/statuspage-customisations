@@ -120,6 +120,26 @@ To run a single selected test when the server is running, you can run
 npx wdio run ./tests/config.js --spec tests/home-page.spec.mjs
 ```
 
+#### Debugging a single test
+
+Put this statement in your JS, where you want to debug:
+
+```js
+await browser.debug();
+```
+
+Run the test like so:
+
+```bash
+DEBUG=true npx wdio run ./tests/[team name]/config.js --spec tests/[team name]/[test name].mjs
+```
+
+For example:
+
+```bash
+DEBUG=true npx wdio run ./tests/notify/config.js --spec tests/notify/home-page.spec.mjs
+```
+
 ### Linting
 
 JavaScript is linted against [Standard JS](https://standardjs.com).
