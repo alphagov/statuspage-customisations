@@ -16,7 +16,8 @@ import {
   remakeStatusOverviewHeadingAsParagraph,
   rewriteIncidentsListHeading,
   remakeComponentsList,
-  reformatDates
+  reformatDates,
+  stopSubscribeButtonNavigation
 } from '../pages/homepage/index.mjs'
 import {
   updateIncidentsListHeadings,
@@ -53,6 +54,7 @@ if (pathRoot in mainContainerMap) {
 
   // Home page specific
   if (pathRoot === '/') {
+    stopSubscribeButtonNavigation(),
     addHeadingsAndMoveAboutText({ h1Text: 'GOV.UK Notify status page', h2Text: 'Current status' })
     remakeStatusOverviewHeadingAsParagraph()
     rewriteIncidentsListHeading()

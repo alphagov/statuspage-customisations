@@ -2,6 +2,17 @@ import { swapElForHTML } from '../../shared/utilities.mjs'
 
 /*
  * Accessibility issue this proposes to address:
+ * - No issue, this fixes a bug
+ *   - PR: https://github.com/alphagov/statuspage-customisations/pull/[?]
+ *   - Trello card: N/A
+ *   - Note: this stops clicks on the 'subscribe to updates' button triggering a navigation
+ */
+function stopSubscribeButtonNavigation () {
+  document.querySelector('#show-updates-dropdown').addEventListener('click', e => e.preventDefault());
+}
+
+/*
+ * Accessibility issue this proposes to address:
  * - issue ID: 53, headings are missing
  *   - PR: https://github.com/alphagov/statuspage-customisations/pull/16
  *   - Trello card: https://trello.com/c/fVAVltqC/796-status-page-add-headings-to-pages
@@ -90,5 +101,6 @@ export {
   remakeStatusOverviewHeadingAsParagraph,
   rewriteIncidentsListHeading,
   remakeComponentsList,
-  reformatDates
+  reformatDates,
+  stopSubscribeButtonNavigation,
 }
