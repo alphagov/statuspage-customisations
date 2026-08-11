@@ -1,6 +1,8 @@
-const debug = process.env.DEBUG
+const debug_browser = process.env.DEBUGBROWSER
+const debug_js = process.env.DEBUGJS
 const defaultTimeoutInterval = 60000
 const defaultMaxInstances = 10
+const debug = debug_browser || debug_js
 
 export const config = {
   // WebdriverIO supports running e2e tests as well as unit and component tests.
@@ -24,6 +26,7 @@ export const config = {
       args: debug ? ['disable-gpu'] : ['headless', 'disable-gpu']
     }
   }],
+  execArgv: debug_js ? ['--inspect-brk'] : [],
   // Level of logging verbosity: trace | debug | info | warn | error | silent
   logLevel: 'error',
   // If you only want to run your tests until a specific amount of tests have failed use
