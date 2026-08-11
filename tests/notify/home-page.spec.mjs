@@ -3,6 +3,7 @@ import { serverConfig } from '../../server/config.mjs';
 
 describe('Homepage', () => {
   let recaptchaMock;
+  const documentRoot = 'https://status.notifications.service.gov.uk';
 
   beforeAll( async () => {
     /*
@@ -19,7 +20,9 @@ describe('Homepage', () => {
           render: () => {},
           reset: () => {}
         }
-    }`);
+    }`, {
+      fetchResponse: false
+    });
     await browser.url(`http://${serverConfig.hostname}:${serverConfig.port}`);
   });
 
@@ -51,6 +54,42 @@ describe('Homepage', () => {
       await expect($('[name="email"]')).toHaveAttribute('autocomplete', 'email');
       await expect($('[name="phone_country"]')).toHaveAttribute('autocomplete', 'tel-country-code');
       await expect($('[name="phone_number"]')).toHaveAttribute('autocomplete', 'tel-national');
+    });
+
+    describe("when submitted", () => {
+      it('with errors, form should show them in banner', async () => {
+        const $emailForm = await $('#subscribe-form-email');
+        const $smsForm = await $('#subscribe-form-sms');
+        const $webhookForm = await $('#subscribe-form-webhook');
+
+        const emailFormAction = await $emailForm.getAttribute('action');
+        const smsFormAction = await $smsForm.getAttribute('action');
+        const webhookFormAction = await $webhookForm.getAttribute('action');
+
+        const emailFormMock = await browser.mock(documentRoot + emailFormAction, { method: 'post' });
+        const smsFormMock = await browser.mock(documentRoot + smsFormAction, { method: 'post' });
+        const webhookFormMock = await browser.mock(documentRoot + webhookFormAction, { method: 'post' });
+
+        emailFormMock.respond({
+          "text": "Please enter a valid email that you wish to have updates sent to.",
+          "type": "error"
+        }, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+          statusCode: 200,
+          fetchResponse: false
+        });
+
+        // show subscribe forms
+        await $('#show-updates-dropdown').click();
+        await $('#subscribe-btn-email').click();
+
+        const $bannerMessage = await $('#cpt-notification-container .cpt-notification-message');
+        await expect($bannerMessage).toBeExisting();
+        await expect($bannerMessage).toHaveText("Please enter a valid email that you wish to have updates sent from.");
+      });
+
     });
   });
 
