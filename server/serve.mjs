@@ -14,10 +14,12 @@ async function serveLocal () {
   const server = http.createServer((req, res) => {
     console.log('request url:', req.url);
     if (req.url in templates) {
+      res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
       res.write(nunjucks.renderString(templates[req.url], localCode));
       res.end();
     } else {
       if (req.url.includes('custom.css')) {
+        res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
         res.write(localCode.customCSS.contents);
         res.end()
       } else {
