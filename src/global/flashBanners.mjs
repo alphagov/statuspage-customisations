@@ -1,0 +1,70 @@
+function revisedNotify (message, options) {
+  const argLenTheSame = (arguments.length === 2)
+  const msgTypeTheSame = typeof message === "string"
+  const optTypeTheSame = Object.prototype.toString.call(options) === '[object Object]'
+  const originalMethod = revisedNotify.cachedOriginal
+
+  // If API has changed, use original
+  if (!(argLenTheSame && msgTypeTheSame && optTypeTheSame) && this.hasOwnProperty(originalMethod)) {
+    return this[originalMethod].apply(this, arguments)
+  }
+
+  var options = $.extend({
+    delay: 5e3,
+    cssClass: "success",
+    id: "cpt-notification-" + Math.ceil(1e5 * Math.random()),
+    method: "show",
+    autoHide: true
+  }, options);
+
+  const methods = {
+    show: function() {
+      if (message) {
+        const headingText = {
+          'success': 'Success',
+          'error': 'There is a problem',
+          'info': 'Status update',
+          'warning': 'Warning'
+        }
+        let $container = $(BANNER_CONTAINER_SELECTOR)
+
+        const $wrapper = $(`
+          <div class="cpt-notification flag-message ${options.cssClass}" id="${options.id}">
+            <div class="cpt-notification__header">
+              <h2 class="cpt-notification__heading">${headingText[options.cssClass]}</h2>
+              <button class="cpt-notification__close-btn">Close</button>
+            </div>
+            <p class="cpt-notification-message">${message}</p>
+          </div>
+        `)
+
+        $('.cpt-notification__close-btn', $wrapper).on('click', e => this.hide())
+
+        if ($container.length === 0) {
+          $container = $('<div id="cpt-notification-container"></div>')
+        }
+        $container.addClass('cpt-notification-container')
+        $container.append($wrapper)
+      }
+    },
+    hide: function() {
+      $("#" + options.id).addClass("hiding")
+      setTimeout(function() {
+        methods.remove()
+      }, 200)
+    },
+    remove: function() {
+      $("#" + options.id).remove()
+    },
+    deferred: function() {
+      if (options.cssClass) { localStorage.setItem("HRBnotifyclass", options.cssClass) }
+      if (message !== null) { localStorage.setItem("HRBnotify", message) }
+    }
+  }
+
+  methods[options.method]()
+}
+
+revisedNotify.cachedOriginal = '_notify'
+
+export { revisedNotify }
