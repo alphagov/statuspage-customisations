@@ -264,6 +264,9 @@
           if ($container.length === 0) {
             $container = $('<div id="cpt-notification-container"></div>');
           }
+          if ($('body > #cpt-notification-container').get(0) === $container.get(0)) {
+            $imagesContainer.after($container);
+          }
           $container.addClass('cpt-notification-container');
           $container.append($wrapper);
         }
