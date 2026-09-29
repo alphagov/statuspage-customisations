@@ -71,6 +71,10 @@
   }
 }
 
+.cpt-notification:focus {
+  outline: 3px solid #ffdd00;
+}
+
 // Override for statuspage link styles in banners
 .cpt-notification a:not(.close),
 .cpt-notification a:not(.close):hover {

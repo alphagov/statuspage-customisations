@@ -221,6 +221,57 @@
 
   const BANNER_CONTAINER_SELECTOR = "#cpt-notification-container";
 
+  function bannerMatchingAjaxMessage (ajaxMessage) {
+    const matches = $.grep($('.cpt-notification-message'), (el) => {
+      return $(el).text().trim() === ajaxMessage
+    });
+
+    return (matches.length > 0) ? $(matches[matches.length - 1]) : null
+  }
+
+  function linkErrorMessageToField ($bannerWithMessage, message, $formField) {
+    $bannerWithMessage.html(`<a href="#${$formField.attr('id')}">${message}</a>`);
+  }
+
+  function bindRefocusEvents ($bannerWithMessage, $formField) {
+    const focusFormField = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if ( // Test for API namespace before calling
+        (!!window.SP) && (!!window.SP.currentPage) &&
+        (!!window.SP.currentPage.updatesDropdown) && (!!window.SP.currentPage.updatesDropdown.show)
+      ) {
+        window.SP.currentPage.updatesDropdown.show();
+      }
+      $formField.focus();
+    };
+
+    $bannerWithMessage.find('a').on('click', focusFormField);
+    $bannerWithMessage.find('.cpt-notification__close-btn').on('click', focusFormField);
+  }
+
+  function bindCustomBehavioursToFormResponses () {
+    ['email', 'sms', 'webhook'].forEach(channel => {
+      const $form = $(`#subscribe-form-${channel}`);
+
+      if ($form.length > 0) {
+        // all responses to forms see to come from a 200, including validation errors
+        $form.on('ajax:success', function (evt, data) {
+          if (data.hasOwnProperty('text')) {
+            const $bannerWithMessage = bannerMatchingAjaxMessage(data.text);
+            if ($bannerWithMessage !== null) {
+              const $formField = $form.find('#email, #phone-number, #email-webhooks');
+              if ($formField.length > 0) {
+                linkErrorMessageToField($bannerWithMessage, data.text, $formField);
+                bindRefocusEvents($bannerWithMessage, $formField);
+              }
+            }
+          }
+        });
+      }
+    });
+  }
+
   function revisedNotify (message, options) {
     const argLenTheSame = (arguments.length === 2);
     const msgTypeTheSame = typeof message === "string";
@@ -252,7 +303,7 @@
           let $container = $(BANNER_CONTAINER_SELECTOR);
 
           const $wrapper = $(`
-          <div class="cpt-notification flag-message ${options.cssClass}" id="${options.id}">
+          <div class="cpt-notification flag-message ${options.cssClass}" id="${options.id}" tabindex="-1">
             <div class="cpt-notification__header">
               <h2 class="cpt-notification__heading">${headingText[options.cssClass]}</h2>
               <button class="cpt-notification__close-btn">Close</button>
@@ -269,8 +320,9 @@
           if ($('body > #cpt-notification-container').get(0) === $container.get(0)) {
             $imagesContainer.after($container);
           }
-          $container.addClass('cpt-notification-container');
-          $container.append($wrapper);
+          $container
+            .addClass('cpt-notification-container')
+            .append($wrapper);
         }
       },
       hide: function() {
@@ -293,6 +345,7 @@
 
   revisedNotify.cachedOriginal = '_notify';
 
+  // Banners are at the bottom of the document but will appear at the top so put them there
   function moveBannerContainer () {
     const imagesContainerSelector = ".images-container";
     const $bannerContainer = $(BANNER_CONTAINER_SELECTOR);
@@ -304,7 +357,9 @@
     return $bannerContainer
   }
 
-  function updateBannerContainerAria ($bannerContainer) {
+  // Give banners an ARIA role matching this GOV.UK notification banner variant:
+  // https://design-system.service.gov.uk/components/notification-banner/#reacting-to-something-the-user-has-done
+  function updateBannerContainerRole ($bannerContainer) {
     $bannerContainer.attr('role', 'alert');
 
     return $bannerContainer
@@ -317,7 +372,9 @@
       window.HRB.utils.notify = revisedNotify;
 
       const $bannerContainer = moveBannerContainer(); // move banners to position they appear visually
-      updateBannerContainerAria($bannerContainer); // update to role=alert
+      updateBannerContainerRole($bannerContainer); // update to role=alert
+       // changes to banners that need the AJAX response (needs to run on page load)
+      $(bindCustomBehavioursToFormResponses);
     }
   }
 

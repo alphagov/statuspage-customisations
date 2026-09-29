@@ -186,6 +186,10 @@ button:focus:not(:active):not(:hover) {
     padding: 0;
   }
 }
+.cpt-notification:focus {
+  outline: 3px solid #ffdd00;
+}
+
 .cpt-notification a:not(.close),
 .cpt-notification a:not(.close):hover {
   font-weight: normal;
