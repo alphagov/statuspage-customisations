@@ -253,6 +253,13 @@ button:focus:not(:active):not(:hover) {
   filter: invert(1);
 }
 
+.validation-error {
+  color: #e74c3c;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
 .container .page-status__heading {
   margin-bottom: 20px;
 }

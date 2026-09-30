@@ -29,6 +29,20 @@ function bindRefocusEvents ($bannerWithMessage, $formField) {
   $bannerWithMessage.find('.cpt-notification__close-btn').on('click', focusFormField)
 }
 
+function addErrorMessageToField (message, $formField) {
+  const errorId = `${$formField.attr('id')}-error`
+  const $form = $($formField.get(0).form)
+  $formField.before(`
+    <p class="validation-error" id="${errorId}">
+      <span class="visually-hidden">Error: </span>${message}
+    </p>
+  `)
+  $formField.attr('aria-describedby', errorId)
+
+  // Remove error message when form re-submits
+  $form.on('ajax:beforeSend', (xhr, settings) => $form.find('.validation-error').remove())
+}
+
 function bindCustomBehavioursToFormResponses () {
   ['email', 'sms', 'webhook'].forEach(channel => {
     const $form = $(`#subscribe-form-${channel}`)
@@ -39,14 +53,18 @@ function bindCustomBehavioursToFormResponses () {
       $form.on('ajax:success', function (evt, data) {
 
         if (data.hasOwnProperty('text')) {
+
+          // add custom behaviours if banner message matches that in the AJAX response
           const $bannerWithMessage = bannerMatchingAjaxMessage(data.text)
           if ($bannerWithMessage !== null) {
             const $formField = $form.find('#email, #phone-number, #email-webhooks')
             if ($formField.length > 0) {
               linkErrorMessageToField($bannerWithMessage, data.text, $formField)
+              addErrorMessageToField(data.text, $formField)
               bindRefocusEvents($bannerWithMessage, $formField)
             }
           }
+
         }
 
       })
