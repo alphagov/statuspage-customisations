@@ -85,10 +85,17 @@ function reformatDates () {
   })
 }
 
+// The 'Subscribe to updates' link doesn't cancel its default event when clicked
+// This causes a navigation to `/#` that doesn't seem intentional. This cancels the event, to prevent the navigation
+function stopSubscribeBtnNavigation () {
+  $('#show-updates-dropdown').on('click', e => e.preventDefault())
+}
+
 export {
   addHeadingsAndMoveAboutText,
   remakeStatusOverviewHeadingAsParagraph,
   rewriteIncidentsListHeading,
   remakeComponentsList,
-  reformatDates
+  reformatDates,
+  stopSubscribeBtnNavigation
 }

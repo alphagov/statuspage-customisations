@@ -17,7 +17,8 @@ import {
   remakeStatusOverviewHeadingAsParagraph,
   rewriteIncidentsListHeading,
   remakeComponentsList,
-  reformatDates
+  reformatDates,
+  stopSubscribeBtnNavigation
 } from '../pages/homepage/index.mjs'
 import {
   updateIncidentsListHeadings,
@@ -65,6 +66,7 @@ if (pathRoot in mainContainerMap) {
     remakeComponentsList()
     addIncidentTypeToIncidentList(pathRoot)
     reformatDates()
+    stopSubscribeBtnNavigation()
   }
 
   if (pathRoot === '/history') {
