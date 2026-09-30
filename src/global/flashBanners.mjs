@@ -1,4 +1,4 @@
-const BANNER_CONTAINER_SELECTOR = "#cpt-notification-container"
+const BANNER_CONTAINER_SELECTOR = '#cpt-notification-container'
 
 function bannerMatchingAjaxMessage (ajaxMessage) {
   const matches = $.grep($('.cpt-notification-message'), (el) => {
@@ -48,25 +48,22 @@ function bindCustomBehavioursToFormResponses () {
     const $form = $(`#subscribe-form-${channel}`)
 
     if ($form.length > 0) {
-
       // all responses to forms see to come from a 200, including validation errors
       $form.on('ajax:success', function (evt, data) {
-
-        if (data.hasOwnProperty('text')) {
-
+        if (Object.prototype.hasOwnProperty.call(data, 'text')) {
           // add custom behaviours if banner message matches that in the AJAX response
           const $bannerWithMessage = bannerMatchingAjaxMessage(data.text)
+
           if ($bannerWithMessage !== null) {
             const $formField = $form.find('#email, #phone-number, #email-webhooks')
+
             if ($formField.length > 0) {
               linkErrorMessageToField($bannerWithMessage, data.text, $formField)
               addErrorMessageToField(data.text, $formField)
               bindRefocusEvents($bannerWithMessage, $formField)
             }
           }
-
         }
-
       })
     }
   })
@@ -74,31 +71,31 @@ function bindCustomBehavioursToFormResponses () {
 
 function revisedNotify (message, options) {
   const argLenTheSame = (arguments.length === 2)
-  const msgTypeTheSame = typeof message === "string"
+  const msgTypeTheSame = typeof message === 'string'
   const optTypeTheSame = Object.prototype.toString.call(options) === '[object Object]'
   const originalMethod = revisedNotify.cachedOriginal
 
   // If API has changed, use original
-  if (!(argLenTheSame && msgTypeTheSame && optTypeTheSame) && this.hasOwnProperty(originalMethod)) {
+  if (!(argLenTheSame && msgTypeTheSame && optTypeTheSame) && Object.prototype.hasOwnProperty.call(this, originalMethod)) {
     return this[originalMethod].apply(this, arguments)
   }
 
-  var options = $.extend({
+  options = $.extend({
     delay: 5e3,
-    cssClass: "success",
-    id: "cpt-notification-" + Math.ceil(1e5 * Math.random()),
-    method: "show",
+    cssClass: 'success',
+    id: 'cpt-notification-' + Math.ceil(1e5 * Math.random()),
+    method: 'show',
     autoHide: true
-  }, options);
+  }, options)
 
   const methods = {
-    show: function() {
+    show: function () {
       if (message) {
         const headingText = {
-          'success': 'Success',
-          'error': 'There is a problem',
-          'info': 'Status update',
-          'warning': 'Warning'
+          success: 'Success',
+          error: 'There is a problem',
+          info: 'Status update',
+          warning: 'Warning'
         }
         let $container = $(BANNER_CONTAINER_SELECTOR)
         let $banner;
@@ -130,18 +127,18 @@ function revisedNotify (message, options) {
         $banner.trigger('focus')
       }
     },
-    hide: function() {
-      $("#" + options.id).addClass("hiding")
-      setTimeout(function() {
+    hide: function () {
+      $('#' + options.id).addClass('hiding')
+      setTimeout(function () {
         methods.remove()
       }, 200)
     },
-    remove: function() {
-      $("#" + options.id).remove()
+    remove: function () {
+      $('#' + options.id).remove()
     },
-    deferred: function() {
-      if (options.cssClass) { localStorage.setItem("HRBnotifyclass", options.cssClass) }
-      if (message !== null) { localStorage.setItem("HRBnotify", message) }
+    deferred: function () {
+      if (options.cssClass) { window.localStorage.setItem('HRBnotifyclass', options.cssClass) }
+      if (message !== null) { window.localStorage.setItem('HRBnotify', message) }
     }
   }
 
@@ -152,11 +149,11 @@ revisedNotify.cachedOriginal = '_notify'
 
 // Banners are at the bottom of the document but will appear at the top so put them there
 function moveBannerContainer () {
-  const imagesContainerSelector = ".images-container"
+  const imagesContainerSelector = '.images-container'
   const $bannerContainer = $(BANNER_CONTAINER_SELECTOR)
 
   if ($(`${imagesContainerSelector} + ${BANNER_CONTAINER_SELECTOR}`).length === 0) {
-    $(imagesContainerSelector).after($bannerContainer);
+    $(imagesContainerSelector).after($bannerContainer)
   }
 
   return $bannerContainer
@@ -173,12 +170,12 @@ function updateBannerContainerRole ($bannerContainer) {
 function reviseBanners (window) {
   // Guard against HRB.utils.notify being removed
   if ((!!window.HRB) && (!!window.HRB.utils) && (!!window.HRB.utils.notify)) {
-    window.HRB.utils[revisedNotify.cachedOriginal] = window.HRB.utils.notify; // cache original for fallbacks
-    window.HRB.utils.notify = revisedNotify;
+    window.HRB.utils[revisedNotify.cachedOriginal] = window.HRB.utils.notify // cache original for fallbacks
+    window.HRB.utils.notify = revisedNotify
 
-    const $bannerContainer = moveBannerContainer(); // move banners to position they appear visually
+    const $bannerContainer = moveBannerContainer() // move banners to position they appear visually
     updateBannerContainerRole($bannerContainer) // update to role=alert
-     // changes to banners that need the AJAX response (needs to run on page load)
+    // changes to banners that need the AJAX response (needs to run on page load)
     $(bindCustomBehavioursToFormResponses)
   }
 }

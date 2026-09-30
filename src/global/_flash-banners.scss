@@ -32,7 +32,7 @@
 // full selector, to match the existing one (and so overwrite)
 .layout-content.status .masthead-container.premium .masthead .text-container {
   position: static;
-  background: black;
+  background: #000000;
 }
 
 .cpt-notification-container {
@@ -41,7 +41,6 @@
   row-gap: 1.5rem; // fallback
   row-gap: 1lh;
   align-items: center;
-  //padding-bottom: calc(4.375rem + 20px);
   position: absolute; // fallback for lack of CSS grid support
   top: 0; // fallback for lack of CSS grid support
 
@@ -59,7 +58,7 @@
   font-size: math.div(19, 16) * 1rem;
 
   &.error, &.info, &.warning, &.success {
-    background: #fff;
+    background: #ffffff;
     border-width: 5px;
   }
 }
