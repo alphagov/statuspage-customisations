@@ -34,8 +34,10 @@ function bindCustomBehavioursToFormResponses () {
     const $form = $(`#subscribe-form-${channel}`)
 
     if ($form.length > 0) {
+
       // all responses to forms see to come from a 200, including validation errors
       $form.on('ajax:success', function (evt, data) {
+
         if (data.hasOwnProperty('text')) {
           const $bannerWithMessage = bannerMatchingAjaxMessage(data.text)
           if ($bannerWithMessage !== null) {
@@ -46,6 +48,7 @@ function bindCustomBehavioursToFormResponses () {
             }
           }
         }
+
       })
     }
   })
@@ -80,6 +83,7 @@ function revisedNotify (message, options) {
           'warning': 'Warning'
         }
         let $container = $(BANNER_CONTAINER_SELECTOR)
+        let $banner;
 
         const $wrapper = $(`
           <div class="cpt-notification flag-message ${options.cssClass}" id="${options.id}" tabindex="-1">
@@ -102,6 +106,10 @@ function revisedNotify (message, options) {
         $container
           .addClass('cpt-notification-container')
           .append($wrapper)
+
+        $banner = $container.find('.cpt-notification')
+        $banner.attr('tabindex', '-1')
+        $banner.trigger('focus')
       }
     },
     hide: function() {
