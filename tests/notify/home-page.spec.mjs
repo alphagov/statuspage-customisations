@@ -2,8 +2,59 @@ import { expect, browser, $ } from '@wdio/globals';
 import { serverConfig } from '../../server/config.mjs';
 
 describe('Homepage', () => {
+  let recaptchaMock;
+  let trackSubscriptionAttemptMock;
+  let statusMock;
+  const defaultMockResponseHeaders = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    statusCode: 200,
+    fetchResponse: false
+  }
+  const documentRoot = 'https://status.notifications.service.gov.uk';
 
   beforeAll( async () => {
+    /*
+     * We don't want Google Recaptcha to run in our tests.
+     * But some of statuspage's JS makes use of its JS API, so fake the response and stub the JS API.
+     */
+    recaptchaMock = await browser.mock('https://www.recaptcha.net/recaptcha/enterprise.js');
+    recaptchaMock.respond(`
+      window.grecaptcha = {
+        getPageId: () => 'RC-zi8XCyzjRNrrfx',
+        enterprise: {
+          getResponse: () => {},
+          ready: (cb) => cb && cb(),
+          render: () => {},
+          reset: () => {}
+        }
+    }`, defaultMockResponseHeaders);
+
+    // Also block statuspage's form submission tracking
+    trackSubscriptionAttemptMock = await browser.mock(`${documentRoot}/subscriptions/track_attempt`)
+    trackSubscriptionAttemptMock.respond("", defaultMockResponseHeaders);
+
+    /*
+     * Statuspage's JS continuously polls the server, for the latest status
+     * This can potentially cause reloads, if things have changed so return unchanged status
+     */
+    statusMock = await browser.mock(`${documentRoot}/api/v2/status.json`);
+    statusMock.respond({
+      "page": {
+        "id": "RC-zi8XCyzjRNrrfx",
+        "name": "GOV.UK Notify",
+        "url": "https://status.notifications.service.gov.uk",
+        "time_zone": "Europe/London",
+        "updated_at": "2026-10-01T12:04:41.463+01:00"
+      },
+      "status": {
+        "indicator": "none",
+        "description": "All Systems Operational"
+      }
+    },
+    defaultMockResponseHeaders);
+
     await browser.url(`http://${serverConfig.hostname}:${serverConfig.port}`);
   });
 
