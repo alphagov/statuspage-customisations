@@ -12,15 +12,23 @@ Custom code for uses of statuspage.io on projects owned by the Government Digita
 ### Set up
 
 Add an `.env` file, copied from `.env.tmpl`, containing your team name and the URL of your
-statuspage.
+statuspage as environment variables.
 
 #### Environment variables
 
-Your team name will be used to point the various commands at the folders for:
+`TEAM` will be used to point the various commands at the folders for:
 - your base `custom.scss` and `custom-footer.mjs` files
 - the folder in `./dist` to output your CSS and JS files
 
-The URL of your statuspage, used to get the source markup for your pages.
+`BASE_URL` is the URL of your statuspage is used to get the source markup for your pages.
+
+`INCIDENT_SHA` is the SHA used in the URL of an incident, for example '2wryjrq3v9mt' for 'https://status.notifications.service.gov.uk/incidents/2wryjrq3v9mt'.
+
+Make sure the contents of your `.env` file are added to your shell session:
+
+```bash
+source .env
+```
 
 #### Configuring your statuspage CSS and JS
 
@@ -117,7 +125,7 @@ npm run test:only
 To run a single selected test when the server is running, you can run
 
 ```bash
-npx wdio run ./tests/config.js --spec tests/home-page.spec.mjs
+npm run test:only  -- --spec tests/$TEAM/home-page.spec.mjs
 ```
 
 ### Linting
