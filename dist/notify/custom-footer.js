@@ -219,49 +219,59 @@
     }
   }
 
-  const BANNER_CONTAINER_SELECTOR = "#cpt-notification-container";
+  const BANNER_CONTAINER_SELECTOR = '#cpt-notification-container';
 
   function bannerMatchingAjaxMessage (ajaxMessage) {
-    const matches = $.grep($('.cpt-notification-message'), (el) => {
-      return $(el).text().trim() === ajaxMessage
+    const matches = $.grep($('.cpt-notification'), (el) => {
+      return $(el).find('.cpt-notification-message').text().trim() === ajaxMessage
     });
 
     return (matches.length > 0) ? $(matches[matches.length - 1]) : null
   }
 
-  function linkErrorMessageToField ($bannerWithMessage, message, $formField) {
-    $bannerWithMessage.html(`<a href="#${$formField.attr('id')}">${message}</a>`);
+  function removeBannersForResourse (resourcePath) {
+    $(`.cpt-notification[data-resource="${resourcePath}"]`).remove();
   }
 
-  function bindRefocusEvents ($bannerWithMessage, $formField) {
-    const focusFormField = (e) => {
+  function addResourceMetaToBanner ($banner, resourcePath) {
+    $banner.attr('data-resource', resourcePath); // set as attribute to allow targeting by CSS selector
+  }
+
+  function linkMessageToField ($banner, message, $formField) {
+    $banner.find('.cpt-notification-message').html(`<a href="#${$formField.attr('id')}">${message}</a>`);
+  }
+
+  function bindRefocusOfField ($bannerWithMessage, $formField) {
+    const refocusField = (e) => {
       e.preventDefault();
       e.stopPropagation();
       if ( // Test for API namespace before calling
         (!!window.SP) && (!!window.SP.currentPage) &&
         (!!window.SP.currentPage.updatesDropdown) && (!!window.SP.currentPage.updatesDropdown.show)
       ) {
-        window.SP.currentPage.updatesDropdown.show();
+        window.SP.currentPage.updatesDropdown.isOpen && window.SP.currentPage.updatesDropdown.show();
       }
       $formField.focus();
     };
 
-    $bannerWithMessage.find('a').on('click', focusFormField);
-    $bannerWithMessage.find('.cpt-notification__close-btn').on('click', focusFormField);
+    $bannerWithMessage.find('.cpt-notification__close-btn').on('click', refocusField);
+    $bannerWithMessage.find('.cpt-notification-message a').on('click', refocusField);
   }
 
   function addErrorMessageToField (message, $formField) {
     const errorId = `${$formField.attr('id')}-error`;
-    const $form = $($formField.get(0).form);
+    $($formField.get(0).form);
     $formField.before(`
     <p class="validation-error" id="${errorId}">
       <span class="visually-hidden">Error: </span>${message}
     </p>
   `);
     $formField.attr('aria-describedby', errorId);
+  }
 
-    // Remove error message when form re-submits
-    $form.on('ajax:beforeSend', (xhr, settings) => $form.find('.validation-error').remove());
+  function removeErrorMessageFromField ($formField) {
+    $formField.siblings('.validation-error').remove();
+    $formField.removeAttr('aria-describedby');
   }
 
   function bindCustomBehavioursToFormResponses () {
@@ -269,25 +279,51 @@
       const $form = $(`#subscribe-form-${channel}`);
 
       if ($form.length > 0) {
-
         // all responses to forms see to come from a 200, including validation errors
         $form.on('ajax:success', function (evt, data) {
-
-          if (data.hasOwnProperty('text')) {
-
+          if (Object.prototype.hasOwnProperty.call(data, 'text')) {
             // add custom behaviours if banner message matches that in the AJAX response
             const $bannerWithMessage = bannerMatchingAjaxMessage(data.text);
+
             if ($bannerWithMessage !== null) {
               const $formField = $form.find('#email, #phone-number, #email-webhooks');
+
+              removeBannersForResourse($form.attr('action'));
+
               if ($formField.length > 0) {
-                linkErrorMessageToField($bannerWithMessage, data.text, $formField);
-                addErrorMessageToField(data.text, $formField);
-                bindRefocusEvents($bannerWithMessage, $formField);
+                addResourceMetaToBanner($bannerWithMessage, $form.attr('action'));
+
+                if (data.type === 'error') {
+                  linkMessageToField($bannerWithMessage, data.text, $formField);
+                  addErrorMessageToField(data.text, $formField);
+                  bindRefocusOfField($bannerWithMessage, $formField);
+                }
               }
             }
-
           }
+        });
 
+        $form.on('ajax:beforeSend', function (xhr, settings) {
+          const $submitBtn = $(`#subscribe-btn-${channel}`);
+          const $formField = $form.find('#email, #phone-number, #email-webhooks');
+
+          if (($formField.length > 0) && ($submitBtn.length > 0)) {
+            // Remove any errors from previous submissions
+            $(`.cpt-notification.error[data-resource="${$form.attr('action')}"]`).remove();
+            removeErrorMessageFromField($formField);
+
+            // Submit buttons with this attribute will cause warning banners to be added with their text
+            const noticeText = $submitBtn.attr('data-long-running-notice-text');
+
+            if (noticeText !== undefined) {
+              // If the banner gets added, mark it as related to resource the form POSTs to
+              const $bannerWithMessage = bannerMatchingAjaxMessage(noticeText);
+
+              if ($bannerWithMessage) {
+                addResourceMetaToBanner($bannerWithMessage, $form.attr('action'));
+              }
+            }
+          }
         });
       }
     });
@@ -295,31 +331,31 @@
 
   function revisedNotify (message, options) {
     const argLenTheSame = (arguments.length === 2);
-    const msgTypeTheSame = typeof message === "string";
+    const msgTypeTheSame = typeof message === 'string';
     const optTypeTheSame = Object.prototype.toString.call(options) === '[object Object]';
     const originalMethod = revisedNotify.cachedOriginal;
 
     // If API has changed, use original
-    if (!(argLenTheSame && msgTypeTheSame && optTypeTheSame) && this.hasOwnProperty(originalMethod)) {
+    if (!(argLenTheSame && msgTypeTheSame && optTypeTheSame) && Object.prototype.hasOwnProperty.call(this, originalMethod)) {
       return this[originalMethod].apply(this, arguments)
     }
 
-    var options = $.extend({
+    options = $.extend({
       delay: 5e3,
-      cssClass: "success",
-      id: "cpt-notification-" + Math.ceil(1e5 * Math.random()),
-      method: "show",
+      cssClass: 'success',
+      id: 'cpt-notification-' + Math.ceil(1e5 * Math.random()),
+      method: 'show',
       autoHide: true
     }, options);
 
     const methods = {
-      show: function() {
+      show: function () {
         if (message) {
           const headingText = {
-            'success': 'Success',
-            'error': 'There is a problem',
-            'info': 'Status update',
-            'warning': 'Warning'
+            success: 'Success',
+            error: 'There is a problem',
+            info: 'Status update',
+            warning: 'Warning'
           };
           let $container = $(BANNER_CONTAINER_SELECTOR);
           let $banner;
@@ -351,18 +387,18 @@
           $banner.trigger('focus');
         }
       },
-      hide: function() {
-        $("#" + options.id).addClass("hiding");
-        setTimeout(function() {
+      hide: function () {
+        $('#' + options.id).addClass('hiding');
+        setTimeout(function () {
           methods.remove();
         }, 200);
       },
-      remove: function() {
-        $("#" + options.id).remove();
+      remove: function () {
+        $('#' + options.id).remove();
       },
-      deferred: function() {
-        if (options.cssClass) { localStorage.setItem("HRBnotifyclass", options.cssClass); }
-        if (message !== null) { localStorage.setItem("HRBnotify", message); }
+      deferred: function () {
+        if (options.cssClass) { window.localStorage.setItem('HRBnotifyclass', options.cssClass); }
+        if (message !== null) { window.localStorage.setItem('HRBnotify', message); }
       }
     };
 
@@ -373,7 +409,7 @@
 
   // Banners are at the bottom of the document but will appear at the top so put them there
   function moveBannerContainer () {
-    const imagesContainerSelector = ".images-container";
+    const imagesContainerSelector = '.images-container';
     const $bannerContainer = $(BANNER_CONTAINER_SELECTOR);
 
     if ($(`${imagesContainerSelector} + ${BANNER_CONTAINER_SELECTOR}`).length === 0) {
@@ -399,7 +435,7 @@
 
       const $bannerContainer = moveBannerContainer(); // move banners to position they appear visually
       updateBannerContainerRole($bannerContainer); // update to role=alert
-       // changes to banners that need the AJAX response (needs to run on page load)
+      // changes to banners that need the AJAX response (needs to run on page load)
       $(bindCustomBehavioursToFormResponses);
     }
   }

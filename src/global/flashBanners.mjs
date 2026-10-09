@@ -1,32 +1,40 @@
 const BANNER_CONTAINER_SELECTOR = '#cpt-notification-container'
 
 function bannerMatchingAjaxMessage (ajaxMessage) {
-  const matches = $.grep($('.cpt-notification-message'), (el) => {
-    return $(el).text().trim() === ajaxMessage
+  const matches = $.grep($('.cpt-notification'), (el) => {
+    return $(el).find('.cpt-notification-message').text().trim() === ajaxMessage
   })
 
   return (matches.length > 0) ? $(matches[matches.length - 1]) : null
 }
 
-function linkErrorMessageToField ($bannerWithMessage, message, $formField) {
-  $bannerWithMessage.html(`<a href="#${$formField.attr('id')}">${message}</a>`)
+function removeBannersForResourse (resourcePath) {
+  $(`.cpt-notification[data-resource="${resourcePath}"]`).remove()
 }
 
-function bindRefocusEvents ($bannerWithMessage, $formField) {
-  const focusFormField = (e) => {
+function addResourceMetaToBanner ($banner, resourcePath) {
+  $banner.attr('data-resource', resourcePath) // set as attribute to allow targeting by CSS selector
+}
+
+function linkMessageToField ($banner, message, $formField) {
+  $banner.find('.cpt-notification-message').html(`<a href="#${$formField.attr('id')}">${message}</a>`)
+}
+
+function bindRefocusOfField ($bannerWithMessage, $formField) {
+  const refocusField = (e) => {
     e.preventDefault()
     e.stopPropagation()
     if ( // Test for API namespace before calling
       (!!window.SP) && (!!window.SP.currentPage) &&
       (!!window.SP.currentPage.updatesDropdown) && (!!window.SP.currentPage.updatesDropdown.show)
     ) {
-      window.SP.currentPage.updatesDropdown.show()
+      window.SP.currentPage.updatesDropdown.isOpen && window.SP.currentPage.updatesDropdown.show()
     }
     $formField.focus()
   }
 
-  $bannerWithMessage.find('a').on('click', focusFormField)
-  $bannerWithMessage.find('.cpt-notification__close-btn').on('click', focusFormField)
+  $bannerWithMessage.find('.cpt-notification__close-btn').on('click', refocusField)
+  $bannerWithMessage.find('.cpt-notification-message a').on('click', refocusField)
 }
 
 function addErrorMessageToField (message, $formField) {
@@ -38,9 +46,11 @@ function addErrorMessageToField (message, $formField) {
     </p>
   `)
   $formField.attr('aria-describedby', errorId)
+}
 
-  // Remove error message when form re-submits
-  $form.on('ajax:beforeSend', (xhr, settings) => $form.find('.validation-error').remove())
+function removeErrorMessageFromField ($formField) {
+  $formField.siblings('.validation-error').remove()
+  $formField.removeAttr('aria-describedby')
 }
 
 function bindCustomBehavioursToFormResponses () {
@@ -57,10 +67,39 @@ function bindCustomBehavioursToFormResponses () {
           if ($bannerWithMessage !== null) {
             const $formField = $form.find('#email, #phone-number, #email-webhooks')
 
+            removeBannersForResourse($form.attr('action'))
+
             if ($formField.length > 0) {
-              linkErrorMessageToField($bannerWithMessage, data.text, $formField)
-              addErrorMessageToField(data.text, $formField)
-              bindRefocusEvents($bannerWithMessage, $formField)
+              addResourceMetaToBanner($bannerWithMessage, $form.attr('action'))
+
+              if (data.type === 'error') {
+                linkMessageToField($bannerWithMessage, data.text, $formField)
+                addErrorMessageToField(data.text, $formField)
+                bindRefocusOfField($bannerWithMessage, $formField)
+              }
+            }
+          }
+        }
+      })
+
+      $form.on('ajax:beforeSend', function (xhr, settings) {
+        const $submitBtn = $(`#subscribe-btn-${channel}`)
+        const $formField = $form.find('#email, #phone-number, #email-webhooks')
+
+        if (($formField.length > 0) && ($submitBtn.length > 0)) {
+          // Remove any errors from previous submissions
+          $(`.cpt-notification.error[data-resource="${$form.attr('action')}"]`).remove()
+          removeErrorMessageFromField($formField)
+
+          // Submit buttons with this attribute will cause warning banners to be added with their text
+          const noticeText = $submitBtn.attr('data-long-running-notice-text')
+
+          if (noticeText !== undefined) {
+            // If the banner gets added, mark it as related to resource the form POSTs to
+            const $bannerWithMessage = bannerMatchingAjaxMessage(noticeText)
+
+            if ($bannerWithMessage) {
+              addResourceMetaToBanner($bannerWithMessage, $form.attr('action'))
             }
           }
         }
