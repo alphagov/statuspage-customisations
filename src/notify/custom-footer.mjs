@@ -11,7 +11,7 @@ import {
 } from '../global/constants.mjs'
 import addSkipLink from '../global/skiplink.mjs'
 import { addHeadingToFooter } from '../global/pageFooter.mjs'
-import { revisedNotify } from '../global/flashBanners.mjs'
+import { reviseBanners } from '../global/flashBanners.mjs'
 import {
   addHeadingsAndMoveAboutText,
   remakeStatusOverviewHeadingAsParagraph,
@@ -52,11 +52,7 @@ if (pathRoot in mainContainerMap) {
 
   // defer until page has loaded, so statuspage setup JS has run
   $(() => {
-    // Guard against HRB.utils.notify being removed
-    if ((!!window.HRB) && (!!window.HRB.utils) && (!!window.HRB.utils.notify)) {
-      window.HRB.utils[revisedNotify.cachedOriginal] = window.HRB.utils.notify; // cache original for fallbacks
-      window.HRB.utils.notify = revisedNotify;
-    }
+    reviseBanners(window)
   })
 
   const $container = document.querySelector('.layout-content > .container')

@@ -219,6 +219,8 @@
     }
   }
 
+  const BANNER_CONTAINER_SELECTOR = "#cpt-notification-container";
+
   function revisedNotify (message, options) {
     const argLenTheSame = (arguments.length === 2);
     const msgTypeTheSame = typeof message === "string";
@@ -290,6 +292,34 @@
   }
 
   revisedNotify.cachedOriginal = '_notify';
+
+  function moveBannerContainer () {
+    const imagesContainerSelector = ".images-container";
+    const $bannerContainer = $(BANNER_CONTAINER_SELECTOR);
+
+    if ($(`${imagesContainerSelector} + ${BANNER_CONTAINER_SELECTOR}`).length === 0) {
+      $(imagesContainerSelector).after($bannerContainer);
+    }
+
+    return $bannerContainer
+  }
+
+  function updateBannerContainerAria ($bannerContainer) {
+    $bannerContainer.attr('role', 'alert');
+
+    return $bannerContainer
+  }
+
+  function reviseBanners (window) {
+    // Guard against HRB.utils.notify being removed
+    if ((!!window.HRB) && (!!window.HRB.utils) && (!!window.HRB.utils.notify)) {
+      window.HRB.utils[revisedNotify.cachedOriginal] = window.HRB.utils.notify; // cache original for fallbacks
+      window.HRB.utils.notify = revisedNotify;
+
+      const $bannerContainer = moveBannerContainer(); // move banners to position they appear visually
+      updateBannerContainerAria($bannerContainer); // update to role=alert
+    }
+  }
 
   /*
    * Accessibility issue this proposes to address:
@@ -479,11 +509,7 @@
 
     // defer until page has loaded, so statuspage setup JS has run
     $(() => {
-      // Guard against HRB.utils.notify being removed
-      if ((!!window.HRB) && (!!window.HRB.utils) && (!!window.HRB.utils.notify)) {
-        window.HRB.utils[revisedNotify.cachedOriginal] = window.HRB.utils.notify; // cache original for fallbacks
-        window.HRB.utils.notify = revisedNotify;
-      }
+      reviseBanners(window);
     });
 
     const $container = document.querySelector('.layout-content > .container');
