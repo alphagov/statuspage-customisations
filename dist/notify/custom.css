@@ -5,7 +5,6 @@
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
   clip-path: inset(50%) !important;
   border: 0 !important;
   white-space: nowrap !important;
@@ -96,7 +95,6 @@ button:focus:not(:active):not(:hover) {
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
   clip-path: inset(50%) !important;
   border: 0 !important;
   white-space: nowrap !important;
@@ -150,7 +148,7 @@ button:focus:not(:active):not(:hover) {
 }
 .layout-content.status .masthead-container.premium .masthead .text-container {
   position: static;
-  background: black;
+  background: #000000;
 }
 
 .cpt-notification-container {
@@ -177,7 +175,7 @@ button:focus:not(:active):not(:hover) {
   font-size: 1.1875rem;
 }
 .cpt-notification.error, .cpt-notification.info, .cpt-notification.warning, .cpt-notification.success {
-  background: #fff;
+  background: #ffffff;
   border-width: 5px;
 }
 
@@ -190,19 +188,15 @@ button:focus:not(:active):not(:hover) {
   outline: 3px solid #ffdd00;
 }
 
+.cpt-notification > div {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+}
+
 .cpt-notification a:not(.close),
 .cpt-notification a:not(.close):hover {
   font-weight: normal;
   color: #1D70B8;
-}
-
-.cpt-notification__header {
-  display: flex;
-  justify-content: space-between;
-  column-gap: 1.5rem;
-  column-gap: 1lh;
-  align-items: start;
-  padding: 0;
 }
 
 .cpt-notification__heading {
@@ -210,6 +204,7 @@ button:focus:not(:active):not(:hover) {
   line-height: 2rem;
   padding: 20px 0 0 20px;
   margin-bottom: 20px;
+  grid-column: 1/2;
 }
 @media screen and (max-width: 700px) {
   .cpt-notification__heading {
@@ -221,6 +216,8 @@ button:focus:not(:active):not(:hover) {
   border: none;
   background: transparent;
   padding: 20px;
+  grid-column: 2/3;
+  grid-row: 1/2;
 }
 
 .cpt-notification-message {

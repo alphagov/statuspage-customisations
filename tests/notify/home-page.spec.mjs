@@ -112,8 +112,10 @@ describe('Homepage', () => {
         await expect($bannerContainer.previousElement()).toHaveElementClass('images-container');
       });
 
-      it("the banners container should have the 'alert' ARIA role", async () => {
-        await expect($bannerContainer).toHaveComputedRole('alert');$
+      // We're focusing banners when added to the page so don't want that to happen inside a live region
+      // In practice, this causes announcements to be duplicated
+      it("the banners container should have its 'status' ARIA role removed", async () => {
+        await expect($bannerContainer).not.toHaveComputedRole('status');$
       });
     });
 
@@ -136,15 +138,17 @@ describe('Homepage', () => {
         await $("#subscribe-btn-email").click();
       });
 
-      it("should be styled as an error banner", async () => {
+      it("they should be styled as an error banner", async () => {
         await expect($('.cpt-notification')).toHaveElementClass('error');
       });
 
-      it("they should appear in the new container (and so be announced to assistive technologies)", async () => {
+      // The approach with the placement of the alert region matches design system's error summary:
+      // https://design-system.service.gov.uk/components/error-summary/
+      it("they should appear in the new container and wrap their contents in an ARIA alert region", async () => {
         const $banner = await $('.cpt-notification');
         const $bannerContainer = $banner.parentElement();
         await expect($banner).toBeExisting();
-        await expect($bannerContainer).toHaveComputedRole('alert');
+        await expect($('.cpt-notification > div')).toHaveComputedRole('alert');
       });
 
       it("they should be focused", async () => {
@@ -152,7 +156,7 @@ describe('Homepage', () => {
       });
 
       it("they should contain a link to the field at error", async () => {
-        const $linkToField = await $('.cpt-notification > .cpt-notification-message > a');
+        const $linkToField = await $('.cpt-notification .cpt-notification-message > a');
         await expect($linkToField).toBeExisting();
         await expect($linkToField).toHaveAttribute('href', '#email');
       });
@@ -166,7 +170,7 @@ describe('Homepage', () => {
       });
 
       it("clicking the link to the field at error should focus it", async () => {
-        await $('.cpt-notification > .cpt-notification-message > a').click();
+        await $('.cpt-notification .cpt-notification-message > a').click();
         await expect($('#email')).toBeFocused();
       });
 

@@ -362,11 +362,11 @@
 
           const $wrapper = $(`
           <div class="cpt-notification flag-message ${options.cssClass}" id="${options.id}" tabindex="-1">
-            <div class="cpt-notification__header">
+            <div role="alert">
               <h2 class="cpt-notification__heading">${headingText[options.cssClass]}</h2>
-              <button class="cpt-notification__close-btn">Close</button>
+              <p class="cpt-notification-message">${message}</p>
+              <button class="cpt-notification__close-btn">Close<span class="visually-hidden"> banner</span></button>
             </div>
-            <p class="cpt-notification-message">${message}</p>
           </div>
         `);
 
@@ -422,7 +422,7 @@
   // Give banners an ARIA role matching this GOV.UK notification banner variant:
   // https://design-system.service.gov.uk/components/notification-banner/#reacting-to-something-the-user-has-done
   function updateBannerContainerRole ($bannerContainer) {
-    $bannerContainer.attr('role', 'alert');
+    $bannerContainer.removeAttr('role');
 
     return $bannerContainer
   }

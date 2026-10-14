@@ -74,6 +74,11 @@
   outline: 3px solid #ffdd00;
 }
 
+.cpt-notification > div {
+  display:grid;
+  grid-template-columns: 1fr min-content;
+}
+
 // Override for statuspage link styles in banners
 .cpt-notification a:not(.close),
 .cpt-notification a:not(.close):hover {
@@ -81,20 +86,12 @@
   color: #1D70B8;
 }
 
-.cpt-notification__header {
-  display: flex;
-  justify-content: space-between;
-  column-gap: 1.5rem; // fallback
-  column-gap: 1lh;
-  align-items: start;
-  padding: 0;
-}
-
 .cpt-notification__heading {
   font-size: math.div(24, 16) * 1rem;
   line-height: 2rem;
   padding: 20px 0 0 20px;
   margin-bottom: 20px;
+  grid-column: 1/2;
 
   @media screen and (max-width: 700px) {
     font-size: math.div(21, 16) * 1rem;
@@ -105,6 +102,8 @@
   border: none;
   background: transparent;
   padding: 20px;
+  grid-column: 2/3;
+  grid-row: 1/2;
 }
 
 .cpt-notification-message {
