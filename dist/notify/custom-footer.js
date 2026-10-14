@@ -281,6 +281,9 @@
       if ($form.length > 0) {
         // all responses to forms see to come from a 200, including validation errors
         $form.on('ajax:success', function (evt, data) {
+          // protect against original HRN.utils.notify being used
+          if (!!revisedNotify.fallbackToOriginal === true) { return }
+
           if (Object.prototype.hasOwnProperty.call(data, 'text')) {
             // add custom behaviours if banner message matches that in the AJAX response
             const $bannerWithMessage = bannerMatchingAjaxMessage(data.text);
@@ -337,6 +340,7 @@
 
     // If API has changed, use original
     if (!(argLenTheSame && msgTypeTheSame && optTypeTheSame) && Object.prototype.hasOwnProperty.call(this, originalMethod)) {
+      revisedNotify.isOriginal = true;
       return this[originalMethod].apply(this, arguments)
     }
 
