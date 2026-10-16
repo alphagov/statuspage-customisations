@@ -1,0 +1,112 @@
+@use 'sass:math';
+
+@supports(display: grid) {
+  .masthead {
+    display: grid;
+    grid-template-rows: 1fr min-content;
+    grid-template-columns: 1rem 1fr 1rem;
+  }
+
+  .images-container,
+  .text-container {
+    grid-column: 1 / span 3;
+    align-self: end;
+  }
+
+  .images-container {
+    grid-row: 1 / 3;
+  }
+
+  .cpt-notification-container {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    padding-bottom: 1rem;
+  }
+
+  .text-container {
+    grid-row: 2 / 3;
+    align-self: end;
+  }
+}
+
+// full selector, to match the existing one (and so overwrite)
+.layout-content.status .masthead-container.premium .masthead .text-container {
+  position: static;
+  background: #000000;
+}
+
+.cpt-notification-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem; // fallback
+  row-gap: 1lh;
+  align-items: center;
+  position: absolute; // fallback for lack of CSS grid support
+  top: 0; // fallback for lack of CSS grid support
+
+  @supports(display: grid) {
+    position: static;
+  }
+}
+
+.cpt-notification {
+  position: static;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: #0b0c0c;
+  font-size: math.div(19, 16) * 1rem;
+
+  &.error, &.info, &.warning, &.success {
+    background: #ffffff;
+    border-width: 5px;
+  }
+}
+
+// Override for statuspage spacing styles on smaller screens
+@media screen and (max-width: 700px) {
+  .cpt-notification:not(.in-page) {
+    padding: 0;
+  }
+}
+
+.cpt-notification:focus {
+  outline: 3px solid #ffdd00;
+}
+
+.cpt-notification > div {
+  display:grid;
+  grid-template-columns: 1fr min-content;
+}
+
+// Override for statuspage link styles in banners
+.cpt-notification a:not(.close),
+.cpt-notification a:not(.close):hover {
+  font-weight: normal;
+  color: #1D70B8;
+}
+
+.cpt-notification__heading {
+  font-size: math.div(24, 16) * 1rem;
+  line-height: 2rem;
+  padding: 20px 0 0 20px;
+  margin-bottom: 20px;
+  grid-column: 1/2;
+
+  @media screen and (max-width: 700px) {
+    font-size: math.div(21, 16) * 1rem;
+  }
+}
+
+.cpt-notification__close-btn {
+  border: none;
+  background: transparent;
+  padding: 20px;
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+.cpt-notification-message {
+  padding: 0 20px;
+  margin-bottom: 20px;
+}

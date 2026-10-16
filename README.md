@@ -125,7 +125,33 @@ npm run test:only
 To run a single selected test when the server is running, you can run
 
 ```bash
-npm run test:only  -- --spec tests/$TEAM/home-page.spec.mjs
+npm run test:only -- --spec tests/$TEAM/home-page.spec.mjs
+```
+
+#### Debugging
+
+If you debug in your code editor, read the relevant section in https://webdriver.io/docs/debugging.
+
+Webdriver.io offers 2 types of debugging:
+1. pausing tests to check the state of the page and interact with it
+2. pausing the code of tests to inspect its state and step through it
+
+The first type uses [the `browser.debug` command](https://webdriver.io/docs/api/browser/debug). Put
+it into your test code where you want to pause.
+
+The second type uses the debugger built into NodeJS. This will 'just work' in most editors but (you
+can also use devtools in chromium browsers](https://blog.master.dev/node-js-debugging-in-chrome-devtools/) if needed.
+
+Run the test like so:
+
+```bash
+DEBUG=true npm run test:only -- --spec tests/$TEAM/[test name].mjs
+```
+
+For example:
+
+```bash
+DEBUG=true npm run test:only -- --spec tests/$TEAM/home-page.spec.mjs
 ```
 
 ### Linting
