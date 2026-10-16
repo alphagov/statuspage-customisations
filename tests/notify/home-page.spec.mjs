@@ -115,7 +115,7 @@ describe('Homepage', () => {
       // We're focusing banners when added to the page so don't want that to happen inside a live region
       // In practice, this causes announcements to be duplicated
       it("the banners container should have its 'status' ARIA role removed", async () => {
-        await expect($bannerContainer).not.toHaveComputedRole('status');$
+        await expect($bannerContainer).not.toHaveComputedRole('status');
       });
     });
 
