@@ -187,7 +187,7 @@ Follow these steps to update the production code of your status page.
 You should have the latest `main` checked out.
 
 1. sign into statuspage.io
-2. go to 'Customize page and emails'
+2. go to 'Customize page and emails' > 'Your page' > 'Customize HTML & CSS'
 3. click the 'Customize HTML & CSS' button
 4. get the latest version of a file in your clipboard with the bash script below
 5. paste it into the textbox for that file
