@@ -34,3 +34,16 @@
 .updates-dropdown-container .updates-dropdown .updates-dropdown-nav .active:focus span {
   filter: invert(1);
 }
+
+// Accessibility issue this proposes to address:
+// - ID: 20, Error messages for entering an email address to subscribe to status incident updates is not announced in screen readers.
+//   - PR: [TO DO]
+//   - Trello card: https://trello.com/c/nPLJPHJf/1809-status-page-errors-arent-announced-to-screen-readers
+//   - Note: As part of fixing the banner, we also follow design system's text-input and add the error message
+//           to the form field, visually and semantically
+.validation-error {
+  color: #e74c3c;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}

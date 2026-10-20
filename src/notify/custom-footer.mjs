@@ -11,12 +11,14 @@ import {
 } from '../global/constants.mjs'
 import addSkipLink from '../global/skiplink.mjs'
 import { addHeadingToFooter } from '../global/pageFooter.mjs'
+import { reviseBanners } from '../global/flashBanners.mjs'
 import {
   addHeadingsAndMoveAboutText,
   remakeStatusOverviewHeadingAsParagraph,
   rewriteIncidentsListHeading,
   remakeComponentsList,
-  reformatDates
+  reformatDates,
+  stopSubscribeBtnNavigation
 } from '../pages/homepage/index.mjs'
 import {
   updateIncidentsListHeadings,
@@ -49,6 +51,11 @@ if (pathRoot in mainContainerMap) {
   addHeadingToFooter()
   reformatDateRanges()
 
+  // defer until page has loaded, so statuspage setup JS has run
+  $(() => {
+    reviseBanners(window)
+  })
+
   const $container = document.querySelector('.layout-content > .container')
 
   // Home page specific
@@ -59,6 +66,7 @@ if (pathRoot in mainContainerMap) {
     remakeComponentsList()
     addIncidentTypeToIncidentList(pathRoot)
     reformatDates()
+    stopSubscribeBtnNavigation()
   }
 
   if (pathRoot === '/history') {
